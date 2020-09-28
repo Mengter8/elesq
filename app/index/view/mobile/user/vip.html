@@ -1,0 +1,54 @@
+<title>秒赞VIP会员 - {:config('conf.title')}</title>
+<div class="app-header t-v bg-dlan dk bb">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">秒赞VIP会员</span>
+    <span class="header-r t-v t-r nowrap" onclick=""><i class="icon  f10"></i></span>
+</div>
+<div class="app-content f5">
+    <div class="mb5">
+        <ul class="mt3 bt bb">
+            <li class="h10">
+                <div class="wh t-v bb">
+                    <div class="w10 t-c"><i class="icon icon-vip f11 fen"></i></div>
+                    <div class="w20">我的会员</div>
+                    <div class="w40 f3 t-r {$coler}">{$title}</div>
+                    <div class="w5 t-c f2 hui"></div>
+                </div>
+            </li>
+            <li class="h10">
+                <div class="wh t-v bb">
+                    <div class="w10 t-c"><i class="icon icon-time f11 cheng"></i></div>
+                    <div class="w20">会员时间</div>
+                    <div class="w40 f3 t-r">{:date('Y-m-d',session('user.vip_start_time'))} - {:date('Y-m-d',session('user.vip_end_time'))}</div>
+                    <div class="w5 t-c f2 hui"></div>
+                </div>
+            </li>
+            {if $diff > 0}
+            <li class="h10">
+                <div class="wh t-v bb">
+                    <div class="w10 t-c"><i class="icon icon-time f11 lv"></i></div>
+                    <div class="w20">剩余时间</div>
+                    <div class="w40 f3 t-r hong">{$diff}天</div>
+                    <div class="w5 t-c f2 hui"></div>
+                </div>
+            </li>
+            {/if}
+        </ul>
+        <ul class="mt3 bt bb">
+            <li class="h9">
+                <span class="wh t-v bb" onclick="mode_shop_vip();">
+                    <div class="w10 t-c"><i class="icon icon-cart f11 qing"></i></div>
+                    <div class="w20">续费会员</div> <div class="w40 f2 t-r"></div>
+                    <div class="w5 t-c f2 hui"><i class="icon icon-pright"></i></div>
+                </span>
+            </li>
+            <li class="h9">
+                <span class="wh t-v" onclick="mode_user_vipLog();">
+                    <div class="w10 t-c"><i class="icon icon-text f11 lv"></i></div>
+                    <div class="w20">开通记录</div> <div class="w40 f2 t-r "></div>
+                    <div class="w5 t-c f2 hui"><i class="icon icon-pright"></i></div>
+                </span>
+            </li>
+        </ul>
+    </div>
+</div>

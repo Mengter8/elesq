@@ -1,0 +1,55 @@
+{if condition="$Qlist"}
+{foreach $Qlist as $key=>$vo }
+<dl class="h13 del17338"><a class="in h" href="{:url('/qlist/qset',['uin'=>$vo.uin])}" data-pjax>
+    <dt><img class="w9 h9 b r5 ml6 mr6" src="//q4.qlogo.cn/headimg_dl?dst_uin={$vo.uin}&spec=40"></dt>
+    <dd>
+        <div class="t-v">
+            <span class="col-4">
+                <p class="hui" style="padding-left:1px;">
+                    <i class="icon icon-my mr1"></i> {$vo.nickname}
+                </p>
+                <p class="mt0 f5 dzi bold">
+                    <i class="icon icon-qq"></i>
+                    <font class="">{$vo.uin}</font>
+                </p>
+            </span>
+            <span class="col-4 f4 bold">
+            {if condition="$vo.status eq 1"}
+                <font class="lv"><i class="icon icon-squarecheck f4 mr1"></i> 状态：正常</font>
+            {else /}
+                <font class="hong"><i class="icon icon-squarecheck f4 mr1"></i> 状态：失效</font>
+            {/if}
+            </span>
+            <span class="col-4 f3">
+                <p>
+                    {if $vo.zan_status == 1 && $vo.status == 1}
+                    <i class="icon icon-appreciate mr1 hui"></i> <font class="lv">秒赞已开启</font>
+                    {else /}
+                    <i class="icon icon-appreciate mr1 hui"></i> <font class="hong">秒赞已关闭</font>
+                    {/if}
+                </p>
+                <p class="mt0 hui">
+                    <i class="icon icon-time mr1"></i> {$vo.last_time|date="m-d H:i:s"}
+                </p>
+            </span>
+        </div>
+    </dd>
+</a>
+    <dt>
+        <button class="btn btn-bai w13 h" onclick="mode_qq_add('{$vo.uin}');"><i class="icon icon-update"></i>
+        </button>
+    </dt>
+    <dt>
+        <button class="btn btn-bai w13 h" onclick="mode_qq_mzrz('{$vo.uin}');"><i class="icon icon-medal"></i></button>
+    </dt>
+    <dt>
+        <button class="btn btn-bai w13 h" onclick="ajax_qq_del('{$vo.uin}');"><i class="icon icon-delete"></i>
+        </button>
+    </dt>
+</dl>
+{/foreach}
+<script>page.setcount(1, 'index');</script>
+{else}
+<div class="pt12 t-c f8 hui">啊哦，怎么一个QQ也没有~</div>
+<script>page.setcount(0,'index');</script>
+{/if}

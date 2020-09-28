@@ -1,0 +1,223 @@
+<title>扫码添加QQ - {:config('conf.title')}</title>
+<style>
+    #qrimg > img {
+    width: 6rem;
+    height: 6rem;
+    }
+</style>
+
+<div class="app-header t-v bg-bai dl2 bb">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">扫码添加QQ</span>
+    <span class="header-r t-v t-r nowrap" onclick="mode_qq_add('{$uin|default="0"}');"><i class="icon icon-more f10"></i></span>
+</div>
+<div class="app-content  bg-bai">
+    <div class="p3">
+        <div class="qrimgid t-c">
+            <div class="f6 bold hong">请使用手机QQ扫描二维码</div>
+            <hr class="mt2"/>
+            <div class="pt1 h63" id="qrimg"><p class="pt12 hui">二维码加载中</p></div>
+            <div class="pb3">
+                <span class="pr2">登陆地点</span>
+                {foreach $serverList as $key=>$vo}
+                {if $key == 0}
+                <label class="i-checks"><input type="radio" name="serverId" value="{$vo.id}" {if !isset($uin,$sid) || $vo.id == $sid}checked{/if} onclick="_sm_cutover_area();"><i></i>{$serverList.0.name}</label>
+                {else /}
+                <label class="i-checks ml2"><input type="radio" name="serverId" value="{$vo.id}" {if isset($uin,$sid) && $vo.id == $sid}checked{/if} onclick="_sm_cutover_area();"><i></i>{$vo.name}</label>
+                {/if}
+                {/foreach}
+            </div>
+            <hr/>
+        </div>
+        <div class="pt3 pb3 bold lv t-c" id="smlogin"><span id="loginmsg"></span>
+            <span id="loginload" class="pl1"><i class="mode-loading cheng w3 h3 v-4"></i></span>
+        </div>
+        <div class="pb3">
+            <button class="btn btn-md btn-lan w" onclick="_sm_mlogin();">QQ快捷扫码</button>
+        </div>
+        <div class="in-list in-t top pt1 mb3 f2 hui smtutorial"><p class="bold f4 mb2">手机扫码教程：</p>
+            <dl>
+                <dt>1、</dt>
+                <dd>长按二维码保存图片到手机，或者使用手机截图功能截图本页面。</dd>
+            </dl>
+            <dl>
+                <dt>2、</dt>
+                <dd>在手机QQ扫一扫界面，点右上角进入相册，选择刚才保存的二维码图片即可识别。</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+{if $uin}
+<div class="mode-footer w h5 bg-bai dl2 t-v bt">
+    <div class="w f2 t-c hui">当前QQ使用 <font class="lv"><i class="icon icon-location"></i> {$name}服务器</font> 进行登陆，如需更改，请删除重新添加
+    </div>
+</div>
+{/if}
+<script>
+    /**
+     * 快捷登录
+     */
+    function _sm_mlogin(){
+        layer.open({
+            content: '<div><h4 class="mt0 mb5">提示</h4></div><div>扫码登录成功后请返回本页面</div>',
+            btn: ['好 的', '取 消'],
+            shadeClose: false,
+            yes: function (i) {
+                x.mclose(i);
+                var imagew = $('#qrimg img').attr('src');
+                var image = imagew.replace(/data:image\/png;base64,/, "");
+                // var url = 'http://grouproam.qq.com/cgi-bin/_sm_qrloginhttpconn?htcmd=0x6ff0080&u=' + api + 'qlogin/get_qrlogin.html?image=' + encodeURIComponent(image);
+                // var url = 'http://htdata2.qq.com/cgi-bin/httpconn?htcmd=0x6ff0080&u=' + api + 'qlogin/get_qrlogin.html?image=' + encodeURIComponent(image);
+                // var url = 'http://htdata.qq.com/cgi-bin/httpconn?htcmd=0x6ff0080&u=' + api + 'qlogin/get_qrlogin.html?image=' + encodeURIComponent(image);
+
+                $.ajax({
+                    url: api + "common/qrLogin.html",
+                    type: "POST",
+                    data: {
+                        'image': image,
+                    },
+                    datatype: "json",
+                    success: function (ret) {
+                        if (ret.code === 1) {
+                            console.log(ret.data);
+                            window.location.href = 'mqqapi://forward/url?version=1&src_type=web&url_prefix=' + window.btoa(ret.data);
+                        } else if (ret.code === 0) {
+                            x.btn(ret.message);
+                        }
+                    },
+                    error: function (){
+                        alert(2);
+                    }
+                });
+
+            },
+            no: function (i) {
+                x.mclose(i);
+            }
+        });
+    }
+    /**
+     * 获取二维码
+     */
+    function _sm_qrpic() {
+        serverId = $('input[name="serverId"]:checked').val();
+
+        $.ajax({
+            url: "/qlogin/getQrCode.html",
+            type: "POST",
+            data: {
+                'serverId': serverId,
+            },
+            datatype: "json",
+            success: function (ret) {
+                if (ret.code === 1) {
+                    $("#loginmsg").html("等待扫描二维码");
+                    $("#qrimg").attr("qrsig", ret['data'].qrsig);
+                    $("#qrimg").attr("loginsig", ret['data'].login_sig);
+                    $("#qrimg").html("<img src='data:image/png;base64," + ret['data'].image + "'/>");
+                    _sm_qrlogin();
+                } else if (ret.code === 0) {
+                    x.btn(ret.message);
+                }
+            }
+        });
+    }
+    /**
+     * 验证登录
+     * @private
+     */
+    function _sm_qrlogin() {
+        saomaInterID = setInterval(function () {
+            var qrsig = $("#qrimg").attr("qrsig");
+            var loginsig = $("#qrimg").attr("loginsig");
+            if (!serverId || !qrsig || !loginsig) return;
+            $.ajax({
+                url: "/qlogin/getQrLogin.html",
+                type: "POST",
+                data: {
+                    'serverId': serverId,
+                    'qrsig': qrsig,
+                    'loginsig': loginsig,
+                },
+                datatype: "json",
+                success: function (ret) {
+                    if (ret.code === 1) {
+                        //登录
+                        _sm_login(ret['data'].uin, ret['data'].skey, ret['data'].pskey, ret['data'].superkey);
+                    } else if (ret.code === -1) {
+                        //二维码失效
+                        sm.cleartime();
+                        _sm_qrpic();
+                    } else if (ret.code === 2) {
+                        //正在验证
+                    } else if (ret.code === 3) {
+                        //已扫码
+                        _sm_success();
+                    } else if (ret.code === 4) {
+                        //被拒绝
+                        x.mclose();
+                        sm.cleartime();
+                        x.btn(ret.message);
+                    }else if (ret.code === 0) {
+                        x.mclose();
+                        sm.cleartime();
+                        x.btn(ret.message);
+                    }
+                }
+            });
+        }, 3000);
+    }
+    /**
+     * 已扫码
+     * @private
+     */
+    function _sm_success() {
+        if ($("#loginload").length > 0) {
+            $(".qrimgid").hide();
+            $("#loginload").remove();
+            $(".smtutorial").remove();
+            $("#loginmsg").html("<p class='mt9'><i class='icon icon-check f16 lv'></i></p><p class='qing mt5 pb9'>扫码成功，请在手机上确认授权登陆&nbsp; <i class='mode-loading qing w3 h3 v-4'></i></p>");
+        }
+    }
+    /**
+     * 登录成功
+     * @private
+     */
+    function _sm_login(uin,skey,pskey,superkey){
+        sm.cleartime();
+        $(".qrimgid").hide();
+        $("#loginload").remove();
+        $("#loginmsg").html("<p><i class='icon icon-check f16 lv'></i></p><p class='qing mt5 pb9'>登录成功，正在保存&nbsp; <i class='mode-loading qing w5 h5 v-4'></i></p>");
+        $.ajax({
+            url: "/qlogin/update.html",
+            type: "POST",
+            data: {
+                "serverId": serverId,
+                "uin": uin,
+                "skey": skey,
+                "pskey": pskey,
+                "superkey": superkey,
+            },
+            datatype: "json",
+            success: function (res) {
+                x.mclose(moid["qrlogin"]);
+                x.mclose(moid["login"]);
+                x.msg(res.message);
+                sm.cleartime();
+                qqlist.callback(1,1,1);
+                qqlist.html();
+            }
+        });
+    }
+    function _sm_cutover_area() {
+        $("#qrimg").html("<p class='pt12 hui'>二维码加载中</p>");
+        sm.cleartime();
+        _sm_qrpic();
+    }
+
+    $(function () {
+        sm.cleartime();
+        _sm_qrpic();
+    });
+</script>

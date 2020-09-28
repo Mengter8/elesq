@@ -1,0 +1,18 @@
+<title>{$title} [手动执行]</title>
+<div class="p6" id="debugbody">
+    <div class="w h18 t-c mt7">
+        <p class="h11 pt3"><span class="mode-loading"></span></p>
+        <p class="f5 hui">正在执行，请稍后</p>
+    </div>
+</div>
+<script>
+    x.postData(
+        '/debug/{$type}','uin={$uin}', 1, 599999,
+        function (d) {
+            $("#debugbody").html(d);
+        },
+        function (d) {
+            $("#debugbody").html('<div class="w h18 t-c mt7"><p class="h11"><i class="icon icon-info f12 nobold hong"></i></p><p class="f5 hong bold">执行失败，请稍后重试</p></div>');
+        }
+    );
+</script>

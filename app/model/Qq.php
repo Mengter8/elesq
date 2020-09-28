@@ -1,0 +1,175 @@
+<?php
+declare (strict_types=1);
+
+namespace app\model;
+
+use think\Model;
+
+/**
+ * @mixin think\Model
+ */
+class Qq extends Model
+{
+    protected $pk = 'uin';
+
+    /**
+     * 获取点赞列表
+     */
+    public function getZanList($uin, $type)
+    {
+        $notlist = (new \app\model\Mpz)->getByDataset($uin, $type);
+        $list = $this->where('status', '=', 1)
+            ->whereNotIn('uin', $notlist . $uin)
+            ->limit(12)
+            ->select()
+            ->toArray();
+        return $list;
+    }
+
+    /**
+     * 获取自己QQ列表
+     * @param int $mod
+     * @param null $search
+     * @return array
+     */
+    public function getMyUin($mod = NULL, $search = NULL)
+    {
+        $uid = session('user.uid');
+        if ($mod == 1) {
+            $status = 1;
+        } elseif ($mod == 2) {
+            $status = 0;
+        }
+        $sql = $this->where('uid', '=', $uid);
+        if (isset($status)) {
+            $sql = $sql->where('status', '=', $status);
+        }
+        if (!is_null($search)) {
+            $sql = $sql->where('uin', 'like', "%{$search}%");
+        }
+        return $sql->select()
+            ->toArray();
+    }
+
+    /**
+     * 是否是自己的QQ
+     */
+    public function findMyUin($uin)
+    {
+        if ($res = $this->where('uin', '=', $uin)->find()) {
+            if ($res->toArray()['uid'] == session('user.uid')) {
+                return $res->toArray();
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+    }
+
+    /**
+     * 设置QQ状态 默认失效
+     * @param int $uin 用户QQ
+     * @param int $status 状态 0失效 1正常
+     * @return Qq
+     */
+    public function setStatus($uin, $status = 0)
+    {
+        return $this->where('uin', '=', $uin)->update(['status' => $status]);
+//        Qq::update(['status' => 0], ['uin' => $qq['uin']]);
+    }
+
+    /**
+     * @param $uid
+     * @param $sid
+     * @param $uin
+     * @param $pwd
+     * @param $skey
+     * @param $pskey
+     * @param $superkey
+     * @return \think\response\Json
+     */
+    public function add($uid,$sid,$uin,$pwd,$skey,$pskey,$superkey)
+    {
+        //验证CK
+        $task = new Task();
+        $res = $this->getByUin($uin);
+        if (!$uid) {
+            //不存在密码 则使用数据库UID
+            $uid = isset($res['uid']) ?  $res['uid']: '';
+        }
+        if (!$pwd) {
+            //不存在密码 则使用数据库密码
+            $pwd = isset($res['pwd']) ?  $res['pwd']: '';
+        }
+        $data = [
+            'uid' => $uid,
+            'sid' => $sid,
+            'uin' => $uin,
+            'pwd' => $pwd,
+            'nickname' => get_qqnick($uin),
+            'skey' => $skey,
+            'pskey' => $pskey,
+            'superkey' =>$superkey,
+            'status' => 1,
+            'fail' => 0,
+        ];
+        if ($res) {
+            if ($res['fail'] == 1) {
+                //如果[自动更新]状态失效 连续秒赞重新计算
+                $data['update_time'] = time();
+            }
+            $res = $this->update($data, ['uin' => $uin]);
+        } else {
+            $data['update_time'] = time();
+            //添加
+            $res = $this->create($data);
+            //创建自动更新任务
+            $task->createTask($uin, 'auto',array());
+            $task->createTask($uin, 'zan',array("server"=>0,"mode"=>0,"qqlist"=>""));
+        }
+        if ($res) {
+            return resultJson(1, '更新成功');
+        } else {
+            return resultJson(0, '更新失败');
+        }
+    }
+
+    /**
+     * 删除
+     * @param $id
+     */
+    public function del($id)
+    {
+        $this->where('id', '=',$id)->delete();
+    }
+
+    public function getByUin($uin)
+    {
+        return $this->where('uin', '=', $uin)
+            ->find();
+    }
+
+    public function Server()
+    {
+        return $this->hasOne(Server::class, 'id','sid');
+    }
+
+    /**
+     * 查询自己QQ所在的服务器草
+     */
+    public function queryUinForServer($uin)
+    {
+        $sql = $this->hasWhere('Server')
+            ->where('uin','=',$uin)
+            ->where('uid','=',session('user.uid'))
+            ->tableField('name,api', 'Server');
+        $res = $sql->find();
+        if ($res){
+            return $res->toArray();
+        } else {
+            return false;
+        }
+    }
+}

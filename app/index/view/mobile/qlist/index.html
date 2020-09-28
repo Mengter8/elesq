@@ -1,0 +1,70 @@
+<title>QQ列表 - {:config('conf.title')}</title>
+<style>
+    .swiper-slide:nth-child(2n) {width: 2.2rem;}
+    .bg-dlan.dk,.btn-dlan.dk {
+        background: linear-gradient(to right, #92a1fb 1%, #8bbef8 100%);
+    }
+
+</style>
+<div class="app-header bg-dlan dk t-v">
+    <span class="dropdown br b2 b-hei-a">
+        <div class="dropdown-menu w20 h8 t-v t-c"><span>全部QQ</span><span class="caret"></span></div>
+        <dl class="dropdown-list animated fadeInUp"> <span class="arrowtop"></span>
+            <dd><a class="p3 t-c" href="javascript:qqlist.type(0);">全部QQ</a></dd>
+            <dd><a class="p3 t-c" href="javascript:qqlist.type(1);">正常QQ</a></dd>
+            <dd><a class="p3 t-c" href="javascript:qqlist.type(2);">失效QQ</a></dd>
+        </dl>
+        <dd class="dropdown-desc animated fadeIn">&nbsp;</dd>
+    </span>
+    <span class="w19 h8 bai t-v t-c br b2 b-hei-a" onclick="mode_qq_add(0);"><i class="icon icon-add bold"></i>&nbsp;添加QQ</span>
+</div>
+<div class="app-content qqlist-refreshBox" id="qqlist_param" mod="0">
+    <div>
+        <div class="bb b2">
+            <form role="form" class="in-text" onsubmit="return false;">
+                <dd><input type="number" pattern="\d*" id="qqlist_search" class="form w h10 no" placeholder="输入QQ号码进行搜索" value="" onkeypress="return x.ints(this,10);"></dd>
+                <dt><button class="btn w10 h10 no" onclick="qqlist.search(1);" style="margin-left:-0.1rem;"><i class="icon icon-roundclose f8" style="color: hsl(210,7%,85%);"></i></button></dt>
+                <dt><button class="btn w15 h10 no bl" onclick="qqlist.search(0);"><i class="icon icon-search f10 bold hui"></i></button></dt>
+            </form>
+        </div>
+        <div class="in-bb" id="qqlist_html"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    var qqlist = {
+        html: function(l,m) {
+            var mod = $('#qqlist_param').attr('mod');
+            var sear = $("#qqlist_search").val();
+            x.gethtml('/qlist/listHtml.html?act=list&mod='+mod+'&moid=qqlist&page='+loadpage["qqlist"]+'&search='+sear,'qqlist_html',l,m);
+        },
+        type: function(id) {
+            x.scroll('.app-content');
+            $('#qqlist_param').attr('mod',id);
+            $('#qqlist_html').html("");
+            qqlist.callback(1,0,1);
+            reBox['qqlist'].triggerUpLoading();
+            console.log(loadpage);
+        },
+        search: function(t) {
+            qqlist.callback(1,1,t);
+            qqlist.html();
+        },
+        callback: function(p,l,s) {
+            if(p===1){
+                loadpage["qqlist"] = 1;
+            }
+            if(l===1){
+                $('#qqlist_param').attr('mod',0);
+            }
+            if(s===1){
+                $("#qqlist_search").val("");
+            }
+        }
+    }
+
+    $(function(){
+        loadpage["qqlist"] = 1;
+        x.refreshBox("qqlist",function(){qqlist.html(1,1);},1,1);
+    });
+
+</script>

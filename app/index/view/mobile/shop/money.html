@@ -1,0 +1,28 @@
+<title>充值账户余额 - {:config('conf.title')}</title>
+<div class="app-header t-v bg-bai dl2 bb"><span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span> <span class="header-c t-v t-c nowrap">充值账户余额</span> <span class="header-r t-v t-r nowrap" onclick=""><i class="icon  f10"></i></span></div>
+<div class="app-content bg-bai f6">
+    <div class="p4 o-h">
+        <div class="mt3 f7">充值金额</div>
+        <div class="mt5 pb1 t-v"><p class="w9 h12 f15 hei bb">¥</p>
+            <p class="w58 mt0 f15">
+                <input type="number" id="money" class="form w h12 bb" placeholder="..." value="" maxlength="6" onkeypress="return x.ints(this,6,1);">
+            </p>
+        </div>
+        <div class="mt6 f3 hui">支付方式：</div>
+        <div class="mt1 f4">
+            <label class="i-checks mt2 mr3"><input type="radio" name="pay" value="alipay" checked><i></i>支付宝</label>
+            <label class="i-checks mt2 mr3"><input type="radio" name="pay" value="wxpay"><i></i>微信支付</label>
+            <label class="i-checks mt2 mr3"><input type="radio" name="pay" value="qqpay"><i></i>QQ支付</label></div>
+        <div class="mt8">
+            <button class="btn btn-qing btn-md w" onclick="ajax_shop_rmb();">立 即 支 付</button>
+        </div>
+    </div>
+</div>
+<script>
+    function ajax_shop_rmb() {
+        var money = x.getval('#money', '请输入充值金额');
+        if (!money) return;
+        var type = $('input[name="pay"]:checked').val();
+        x.ajax('/shop/submit.html', 'act=money&money=' + money + '&type=' + type);
+    }
+</script>

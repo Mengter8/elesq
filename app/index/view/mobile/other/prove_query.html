@@ -1,0 +1,35 @@
+<title>秒赞认证查询 - {:config('conf.title')}</title>
+<div class="app-header t-v bg-bai dl2 bb">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">秒赞认证查询</span>
+    <span class="header-r t-v t-r nowrap" onclick=""><i class="icon  f10"></i></span>
+</div>
+<div class="app-content bg-bai">
+    <div class="p4 pb2">
+        <div class="pb4 f4 hui bb"><p>输入对方QQ号码即可查询是否在小柯秒赞网开启秒赞功能</p></div>
+        <div class="h10 mt3"><input type="number" pattern="\d*" class="form wh p0 r0 bb" id="uin" placeholder="请输入QQ号码查询秒赞认证" value="" onkeypress="return x.ints(this,10);" maxlength="10"></div>
+        <div class="mt7">
+            <button class="btn btn-qing btn-md w" onclick="ajax_quiry();">查 询 验 证</button>
+        </div>
+    </div>
+    <div id="result"></div>
+</div>
+<script>
+    function ajax_quiry() {
+        var uin = x.getval('#uin', '请先输入要查询的QQ号码!');
+        if (!uin) return;
+        x.loading();
+        $.ajax({
+            url: "/other/prove.html",
+            type: "POST",
+            data: {
+                'uin': uin
+            },
+            datatype: "html",
+            success: function (ret) {
+                $("div#result").html(ret);
+            }
+        });
+        x.mclose();
+    }
+</script>

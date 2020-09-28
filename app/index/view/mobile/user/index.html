@@ -1,0 +1,172 @@
+<title>我的信息 - {:config('conf.title')}</title>
+<style>
+    .header-wh {
+        width: 100%;
+        height: 4.4rem;
+    }
+
+    .header-bg {
+        background: url(//cdn.istt.cn/cdn/img/mz/qqsetbg.jpg) no-repeat center;
+        background-clip: border-box;
+        background-size: cover;
+    }
+
+    .header-bg-t {
+        background: url(//q4.qlogo.cn/headimg_dl?dst_uin={:session('user.qq')}&spec=100) no-repeat center;
+        background-clip: border-box;
+        background-size: cover;
+    }
+
+    .header-bg-dd {
+        position: relative;
+        background: url(/static/img/dd.png);
+    }
+
+    .header-bg-blur {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .header-bg-blur::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 4.4rem;
+        background: url(//q4.qlogo.cn/headimg_dl?dst_uin={:session('user.qq')}&spec=100) no-repeat center;
+        background-clip: border-box;
+        background-size: cover;
+        -webkit-filter: blur(0.07rem);
+        filter: blur(0.07rem);
+    } </style>
+<div class="app-content">
+    <div class="mb5 o-h">
+        <div class="bb b-hui">
+            <div class="header-bg header-wh">
+                <div class="header-bg-t header-wh">
+                    <div class="header-bg-blur header-wh">
+                        <div class="header-bg-dd header-wh">
+                            <div class="t-c pt7">
+                                <a onclick="bindQq();">
+                                <div><img class="w20 h20 r5 b b5 b-bai box-shadow" src="//q4.qlogo.cn/headimg_dl?dst_uin={:session('user.qq')}&spec=100"></div>
+                                <div class="mt4 f13 bold bai text-shadow">{:htmlentities(session('user.nickname'))}</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul class="mt3 bt bb">
+            <li class="h9">
+                <span class="wh t-v" onclick="mode_user_money();">
+                    <div class="w10 h t-v t-c"><i class="icon icon-moneybag f11 cheng"></i></div>
+                    <div class="h t-v bb"> <div class="w20">账户余额</div>
+                        <div class="w40 f2 t-r nowrap lv">{:session('user.money')} 元</div>
+                        <div class="w5 t-c f2 hui"><i class="icon icon-pright"></i></div>
+                    </div>
+                </span>
+            </li>
+            <li class="h9">
+                <span class="wh t-v" onclick="mode_user_score();">
+                    <div class="w10 h t-v t-c"><i class="icon icon-goodsfavor f11 lan"></i></div>
+                    <div class="h t-v bb"> <div class="w20">账户积分</div>
+                        <div class="w40 f2 t-r nowrap lv">{:session('user.score')} 个</div>
+                        <div class="w5 t-c f2 hui"><i class="icon icon-pright"></i></div>
+                    </div>
+                </span>
+            </li>
+            <li class="h9">
+                <span class="wh t-v" onclick="mode_user_vip();">
+                    <div class="w10 h t-v t-c"><i class="icon icon-vip f11 fen"></i></div>
+                    <div class="h t-v bb">
+                        <p class="w20">秒赞会员</p>
+                        <p class="w40 f2 t-r nowrap hong">{:date('Y-m-d',session('user.vip_end_time'))} 到期</p>
+                        <p class="w5 t-c f2 hui"><i class="icon icon-pright"></i></p>
+                    </div>
+                </span>
+            </li>
+        </ul>
+        <ul class="mt3 bt bb">
+            <li class="h9">
+                <div class="wh t-v">
+                    <div class="w10 h t-v t-c"><i class="icon icon-news f11 lv"></i></div>
+                    <div class="h t-v bb">
+                        <div class="w20">账号UID</div>
+                        <div class="w40 f2 t-r nowrap hui">{:session('user.uid')}</div>
+                        <div class="w5 t-c f2 hui"></div>
+                    </div>
+                </div>
+            </li>
+            <li class="h9">
+                <a class="wh t-v hei dl" onclick="bindQq();">
+                <div class="w10 h t-v t-c"><i class="icon icon-addressbook f11 qing"></i></div>
+                <div class="h t-v bb b-hui dl">
+                    <div class="w20">我的昵称</div>
+                    <div class="w40 f2 t-r nowrap hui">{:htmlentities(session('user.nickname'))}</div>
+                    <div class="w5 t-c f2 hui"><i class="icon icon-pright"></i></div>
+                </div>
+                </a>
+            </li>
+            <li class="h9">
+                <a class="wh t-v hei dl" onclick="bindQq();">
+                <div class="w10 h t-v t-c"><i class="icon icon-qq f11 lan"></i></div>
+                <div class="h t-v bb b-hui dl">
+                    <div class="w20">绑定Q Q</div>
+                    <div class="w40 f2 t-r nowrap hui">{:session('user.qq')}</div>
+                    <div class="w5 t-c f2 hui"><i class="icon icon-pright"></i></div>
+                </div>
+                </a>
+            </li>
+        </ul>
+        <ul class="mt3 bt bb">
+            <li class="h9">
+                <div class="wh t-v">
+                    <div class="w10 h t-v t-c"><i class="icon icon-time f11 lv"></i></div>
+                    <div class="h t-v bb">
+                        <p class="w20">注册时间</p>
+                        <p class="w40 f2 t-r nowrap hui">{:date('Y-m-d H:i:s',session('user.reg_time'))}</p>
+                        <p class="w5 t-c f2 hui"><i class="icon icon-pright"></i></p>
+                    </div>
+                </div>
+            </li>
+            <li class="h9">
+                <div class="wh t-v">
+                    <div class="w10 h t-v t-c"><i class="icon icon-time f11 fen"></i></div>
+                    <div class="h t-v bb">
+                        <p class="w20">最近登录</p>
+                        <p class="w40 f2 t-r nowrap hui">{:date('Y-m-d H:i:s',session('user.last_time'))}</p>
+                        <p class="w5 t-c f2 hui"><i class="icon icon-pright"></i></p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <ul class="mt3 bt bb">
+            <li class="h9"><a class="wh t-v hei dl" onclick="x.ajax('/user/logout.html');">
+                <div class="w10 h t-v t-c"><i class="icon icon-exit f11 hong"></i></div>
+                <div class="h t-v bb"> <div class="w20">退出登陆</div>
+                    <div class="w40 f2 t-r nowrap nowrap"></div>
+                    <div class="w5 t-c f2 hui"><i class="icon icon-pright"></i></div>
+                </div>
+            </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+{if condition="!session('user.qq')"}
+<script>
+    layer.open({
+        content: '<div><h4 class="mt0 mb5">请绑定QQ</h4></div><div>未绑定QQ将无法显示用户头像<br><font class="f3 hui">当绑定QQ后可使用QQ群机器人快捷扫码</font></div>',
+        btn: ['好 的', '取 消'],
+        shadeClose: false,
+        yes: function (i) {
+            x.mclose(i);
+            bindQq();
+        },
+        no: function (i) {
+            x.mclose(i);
+        }
+    });
+</script>
+{/if}

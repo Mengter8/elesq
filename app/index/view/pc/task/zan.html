@@ -1,0 +1,59 @@
+<title>好友动态点赞 设置</title>
+<div class="p5">
+    <div class="lan bold">[24H自动] 为QQ空间好友发表的动态进行点赞</div>
+    <hr/>
+    <div class="pt4 pb4 bold">
+        <label class="i-checks"><input type="radio" name="status" value="0" {if $status == 0}checked{/if}><i></i>关闭功能</label>
+        <label class="i-checks ml4"><input type="radio" name="status" value="1" {if $status == 1}checked{/if}><i></i>开启功能</label>
+    </div>
+    <hr/>
+    <div class="pt1 pb3">
+        <div class="in-text">
+            <dt class="bold pr5">
+                <p class="h8 t-v"><label class="i-checks"><input type="radio" name="server" value="0" {if isset($data.server) && $data.server == 0}checked{/if}><i></i>免费服务器</label></p>
+                <p class="h8 t-v"><label class="i-checks"><input type="radio" name="server" value="1" {if isset($data.server) && $data.server == 1}checked{/if}><i></i>VIP 服务器</label></p>
+                <p class="h8 t-v"><label class="i-checks"><input type="radio" name="server" value="2" {if isset($data.server) && $data.server == 2}checked{/if}><i></i>急速服务器</label>
+                </p>
+            </dt>
+            <dt class="pr5">
+                <p class="h8 t-v f3 qing">[60秒执行一次]</p>
+                <p class="h8 t-v f3 zi">[40秒执行一次]</p>
+                <p class="h8 t-v f3 hong">[20秒执行一次]</p>
+            </dt>
+            <dd>
+                <p class="h8 t-v f3 hui">免费使用</p>
+                <p class="h8 t-v f3 hui">免费使用</p>
+                <p class="h8 t-v f3 hui">秒赞会员可使用</p>
+            </dd>
+        </div>
+        <div class="mt5 f3 hui">免费服务器使用人数较多，速度较慢，使用VIP服务器可提升秒赞稳定性</div>
+    </div>
+    <hr/>
+    <div class="pt3 pb3">
+        <div class="in-text bold">
+            <dt class="f4 pr5">特殊模式</dt>
+            <dd>
+                <label class="i-checks"><input type="radio" name="mode" value="0" {if isset($data.mode) && $data.mode == 0}checked{/if}><i></i>关闭</label>
+                <label class="i-checks ml4"><input type="radio" name="mode" value="1" {if isset($data.mode) && $data.mode == 1}checked{/if}><i></i>白名单</label>
+                <label class="i-checks ml4"><input type="radio" name="mode" value="2" {if isset($data.mode) && $data.mode == 2}checked{/if}><i></i>黑名单</label>
+            </dd>
+        </div>
+        <div class="mt5">
+            <font class="f4 bold">QQ列表</font>
+            <font class="ml4 f3 hui">白名单：仅赞列表QQ号；黑名单：不赞列表QQ号 （多个QQ号之间请使用小数点隔开）</font></div>
+        <div class="mt2">
+            <textarea type="text" class="form b" name="qqlist" placeholder="输入QQ号码" rows="3" onkeyup="this.value=this.value.replace(/[^\d\.]/,'')" autocomplete="off">{$data.qqlist|default=""}</textarea>
+        </div>
+    </div>
+    <div class="pt6 pb4">
+        <button class="btn btn-qing btn-md btn-block rx1" onclick="ajax_gnset_zan();">保 存 设 置</button>
+    </div>
+</div>
+<script type="text/javascript">
+    function ajax_gnset_zan() {
+        var status = $('input:radio[name="status"]:checked').val();
+        var server = $('input:radio[name="server"]:checked').val();
+        var mode = $('input:radio[name="mode"]:checked').val();
+        x.ajax('/task/setTaskData.html', 'type=zan&uin={$uin}&status='+ status + '&server=' + server + '&mode=' + mode + '&qqlist=' + x.getval('textarea[name="qqlist"]', 1));
+    }
+</script>

@@ -1,0 +1,16 @@
+{foreach $list as $vo}
+<dl>
+    <dt>开通会员 : <span class="hong">{$vo.score}天</span></dt>
+    <dd><p class="pl5 t-r f2 hui">{$vo.name}</p></dd>
+    <dt><p class="w20 t-r">{$vo.create_time|date="m-d H:i"}</p></dt>
+</dl>
+{/foreach}
+
+<script>
+    {if $isLoadingSuccess}
+    reBox['note_vip'].endUpLoading(false);
+    {else/}
+    loadpage['note_vip']++;
+    reBox['note_vip'].endUpLoading(true);
+    {/if}
+</script>

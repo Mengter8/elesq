@@ -1,0 +1,20 @@
+<title>补充QQ密码</title>
+<div class="p6">
+    <div class="bold hong t-c">QQ:{$uin} {$nickname} 请输入QQ密码</div>
+    <div class="f3 hui t-c">您使用扫码添加的QQ，补充密码后，当QQ状态失效时，系统可为您自动更新QQ状态</div>
+    <hr/>
+    <div class="in-text mt5">
+        <dt class="bold bb pr2">QQ密码</dt>
+        <dd>
+            <input type="password" class="form h11 bb" name="addpass" placeholder="请输入QQ密码" value="" autocomplete="off">
+        </dd>
+    </div>
+    <button class="btn btn-qing btn-block rx1 mt8 autoenter" onclick="ajax_add_mzqq();">确 定 补 充</button>
+</div>
+<script>
+    function ajax_add_mzqq() {
+        var pwd = x.getval('input[name="addpass"]', '请输入QQ密码');
+        if (!pwd) return;
+        x.ajax('/qlist/setPwd.html', 'uin={$uin}&pwd=' + encodeURIComponent(pwd));
+    }
+</script>

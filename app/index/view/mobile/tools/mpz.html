@@ -1,0 +1,87 @@
+<title>互赞列表 - {:config('conf.title')}</title>
+<style>
+    .swiper-slide:nth-child(2n) {width: 2.2rem;}
+    .bg-dlan.dk,.btn-dlan.dk {
+        background: linear-gradient(to right, #92a1fb 1%, #8bbef8 100%);
+    }
+</style>
+<div class="app-header bg-dlan dk t-v">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    {if cookie('mpz_auto') == 'true'}
+    <span class="w19 h8 bai t-v t-c br b2 b-hei-a" onclick="tools.status(false);"><i class="icon icon-appreciate bold"></i>&nbsp;关闭互赞</span>
+    {else /}
+    <span class="w19 h8 bai t-v t-c br b2 b-hei-a" onclick="tools.status(true);"><i class="icon icon-appreciate bold"></i>&nbsp;自动互赞</span>
+    {/if}
+</div>
+<div class="app-content qqlist-refreshBox">
+    {if isset($uin)}
+    <div class="bg-bai in-text h19 bb">
+        <dt class="pl3 pr3"><img src="//q4.qlogo.cn/headimg_dl?dst_uin={$uin}&spec=100" class="b b-hui r5 w12 h12" style="border-width:0.04rem !important;"/></dt>
+        <dd class="pr3"><p class="f3 hui">{$nickname}</p>
+            <h4 class="t-v">{$uin}
+            {if condition="!$status"}
+            <font class="hong ml2 f5"><i class="icon icon-squarecheck mr1"></i>失效</font>
+            <button class="btn btn-xs btn-hei btn-1 rx2 ml2" onclick="mode_qq_add('{$uin}');">点此更新</button>
+            </h4>
+            {else}
+            <font class="lv ml2 f5"><i class="icon icon-squarecheck mr1"></i>正常</font>
+            </h4>
+            {/if}
+            <p class="f2 hui mt1">状态若显示失效请及时更新否则不能使用该功能</p>
+        </dd>
+    </div>
+    {/if}
+    <div>
+        <div class="in-bb" id="tools_qqlist_html"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    var i = 1;
+    var tools = {
+        //获取点赞列表
+        html: function (uin, l, m) {
+            x.gethtml('/tools/mpzListHtml.html?uin=' + uin, 'tools_qqlist_html', l, m);
+        },
+        refresh: function (uin){
+            x.mode('/tools/mpz.html?uin=' + uin,'tools_mpz','d');
+        },
+        //点赞
+        zan: function (uin, qq) {
+            $.ajax({
+                url: '/tools/LikeMpz.html',
+                type: 'POST',
+                data: {
+                    'uin': uin,
+                    'qq': qq
+                },
+                dataType: 'json',
+                success: function (ret) {
+                    if (ret.code === 1) {
+                        x.msg(ret.message + ' - 第' + (i++) + '次');
+                        setTimeout(function () {
+                            tools.zan(uin, qq);
+                        }, 100);
+                    } else {
+                        x.msg(ret.message);
+                        tools.refresh({$uin});
+                    }
+                },
+                error: function () {
+                    x.btn('点赞失败');
+                }
+            });
+
+        },
+        //自动点赞 开启关闭
+        status: function (status) {
+            document.cookie = 'mpz_auto=' + status + '; path=/';
+            tools.refresh({$uin});
+        }
+    };
+
+    $(function(){
+        x.refreshBox("qqlist",function(){
+            tools.html('{$uin}',1,1);
+        },1,1);
+    });
+</script>

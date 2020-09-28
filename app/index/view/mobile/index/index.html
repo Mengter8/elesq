@@ -1,0 +1,142 @@
+<title>{:config('conf.title')} - 急速 安全 稳定的QQ名片互赞平台</title>
+<div class="app-content">
+    <div class="t-c pt4 pb5 bg-dlan index">
+        <h2 class="bai f15 p1 nowrap" style="text-shadow: 5px 1px 6px #7b7b7b;">{:config('conf.title')}</h2>
+        <p class="bai f10 p1 nowrap">
+            { 急速 安全 稳定 免费 }
+        </p>
+    </div>
+    <div class="p4 bg-bai bb">
+        <button onclick="autoAdd();" class="btn btn-lan w h10 f8 show t-v t-c" style="border-radius: 1rem;border: .0rem solid transparent;background: -webkit-linear-gradient(right,#92a1fb,#8bbef8 52%,#92a1fb);text-shadow: 5px 1px 6px #7b7b7b;">
+            <i class="icon icon-pullright f9 nobold v-1 mr3"></i>点此加入互赞<i class="icon icon-pullleft f9 nobold v-1 ml3"></i>
+        </button>
+    </div>
+    <div class="p4 bg-bai bb">
+        <p class="f8 hong">系统公告</p>
+        <p class="f5 mt3">
+            欢迎使用 <font color="#f30ca8">{:config('conf.title')} 秒赞，互赞</font><br/>
+            我们的初衷 : <font class="hong"><b>便捷 急速 安全 稳定</b></font><br>
+            为了用户体验，我们重新升级优化，平台功能免费，欢迎体验</p>
+    </div>
+    <div class="in-list in-b in-bb bg-bai">
+        <dl class="h10">
+            <a class="in h pl4 pr4 hei dl" data-pjax="">
+                <dt><i class="icon icon-notification lv f7 mr2"></i></dt>
+                <dd>
+                    <p><font color="#f30ca8"> 系统已更新，功能陆续开放</font></p>
+                </dd>
+                <dt><i class="icon icon-pright hui f7"></i></dt>
+            </a>
+        </dl>
+        <dl class="h10">
+            <a class="in h pl4 pr4 hei dl" href="https://jq.qq.com/?_wv=1027&k=5vjg6UX" target="_blank" data-pjax="">
+                <dt><i class="icon icon-hot hong f7 mr2"></i></dt>
+                <dd>
+                    <p><font class="hong"> [官方群]</font><font color="#f30ca8"> 点击进入亿乐云交流群，获取平台最新动态</font></p>
+                </dd>
+                <dt><i class="icon icon-pright hui f7"></i></dt>
+            </a>
+        </dl>
+    </div>
+    <div class="bg-bai pt3 pb3 t-v bb">
+        <div class="w37 t-c br">
+            <div class="f6 hong">
+                <span class="qdhtmlday">{$siteCount.user}</span> 人
+            </div>
+            <div class="mt1 f2 hui">
+                当前用户
+            </div>
+        </div>
+        <div class="w37 t-c">
+            <div class="f6 hong">
+                <span class="userscore">{$siteCount.today}</span> 人
+            </div>
+            <div class="mt1 f2 hui">
+                今日增加
+            </div>
+        </div>
+        <div class="w37 t-c">
+            <div class="f6 hong">
+                <span class="userscore">{$siteCount.uin}</span> 个
+            </div>
+            <div class="mt1 f2 hui">
+                QQ数量
+            </div>
+        </div>
+        <div class="w37 t-c br">
+            <div class="f6 hong">
+                <span class="qdhtmlday">{$siteCount.task}</span> 条
+            </div>
+            <div class="mt1 f2 hui">
+                任务数量
+            </div>
+        </div>
+    </div>
+    <div class="dixian t-v t-c">
+        <hr>
+        <p>到底了哦</p>
+        <hr>
+    </div>
+</div>
+<script>
+    $(".index").jParticle({
+        background: "rgba(0,0,0,0)",
+        color: "rgba(255,255,255,0.27)",//粒子和连线的颜色
+        particlesNumber: 13,//粒子数量
+        //disableLinks:true,//禁止粒子间连线
+        disableMouse: true,//禁止粒子间连线(鼠标)
+        width: 414,
+        height: 152,
+        particle: {
+            minSize: 1,//最小粒子
+            maxSize: 3,//最大粒子
+            speed: 30,//粒子的动画速度
+        }
+    });
+    function autoAdd(){
+        {if session('user')}
+        mode_qq_add(0);
+        {else/}
+        window.location.href= '/user/login.html';
+        {/if}
+    }
+</script>
+<style>
+    .index {color: #fff;background: linear-gradient(-45deg, rgba(9,69,138,0.2), rgba(68,155,255,0.7), rgba(117,113,251,0.7), rgba(68,155,255,0.7), rgba(9,69,138,0.2));background-size: 400% 400%;-webkit-animation: Gradient 15s ease infinite;-moz-animation: Gradient 15s ease infinite;animation: Gradient 15s ease infinite;}
+    @-webkit-keyframes Gradient {
+        0% {
+            background-position: 0% 50%
+        }
+        50% {
+            background-position: 100% 50%
+        }
+        100% {
+            background-position: 0% 50%
+        }
+    }
+
+    @-moz-keyframes Gradient {
+        0% {
+            background-position: 0% 50%
+        }
+        50% {
+            background-position: 100% 50%
+        }
+        100% {
+            background-position: 0% 50%
+        }
+    }
+
+    @keyframes Gradient {
+        0% {
+            background-position: 0% 50%
+        }
+        50% {
+            background-position: 100% 50%
+        }
+        100% {
+            background-position: 0% 50%
+        }
+    }
+    /*.container{width: 100%; height: 100%;}*/
+</style>

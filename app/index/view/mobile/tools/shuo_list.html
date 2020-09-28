@@ -1,0 +1,24 @@
+<title>说说列表 - 亿乐社区</title>
+<div class="app-header t-v bg-bai dl2 bb">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">说说列表</span>
+    <span class="header-r t-v t-r nowrap" onclick=""><i class="icon  f10"></i></span></div>
+<div class="app-content bg-bai f5">
+    <div class="w h10 t-v t-c bb f6 hong bold">请选择一个说说用于互赞</div>
+    {if $list}
+    {foreach $list as $vo}
+    <div class="in-list in-b in-bb">
+        <dl class="in p3" onclick="x.mclose;x.mode('/tools/shuo.html?uin={$vo.userinfo.user.uin}&content={:str_replace("\\n",'',@$vo.summary.summary)}&createTime={$vo.comm.time}&tid={$vo.id.cellid}&appid={$vo.comm.appid}','tools_shuo')">
+            <dt><img class="w7 h7 b r5 mr2" src="//q4.qlogo.cn/headimg_dl?dst_uin={$vo.userinfo.user.uin}&spec=40"></dt>
+            <dd>
+                <p class="dzi bold"><font class="">{$vo.summary.summary|default=""}</font></p>
+                <p class="hui f3"><i class="icon icon-time"></i> <font class="">{$vo.comm.time|date="Y-m-d H:i:s"}</font></p>
+            </dd>
+        </dl>
+    </div>
+    {/foreach}
+    {else /}
+    当前状态已失效
+    {/if}
+</div>
+

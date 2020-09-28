@@ -1,0 +1,31 @@
+<title>添加更多功能 - {:config('conf.title')}</title>
+<div class="app-header t-v bg-bai dl2 bb">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">添加更多功能</span>
+    <span class="header-r t-v t-r nowrap" onclick=""><i class="icon  f10"></i></span>
+</div>
+<div class="app-content bg-bai">
+    <div class="in-list in-b">
+        {foreach :getTask() as $tasks}
+        {if array_key_exists($tasks.id, $task)}
+        <dl>
+            <a class="in p2" href="javascript:;" onclick="x.msg('此功能已经添加在列表中');">
+                <dt><img class="w6 h6 mr2" src="/static/img/is{$tasks.id}.png"></dt>
+                <dd><p class="pr3">添加 {$tasks.title} 功能<span class="ml4">[{if $tasks.vip == true}<font class="hong">vip</font>{else}<font class="f3 lv">免费</font>{/if}]</span></p></dd>
+                <dt><span class="pr2 f3 lv {$tasks.id}access">已添加</span></dt>
+                <dt><i class="icon icon-pright hui"></i></dt>
+            </a>
+        </dl>
+        {else}
+        <dl>
+            <a class="in p2" href="javascript:;" onclick="x.ajax('/task/addTask.html','type={$tasks.id}&uin={$uin}');">
+                <dt><img class="w6 h6 mr2" src="/static/img/is{$tasks.id}.png"></dt>
+                <dd><p class="pr5">添加 {$tasks.title} 功能<span class="ml4">[{if $tasks.vip == true}<font class="hong">vip</font>{else}<font class="f3 lv">免费</font>{/if}]</span></p></dd>
+                <dt><span class="pr2 f3 lv {$tasks.id}access"></span></dt>
+                <dt><i class="icon icon-pright hui"></i></dt>
+            </a>
+        </dl>
+        {/if}
+        {/foreach}
+    </div>
+</div>

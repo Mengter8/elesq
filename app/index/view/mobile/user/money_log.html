@@ -1,0 +1,32 @@
+<title>余额记录 - {:config('conf.title')}</title>
+<div class="app-header t-v bg-bai dl2 bb"><span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span> <span class="header-c t-v t-c nowrap">余额记录</span> <span class="header-r t-v t-r dropdown"> <div class="dropdown-menu wh t-v t-r"><i class="icon icon-more f10"></i></div> <dl class="dropdown-list header animated fadeInUp"> <span class="arrowtop"></span> <dd><a class="p3 t-c" href="javascript:note_money.mode(0);">全部记录</a></dd> <dd><a class="p3 t-c" href="javascript:note_money.mode(1);"><font class="qing">增加记录</font></a></dd> <dd><a class="p3 t-c" href="javascript:note_money.mode(2);"><font class="hong">减少记录</font></a></dd> </dl> <dd class="dropdown-desc animated fadeIn">&nbsp;</dd> </span></div>
+<div class="app-content note_money-refreshBox" id="note_money_param" mod="0">
+    <div>
+        <div class="bg-bai in-list in-p2 in-b in-bb" id="note_money_html"></div>
+    </div>
+</div>
+<script>
+
+    var note_money = {
+        html: function (l, m) {
+            var mod = $('#note_money_param').attr('mod');
+            x.gethtml('/user/moneyLogHtml.html?mod=' + mod + '&page=' + loadpage["note_money"], 'note_money_html', l, m);
+        },
+        mode: function (id) {
+            loadpage["note_money"] = 1;
+            x.scroll('.app-content');
+            $('#note_money_param').attr('mod', id);
+            $('#note_money_html').html("");
+            reBox['note_money'].triggerUpLoading();
+        }
+    }
+
+
+    $(function () {
+        loadpage["note_money"] = 1;
+        x.refreshBox("note_money", function () {
+            note_money.html(1, 1);
+        }, 1, 1);
+    });
+
+</script>

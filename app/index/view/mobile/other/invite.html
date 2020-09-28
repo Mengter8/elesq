@@ -1,0 +1,103 @@
+<title>积分</title>
+<div class="app-header t-v bg-bai dl2 bb b-hui">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">邀请好友</span>
+    <span class="header-r t-v t-r dropdown">
+        <div class="dropdown-menu wh t-v t-r"><i class="icon icon-more f10"></i></div>
+        <dl class="dropdown-list header animated fadeInUp"> <span class="arrowtop"></span>
+            <dd><a class="p3 t-c" href="javascript:mode_redeem();"><i class="icon icon-duijie f6 v-0"></i> 积分兑换</a></dd>
+            <dd><a class="p3 t-c" href="javascript:mode_invite_log(0);"><i class="icon icon-text f6 v-0"></i> 邀请记录</a></dd>
+            <dd><a class="p3 t-c" href="javascript:mode_invite_log(1);"><i class="icon icon-text f6 v-0"></i> 我的邀请</a></dd>
+        </dl>
+        <dd class="dropdown-desc animated fadeIn">&nbsp;</dd>
+    </span>
+</div>
+<div class="app-content bg-bai f5">
+    <div class="mb5 o-h">
+        <div class="p4 f4 hui bb">
+            <p>
+                1、复制链接后，可以分享到QQ群、发给朋友
+            </p>
+            <p>
+                2、如果有人成功通过你的链接注册用户，可被计为成功邀请
+            </p>
+            <!--并<font class="f5 hong mr2 userscore">添加QQ</font>-->
+            <p>
+                4、每成功邀请一个人可获得 <font class="f5 hong mr2 userscore">30</font>积分，无推广上限，奥利给！
+            </p>
+        </div>
+        <div class="pt3 pb3 t-v bb">
+            <div class="w37 t-c">
+                <div class="f6 hong"><span class="userscore">{$inviteCount}</span> 位</div>
+                <div class="mt1 f2 hui">已邀请用户</div>
+            </div>
+            <div class="w37 t-c">
+                <div class="f6 hong"><span class="userscore">{$inviteQQCount}</span> 个</div>
+                <div class="mt1 f2 hui">邀请用户添加QQ</div>
+            </div>
+            <div class="w37 t-c br">
+                <div class="f6 hong"><span class="qdhtmlday">{$score|default="0"}</span> 个</div>
+                <div class="mt1 f2 hui">账户积分</div>
+            </div>
+        </div>
+        <div class="p8 qdhtmlbtn" id="yq_btn">
+            <button class="btn btn-qing btn-md w" style="border-radius: 1rem;border: .0rem solid transparent;background: -webkit-linear-gradient(right,#92a1fb,#8bbef8 52%,#92a1fb);text-shadow: 5px 1px 6px #7b7b7b;" onclick="getShortUrl();">-> 点此生成邀请链接 <-
+            </button>
+        </div>
+        <div id="yq_div" style="display:none">
+            <div class="w67 p3 m4 bg-bai dl2 b b-hui rx4">
+                <div class="t-v t-c">
+                    <font class="bold dzi">{:config('conf.title')}</font>
+                </div>
+                <div class="mt2 t-v t-c">每天扫一扫，轻松五千赞！</div>
+                <div class="mt2 t-v t-c">还不快来用？互赞没烦恼！</div>
+                <div class="mt2 t-v t-c">复制网址到浏览器打开：<font class="bold" id="yqlj"></font></div>
+                <div class="mt2 t-v t-c">
+                    <a class="btn btn-xs btn-hui btn-1 rx1 ml3" data-clipboard-text="" id="text_1">复制链接</a>
+                    <a class="btn btn-xs btn-hui btn-1 rx1 ml3" data-clipboard-text="" id="text_2">复制广告语</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    invite = "{:url('/user/invite',['tid'=>session('user.uid')])->domain('www')}";
+
+    function getShortUrl() {
+        $.ajax({
+            url: api + "common/getShortUrl.html",
+            type: "POST",
+            data: {
+                'url': invite
+            },
+            datatype: "json",
+            success: function (ret) {
+                if (ret.code === 1) {
+                    $("#yq_div").show();
+                    $("#text_1").attr("data-clipboard-text", ret.data['short_url']);
+                    // $("#text_2").attr("data-clipboard-text", "可以试试这在线互赞助手，一键自动帮你互赞，轻松几千赞，链接：" + ret.data);
+                    $("#text_2").attr("data-clipboard-text", "每天扫一扫，轻松五千赞！\r\n" + "还不快来用？互赞没烦恼！\r\n" + "复制网址到浏览器打开：" + ret.data['short_url']);
+                    $("#yqlj").html(ret.data['short_url']);
+                }
+            }
+        });
+    }
+
+    var clipboard = new Clipboard('#text_1');
+    clipboard.on('success', function (e) {
+        x.msg("复制成功");
+    });
+    clipboard.on('error', function (e) {
+        x.msg("复制失败，请长按链接后手动复制");
+    });
+
+    var clipboard2 = new Clipboard('#text_2');
+    clipboard2.on('success', function (e) {
+        x.msg("复制成功");
+    });
+    clipboard2.on('error', function (e) {
+        x.msg("复制失败，请长按链接后手动复制");
+    });
+</script>
+
+

@@ -1,0 +1,29 @@
+<title>卡密充值 - {:config('conf.title')}</title>
+<div class="app-header t-v bg-bai dl2 bb"><span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span> <span class="header-c t-v t-c nowrap">卡密充值</span> <span class="header-r t-v t-r nowrap" onclick=""><i class="icon  f10"></i></span></div>
+<div class="app-content bg-bai f6">
+    <div class="p4">
+        <div class="mt3 f7">充值卡密</div>
+        <div class="mt5 pb1"><input type="text" id="cdKey" class="form w h10 p0 f8 bb" placeholder="请输入卡密..." value="" maxlength="32"></div>
+        <div class="mt8">
+            <button class="btn btn-md btn-qing w" onclick="ajax_shop_km();">确 定</button>
+        </div>
+        <div class="mt8 mb3 f3 hong">您购买的卡密可以在这里输入后使用，系统会自动识别卡密类型和数量。</div>
+    </div>
+</div>
+<script>
+    function ajax_shop_km() {
+        var cdKey = x.getval('#cdKey', '请输入卡密');
+        if (!cdKey) return;
+        $.ajax({
+            url: "/shop/cdKeyAjax",
+            type: "POST",
+            data: {
+                'cdKey': cdKey
+            },
+            datatype: "json",
+            success: function (ret) {
+                x.btn(ret.data['title'],ret.data['content']);
+            }
+        });
+    }
+</script>

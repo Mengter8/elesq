@@ -1,0 +1,69 @@
+<title>QQ群签到 设置 - {:config('conf.title')}</title>
+<div class="p5">
+    <div class="lan bold">[每日自动] QQ群签到</div>
+    <div class="mt2 f3 hui">签到地点填写示例：深圳市 · 腾讯大厦 （不使用请留空）</div>
+    <hr/>
+    <div class="pt2 pb2 in-text bold">
+        <dt class="f4 pr5">功能开关</dt>
+        <dd><label class="i-checks"><input type="radio" name="status" value="0" {if $status == 0}checked{/if}><i></i>关闭</label>
+            <label class="i-checks ml4"><input type="radio" name="status" value="1" {if $status == 1}checked{/if}><i></i>开启</label>
+        </dd>
+    </div>
+    <hr/>
+    <div class="pt3 pb3 in-text">
+        <dt class="bold bb pr2">签到模板</dt>
+        <dd class="in-auto">
+            <select class="form bb" name="tid">
+                <option value="0" {if isset($data.tid) && $data.tid == 0}selected="selected"{/if}>随机模板</option>
+                {foreach :getQunSign() as $vo}
+                <option value="{$vo.id}" {if isset($data.tid) && $data.tid == $vo.id}selected="selected"{/if}>{$vo.name}</option>
+                {/foreach}
+            </select>
+        </dd>
+    </div>
+    <div class="pt3 pb3 in-text">
+        <dt class="bold bb pr2">签到地址</dt>
+        <dd><input type="text" class="form h11 bb" name="site" placeholder="输入签到地点，不使用签到地点请留空" value="{$data.site|default=""}" autocomplete="off">
+        </dd>
+    </div>
+    <div class="pt3 pb3 in-text">
+        <dt class="bold bb pr2">签到内容</dt>
+        <dd>
+            <input type="text" class="form h11 bb" name="content" placeholder="输入你要签到的内容，留空系统默认内容" value="{$data.content|default=""}" autocomplete="off">
+        </dd>
+    </div>
+    <div class="pt5 pb3">
+        <div class="in-text bold">
+            <dt class="f4 pr5">特殊模式</dt>
+            <dd>
+                <label class="i-checks"><input type="radio" name="mode" value="0" onclick="$('#need').hide();" {if !isset($data.mode) || $data.mode == 0}checked{/if}><i></i>关闭</label>
+                <label class="i-checks ml4"><input type="radio" name="mode" value="1" onclick="$('#need').show();" {if isset($data.mode) && $data.mode == 1}checked{/if}><i></i>白名单</label>
+                <label class="i-checks ml4"><input type="radio" name="mode" value="2" onclick="$('#need').show();" {if isset($data.mode) && $data.mode == 2}checked{/if}><i></i>黑名单</label>
+            </dd>
+        </div>
+        <div id="need" {if !isset($data.mode) ||  $data.mode == 0}style="display: none;"{/if}>
+
+        <div class="mt5">
+            <font class="f4 bold">QQ群列表</font>
+            <font class="ml4 f3 hui">白名单：仅签到列表Q群；黑名单：不签到列表Q群 （多个群号之间请使用小数点隔开）</font>
+        </div>
+        <div class="mt2">
+            <textarea type="text" class="form b" name="qunlist" placeholder="输入QQ号码" rows="3" onkeyup="this.value=this.value.replace(/[^\d\.]/,'')" autocomplete="off">{$data.qunlist|default=""}</textarea>
+        </div>
+
+        </div>
+    </div>
+    <div class="pt6 pb4">
+        <button class="btn btn-qing btn-md btn-block rx1" onclick="ajax_gnset_qunqd();">保 存 设 置</button>
+    </div>
+</div>
+<script type="text/javascript">
+    function ajax_gnset_qunqd() {
+        var status = $('input[name="status"]:checked').val();
+        var tid = $('select[name="tid"] option:selected').val();
+        var site = $('input[name="site"]').val();
+        var content = $('input[name="content"]').val();
+        var mode = $('input[name="mode"]:checked').val();
+        x.ajax('/task/setTaskData.html', 'type=qunqd&uin={$uin}&status=' + status + '&tid=' + tid + '&site=' + site + '&content=' + content + '&mode=' + mode + '&qunlist=' + x.getval('textarea[name="qunlist"]', 1));
+    }
+</script>

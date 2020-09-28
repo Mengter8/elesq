@@ -1,0 +1,67 @@
+<title>修改资料</title>
+<div class="p5">
+    <div class="pt3 pb3">
+        <div class="mt2">
+            <font class="f4 bold">QQ</font>
+            <input type="text" class="form b" name="uin" value="{:session('user.qq')}" placeholder="输入QQ号码" onkeyup="this.value=this.value.replace(/[^\d\.]/,'')" autocomplete="off"/>
+        </div>
+        <div class="mt2">
+            <font class="f4 bold">昵称</font>
+            <input type="text" class="form b" name="nickname" value="{:session('user.nickname')}" placeholder="输入用户昵称" autocomplete="off"/>
+        </div>
+        <div class="mt5 f3 hui">绑定QQ后可使用官方群内机器人</div>
+    </div>
+    <div class="pt6 pb4">
+        <button class="btn btn-qing btn-md btn-block rx1" onclick="save();">保 存 设 置</button>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("input[name=uin]").change(function(){
+            getNickName(1);
+        });
+    });
+
+    function getNickName(){
+        var uin = $('input[name="uin"]').val();
+        const id = x.loading();
+        $.ajax({
+            url: api + "common/getNickName.html",
+            type: "POST",
+            data: {
+                'uin': uin
+            },
+            datatype: "json",
+            success: function (ret) {
+                if (ret.code === 1) {
+                    $('input[name="nickname"]').val(ret.data);
+                }
+            }
+        });
+        x.close(id);
+
+    }
+    function save() {
+        var nickname = $('input[name="nickname"]').val();
+        var uin = $('input[name="uin"]').val();
+        $.ajax({
+            url: "/user/update.html",
+            type: "POST",
+            data: {
+                'uin': uin,
+                'nickname':nickname
+            },
+            datatype: "json",
+            success: function (res) {
+                if (res.code === 1) {
+                    layer.alert('保存成功',function () {
+                        x.mclose();
+                        window.location.reload();
+                    });
+                } else {
+                    x.btn('绑定失败',res.message);
+                }
+            }
+        });
+    }
+</script>

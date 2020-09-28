@@ -1,0 +1,76 @@
+<div class="bg-bai b rx3">
+    <div class="t-v t-t">
+        <div class="c-sidebar c-sidebar-h pb5 br">
+            <div class="c-sidebar-title t-v hui bb">快捷连接</div>
+            <ul class="c-nav click-nav">
+                <li>
+                    <a href="/other/prove_query.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-medal"></i></div>
+                        <div>秒赞认证</div>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/other/agent_query.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-profile"></i></div>
+                        <div>代理认证</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/other/wall.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-cascades"></i></div>
+                        <div>QQ秒赞墙</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/other/agent.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-write"></i></div>
+                        <div>代理后台</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="c-content bl">
+            <div class="g-title t-v pl4 bb">
+                <div class="col-8 h t-v bold">代理验证</div>
+                <div class="col-4 t-v t-r"></div>
+            </div>
+            <div class="g-content p5 f3 hui bb "><p>1、输入对方QQ号码即可查询是否为{:config('conf.title')}代理</p></div>
+            <div class="g-content p5 pt8">
+                <div class="in-text" style="width:580px;">
+                    <dt class="bold pr4">代理QQ：</dt>
+                    <dd><input type="number" class="form p0 h11 bb bb-hui" id="uin" placeholder="请输入代理QQ号码进行查询"
+                               value="" onkeypress="return x.ints(this,10);" autocomplete="off"></dd>
+                    <dt>
+                        <button class="btn btn-qing btn-md rx1 ml5" onclick="ajax_dlyz_inquiry();">查询验证</button>
+                    </dt>
+                </div>
+            </div>
+            <div class="g-content p5 pt8" id="result"></div>
+        </div>
+    </div>
+</div>
+<script>
+    function ajax_dlyz_inquiry() {
+        var uin = x.getval('#uin', '请先输入代理QQ号码!');
+        if (!uin) return;
+        const id = x.loading();
+        $.ajax({
+            url: "/other/agent_ajax.html",
+            type: "POST",
+            data: {
+                'uin': uin
+            },
+            datatype: "json",
+            success: function (ret) {
+                if (ret.code === 1) {
+                    x.getval("#uin", null);
+                    $("#result").html('<font class="bold mr3">查询结果：</font>该QQ(' + uin + ')是{:config('conf.title')}的<font class="bold hong">'  + ret.data['name']+ '</font>，请放心交易。');
+                } else {
+                    x.getval("#uin", null);
+                    $("#result").html('<font class="bold mr3">查询结果：</font><font class="cheng">警告，该QQ(' + uin + ')不是{:config('conf.title')}的代理，请结束交易。</font>');
+                }
+            }
+        });
+        x.close(id);
+    }
+</script>

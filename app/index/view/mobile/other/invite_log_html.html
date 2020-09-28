@@ -1,0 +1,18 @@
+{foreach $list as $value}
+<dl>
+    <dt><img class="w7 h7 b r5 mr2" src="//q4.qlogo.cn/headimg_dl?dst_uin={$value.qq}&spec=40"></dt>
+    <dd><p class="f3 hong"><i class="icon icon-my"></i> {$value.nickname}</p>
+        <p class="f3 hui">用户{$value.nickname}邀请了用户{$value.inv_nickname}[UID:{$value.uid}]</p></dd>
+    <dt class="t-r"><p class="lv bold">+ 30积分</p>
+        <p class="f3 hui">{$value.reg_time|date="m-d H:i"}</p></dt>
+</dl>
+{/foreach}
+
+<script>
+    loadpage['note_qd']++;
+    {if $isLoadingSuccess}
+    reBox['note_qd'].endUpLoading(false);
+    {else /}
+    reBox['note_qd'].endUpLoading(true);
+    {/if}
+</script>

@@ -1,0 +1,23 @@
+<title>系统提示</title>
+<div class="app-content w t-v t-c">
+    <div class="p4 pt0 pb12 mb12">
+        <div class="f20 bold"><i class="icon icon-info hui dl"></i></div>
+        <div class="mt4 f7 bold">系统提示</div>
+        <div class="mt3">请登录后再进行操作！</div>
+        <div class="mt6 btnneiye"><a class="btn btn-sm w35 h7 btn-hui btn-1 rx3 bold" href="/">返回首页</a></div>
+    </div>
+    <script>
+        layer.open({
+            content: '<h4 class="mt0 mb4">系统提示</h4><p>请登录后再进行操作！</p>',
+            btn: ['登 录', '取 消'],
+            shadeClose: false,
+            yes: function (i) {
+                x.mclose(i);
+                x.url('/user/login.html', '');
+            },
+            no: function (i) {
+                x.mclose(i);
+            }
+        });
+    </script>
+</div>

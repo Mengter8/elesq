@@ -1,0 +1,12 @@
+{foreach $list as $vo}
+<dl>
+    {if $vo.type == 1}
+    <dd><p class="pl1 pr5">{$vo.name} ： <font class="lv bold">+ {$vo.score/100} 元</font></p></dd>
+    {else/}
+    <dd><p class="pl1 pr5">{$vo.name} ： <font class="hong bold">- {$vo.score/100} 元</font></p></dd>
+    {/if}
+    <dt class="t-r f2 hui">{$vo.create_time|date="m-d H:i"}</dt>
+</dl>
+{/foreach}
+<script> reBox['note_money'].endUpLoading(false);
+</script>

@@ -1,0 +1,57 @@
+<title>积分兑换 - {:config('conf.title')}</title>
+<div class="app-header t-v bg-bai dl2 bb">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">积分兑换</span>
+<!--    <span class="header-r t-v t-r nowrap" onclick="mode_redeem_log();"><i class="icon icon-text f10"></i></span>-->
+    <span class="header-r t-v t-r dropdown">
+        <div class="dropdown-menu wh t-v t-r"><i class="icon icon-more f10"></i></div>
+        <dl class="dropdown-list header animated fadeInUp"> <span class="arrowtop"></span>
+            <dd><a class="p3 t-c" href="javascript:mode_redeem_log(0);"><i class="icon icon-text f6 v-0"></i> 兑换记录</a></dd>
+            <dd><a class="p3 t-c" href="javascript:mode_redeem_log(1);"><i class="icon icon-text f6 v-0"></i> 我的兑换</a></dd>
+        </dl>
+        <dd class="dropdown-desc animated fadeIn">&nbsp;</dd>
+    </span>
+</div>
+<div class="app-content bg-bai f5">
+    <div class="mb5 o-h">
+        <div class="p4 f4 hui bb">
+            <p>1、积分可通过
+                <a class="lan bold" href="javascript:;" onclick="mode_sign();">每日签到</a>
+                <a class="lan bold" href="javascript:;" onclick="mode_invite();">推广有礼</a>获取。
+            </p>
+            <p>2、兑换后系统自动开通相应业务！</p>
+            <p>3、当前拥有积分：<font class="f5 hong mr2"><span id="score">{$score|default="0"}</span></font>个</p></div>
+        <div class="in-list in-b in-bb">
+            {foreach $list as $key=>$vo}
+            <dl class="h13 in" onclick="redeem({$key});">
+                <dt><p class="w12 t-c"><i class="icon icon-vip lv f14"></i></p></dt>
+                <dd><p>{$vo.name} <font class="ml4 f3 hong">[{$vo.score}积分]</font></p>
+                    <p class="f2 hui">兑换后增加{$vo.name}天VIP时长，多次兑换可叠加</p></dd>
+                <dt><p class="w6 pl1 f3 hui"><i class="icon icon-pright"></i></p></dt>
+            </dl>
+            {/foreach}
+        </div>
+    </div>
+</div>
+<script>
+    function redeem(id){
+        x.loading();
+        $.ajax({
+            url: "/other/redeemAjax.html",
+            type: "POST",
+            data: {
+                'id': id
+            },
+            datatype: "json",
+            success: function (ret) {
+                x.mclose();
+                if (ret.code === 1) {
+                    x.btn('兑换成功',ret.message);
+                    $('#score').text(ret.data['score']);
+                } else {
+                    x.btn('兑换失败',ret.message);
+                }
+            }
+        });
+    }
+</script>

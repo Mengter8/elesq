@@ -1,0 +1,72 @@
+<title>每日签到 - {:config('conf.title')}</title>
+<div class="app-header t-v bg-bai dl2 bb"><span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">每日签到</span>
+    <span class="header-r t-v t-r dropdown">
+        <div class="dropdown-menu wh t-v t-r"><i class="icon icon-more f10"></i></div>
+        <dl class="dropdown-list header animated fadeInUp"> <span class="arrowtop"></span>
+            <dd><a class="p3 t-c" href="javascript:mode_redeem();"><i class="icon icon-duijie f6 v-0"></i> 积分兑换</a></dd>
+            <dd><a class="p3 t-c" href="javascript:mode_sign_log(0);"><i class="icon icon-text f6 v-0"></i> 签到记录</a></dd>
+            <dd><a class="p3 t-c" href="javascript:mode_sign_log(1);"><i class="icon icon-text f6 v-0"></i> 我的签到</a></dd>
+        </dl>
+        <dd class="dropdown-desc animated fadeIn">&nbsp;</dd>
+    </span>
+</div>
+<div class="app-content bg-bai f5">
+    <div class="mb5 o-h">
+        <div class="p4 f4 hui bb">
+            <p>每日签到有几率获取平台会员VIP，积分等奖励</p>
+            <p>中奖奖池如下，中奖几率为50,拼人品的时候到了！</p>
+            <p>
+                <span class="tag bg-qing f3">1天VIP</span>
+                <span class="tag bg-qing f3">7天VIP</span>
+                <span class="tag bg-qing f3">15天VIP</span>
+                <span class="tag bg-qing f3">5个积分</span>
+                <span class="tag bg-qing f3">30积分</span>
+                <span class="tag bg-qing f3">100个积分</span>
+            </p>
+        </div>
+        <div class="pt3 pb3 t-v bb">
+            <div class="w37 t-c br">
+                <div class="f6 hong"><span id="vipDay">{$vipDay}</span> 天</div>
+                <div class="mt1 f2 hui">中奖会员</div>
+            </div>
+            <div class="w37 t-c br">
+                <div class="f6 hong"><span id="signDay">{$signDay}</span> 次</div>
+                <div class="mt1 f2 hui">签到次数</div>
+            </div>
+            <div class="w37 t-c">
+                <div class="f6 hong"><span id="score">{$score|default="0"}</span> 个</div>
+                <div class="mt1 f2 hui">账户积分</div>
+            </div>
+        </div>
+        <div class="p8 qdhtmlbtn">
+            {if @$isSignSuccess}
+            <button class="btn btn-hui btn-md w">今 日 已 签</button>
+            {else /}
+            <button class="btn btn-qing btn-md w" onclick="sign();">点 此 签 到</button>
+            {/if}
+        </div>
+    </div>
+</div>
+<script>
+    function sign(){
+        x.loading();
+        $.ajax({
+            url: "/other/signAjax.html",
+            type: "GET",
+            datatype: "json",
+            success: function (ret) {
+                x.mclose();
+                $(".qdhtmlbtn").html("<button class=\"btn btn-hui btn-md w\">今 日 已 签</button>\n");
+                if (ret.code === 1){
+                    x.btn('签到成功',ret.message);
+                    $('#signDay').text(ret.data['signDay']);
+                    $('#vipDay').text(ret.data['vipDay']);
+                    $('#score').text(ret.data['score']);
+                } else {
+                    x.btn('签到失败', ret.message);
+                }
+            }
+        });
+    }
+</script>

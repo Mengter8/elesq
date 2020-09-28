@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="author" content="xiaoke"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>{:config('conf.title')} - 最稳定的秒赞平台</title>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/static/pc/app.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/pc/style.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/pc/animate.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/pc/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/pc//bootstrap-slider.min.css"/>
+    <script type="text/javascript" src="/static/pc/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/static/pc/jquery.pjax.min.js"></script>
+    <script type="text/javascript" src="/static/pc/layer.min.js"></script>
+    <script type="text/javascript" src="/static/pc/app.min.js"></script>
+    <script type="text/javascript" src="/static/pc/bootstrap-slider.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+</head>
+<body class="bg-bai dl">
+<div class="g-main bg-bt2">
+    <div class="g-header bb">
+        <div class="g-1400 h d-c t-v">
+            <div class="logo t-v">
+                <a href="/">
+                    <img class="w7 h7 mr3" src="/static/pc/ioc-p.png">
+                    <a class="bai t-s" href="/"><p>{:config('conf.title')}</p><p class="mt0 f3 nobold">{:config('conf.host')}</p></a>
+<!--                <img class="w19 h9" src="//cdn.istt.cn/cdn/img/mz/img/logo.png">-->
+                </a>
+            </div>
+            <div class="nav">
+                <ul class="g-nav click-nav t-v fl">
+                    <li class="{eq name=':request()->controller()' value='User'}active{/eq}"><a href="{:url('/user/index')}" class="t-v" data-pjax>首页</a></li>
+                    <li class="{eq name=':request()->controller()' value='Qlist'}active{/eq}"><a href="{:url('/qlist/index')}" class="t-v" data-pjax>QQ管理</a></li>
+                    <li class="{eq name=':request()->controller()' value='Shop'}active{/eq}"><a href="{:url('/shop/vip')}" class="t-v" data-pjax>自助购买</a></li>
+                    <li class="{if request()->controller() == 'Other' }{if request()->action() == 'sign' || request()->action() == 'invite' || request()->action() == 'redeem'}active{/if}{/if}"><a href="/other/sign.html" class="t-v" data-pjax>福利中心</a></li>
+                    <li class="{if request()->controller() == 'Other' }{if request()->action() == 'prove_query' || request()->action() == 'wall'  }active{/if}{/if}"><a href="/other/prove_query.html" class="t-v" data-pjax>快捷连接</a></li>
+                </ul>
+                <ul class="g-nav t-v fr">
+                    <li class="">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-0" data-toggle="dropdown"><span><img class="w8 h8 b b2 b-bai r5 mr3" src="//q4.qlogo.cn/headimg_dl?dst_uin={:session('user.qq')}&spec=100">{:session('user.nickname')}</span> <span class="caret ml2"></span></button>
+                            <ul class="dropdown-menu" style="min-width:138px;"><span class="arrow top arrow-default"></span>
+                                <li>
+                                    <a href="/user/index.html" data-pjax><i class="icon icon-home"></i> 用户首页</a>
+                                </li>
+<!--                                <li>-->
+<!--                                    <a href="#" target="_blank"><i class="icon icon-lock"></i> 修改密码</a>-->
+<!--                                </li>-->
+                                <li>
+                                    <a href="/user/logout.html"><i class="icon icon-exit"></i> 退出登陆</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="g-header gonggao bb">
+        <div class="g-1400 h d-c t-v">
+            <div class="w9 pl4"><i class="icon icon-laba hong f5"></i></div>
+            <div>欢迎来到{:config('conf.title')}，这里是最稳定的秒赞平台，永久访问地址：{:config('conf.host')}</div>
+        </div>
+    </div>
+    <div class="g-1400 g-container" id="pjax-container">
+        {__CONTENT__}
+    </div>
+</div>
+<div class="g-footer hui">
+    <div class="g-1400 h d-c t-v t-c">
+        <div class="hui dk"><p>{:config('conf.title')}，最专业、最稳定的QQ空间动态自动点赞平台</p>
+            <p>Copyright © 2020 {:config('conf.title')} {:config('conf.host')}
+                <a class="hui dk" href="http://beian.miit.gov.cn/" title="{:config('conf.title')}" target="_blank">{:config('conf.icp')}</a>
+            </p>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/static/pc/bootstrap.min.js"></script>
+<span class="ajaxshow" id="ajaxshow"></span>
+<span class="ajaxshow" id="ajaxload"></span>
+<span class="ajaxshow" id="designationshow"></span>
+<script>
+    if (window.ActiveXObject || "ActiveXObject" in window || window.navigator.userAgent.indexOf("Edge") > -1) {
+        $(function ($) {
+            var docEl = $("#pjax-container");
+            var height, cheight;
+
+            function refreshRem() {
+                cheight = docEl.outerHeight(true) + 95 - window.innerHeight;
+                if (cheight > 0) {
+                    var height = 250 - cheight;
+                    if (height < 100) height = 100;
+                    $(".g-footer").css("margin-top", "-" + height + "px");
+                } else {
+                    $(".g-footer").css("margin-top", "-250px");
+                }
+            }
+
+            $(window).resize(function () {
+                refreshRem();
+            });
+            new MutationObserver(refreshRem).observe(document.getElementById('pjax-container'), {
+                attributes: true,
+                characterData: true,
+                childList: true,
+                subtree: true,
+            });
+            refreshRem();
+        });
+    }
+
+    function _sys_cleartime() {
+        typeof ChatTimeID != "undefined" && clearTimeout(ChatTimeID);
+    }
+
+    $(document).on('pjax:send', function () {
+        _sys_cleartime();
+    });
+
+    function mode_shop_vip() {
+        x.url('/user/shop/vip');
+    }
+
+    function mode_qq_mzrz(uin) {
+        x.mode('/other/prove.html?uin=' + uin, '', 500);
+    }
+
+    function mode_qq_add(uin) {
+        x.mode('/qlogin/login?uin=' + uin,'login');
+    }
+
+    function ajax_qq_del(uin) {
+        x.del('/qlist/del.html', 'uin=' + uin);
+    }
+
+    var api = '{:url('/')->domain('api')}';
+    var session_id = '{:\\think\\facade\\session::getId()}';
+</script>
+{:config('conf.footer')}
+</body>
+</html>

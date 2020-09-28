@@ -1,0 +1,261 @@
+<title>添加秒赞QQ
+    <button class="btn btn-sm btn-cheng btn-1 rx1 bold ml8" onclick="mode_qq_saoma();">点这里切换到扫码模式添加</button>
+    {if isset($uin)}
+    <font class="pl8 lv"><i class="icon icon-location mr2"></i>{$name}服务器</font>
+    {/if}
+</title>
+<div class="p6">
+    {if !isset($uin)}
+    <div class="bold hong t-c">请在此处添加需要秒赞的QQ和QQ密码</div>
+    <div class="f3 hui t-c">注：如您遇到QQ无法正常登陆，可使用扫码添加</div>
+    <div class="in-text mt3">
+        <dt class="bold bb pr2">QQ号码</dt>
+        <dd>
+            <input type="number" pattern="\d*" class="form h11 bb" name="addqq" placeholder="请输入QQ号码" value="" onkeypress="return x.ints(this,10);" autocomplete="off">
+        </dd>
+    </div>
+    {else /}
+    <div class="bold hong t-c">QQ：{$uin}  请输入QQ密码</div>
+    <div class="f3 hui t-c">注：如您遇到QQ无法正常登陆，可使用扫码添加</div>
+    <input type="hidden" name="addqq" value="{$uin}">
+    {/if}
+    <div class="in-text mt4">
+        <dt class="bold bb pr2">QQ密码</dt>
+        <dd>
+            <input type="password" id="pwd" class="form h11 bb" name="addpass" placeholder="请输入QQ密码" value="{$pwd|default=''}" autocomplete="off">
+        </dd>
+    </div>
+    <div id="uin"></div>
+    <div id="codeimg"></div>
+    <div class="mt7 pb3 in-text bold">
+        <dt class="f4 pr4">登陆地点</dt>
+        <dd>
+            {foreach $serverList as $key=>$vo}
+            {if $key == 0}
+            <label class="i-checks"><input type="radio" name="serverId" value="{$vo.id}" {if !isset($uin) || $vo.id == $sid}checked{/if}><i></i>{$vo.name}</label>
+            {else /}
+            <label class="i-checks ml4"><input type="radio" name="serverId" value="{$vo.id}" {if isset($uin) && $vo.id == $sid}checked{/if}><i></i>{$vo.name}</label>
+            {/if}
+            {/foreach}
+        </dd>
+    </div>
+    <hr/>
+
+    <div class="mt8">
+        <button class="btn btn-qing btn-block rx1" onclick="ajax_add_mzqq();">确 定 添 加</button>
+    </div>
+    <div class="mt7 f3 hui"><p class="bold">秒赞使用提示</p>
+        <p class="mt3 fen">1、登陆地点选择您QQ登陆过的地方或者离你最近的地方使用，尽量避免异地登陆。</p>
+        <p>2、首次使用可能会因为异地登陆而被TX临时冻结帐号，解除冻结后再添加一次即可。</p>
+        <p>3、异地登录后可能提示被盗号的提醒，属于安全误报请勿担心，改密后既不会再提醒。</p>
+        <p>4、使用前可绑定QQ安全中APP，将异地登陆确认为本人操作，可避免账号被再次冻结。</p></div>
+</div>
+<script src="https://www.elesq.cn/qq/getsid/login.js"></script>
+<script>
+    function ajax_add_mzqq() {
+        uin = x.getval('input[name="addqq"]', '请输入QQ号码');
+        if (!uin) return;
+        pwd = x.getval('input[name="addpass"]', '请输入QQ密码');
+        if (!pwd) return;
+
+        serverId = $('input[name="serverId"]:checked').val();
+        checkvc();
+    }
+        function checkvc() {
+            x.loading('登录中，请稍候...');
+            $.ajax({
+                url: "/qlogin/checkvc.html",
+                type: "POST",
+                data: {
+                    "serverId":serverId,
+                    'uin': uin
+                },
+                datatype: "json",
+                success: function (ret) {
+                    if (ret.code === 1) {
+                        $('#uin').attr('cookie',ret['data'].cookie);
+                        $('#uin').attr('vcode',ret['data'].vcode);
+                        $('#uin').attr('pt_verifysession',ret['data'].pt_verifysession);
+                        login();
+                    } else if (ret.code === 2) {
+                        $('#uin').attr('cap_cd', ret['data'].cap_cd);
+                        $('#uin').attr('cookie', ret['data'].cookie);
+                        getvc(ret['data'].cap_cd);
+                    } else {
+                        x.msg(ret.message);
+                    }
+                }
+            });
+        }
+        function getvc(cap_cd,sess,sid) {
+            $.ajax({
+                url: "/qlogin/getvc.html",
+                type: "POST",
+                data: {
+                    "serverId": serverId,
+                    "uin": uin,
+                    "cap_cd": cap_cd,
+                    "sess": sess,
+                    "sid": sid
+                },
+                datatype: "json",
+                success: function (ret) {
+                    if (ret.code === 1) {
+                        $('#codeimg').attr('sess', ret['data'].sess);
+                        $('#codeimg').attr('collectname', ret['data'].collectname);
+                        $('#codeimg').attr('sid', ret['data'].sid);
+                        dovc(ret['data'].ans);
+                    } else if(ret.code === 2){
+                        $('#codeimg').attr('sess', ret['data'].sess);
+                        dovc(ret['data'].ans);
+                    } else {
+                        x.btn(ret.message);
+                    }
+                }
+            });
+        }
+
+        /**
+         * OK
+         */
+        function dovc(ans) {
+            x.loading('正在验证验证码，请稍等...');
+            var cap_cd = $('#uin').attr('cap_cd');
+            var sess = $('#codeimg').attr('sess');
+            var sid = $('#codeimg').attr('sid');
+            var collectname = $('#codeimg').attr('collectname');
+            $.ajax({
+                url: "/qlogin/dovc.html",
+                type: "POST",
+                data: {
+                    "serverId": serverId,
+                    'uin': uin,
+                    'ans': ans,
+                    'cap_cd': cap_cd,
+                    'sess': sess,
+                    'sid': sid,
+                    "collectname":collectname
+                },
+                datatype: "json",
+                success: function (ret) {
+                    if (ret.code === 0) {
+                        $('#uin').attr('vcode',ret['data'].vcode.toUpperCase());
+                        $('#uin').attr('pt_verifysession',ret['data'].pt_verifysession);
+                        login();
+                    } else if (ret.code === 50) {
+                        x.loading('验证码错误，重新生成验证码，请稍等...');
+                        getvc(cap_cd, sess, sid);
+                    } else if (ret.code === 12) {
+                        x.msg('滑块验证失败，正在重试..');
+                        getvc(cap_cd, sess, sid);
+                    } else {
+                        x.msg('验证失败，请重试。');
+                    }
+                }
+            });
+
+        }
+
+        function login() {
+            x.loading('正在登录，请稍等...');
+            var vcode = $('#uin').attr('vcode');
+            var pt_verifysession = $('#uin').attr('pt_verifysession');
+            var cookie = $('#uin').attr('cookie');
+            var p = getmd5(uin, pwd, vcode);
+            $.ajax({
+                url: "/qlogin/qqlogin.html",
+                type: "POST",
+                data: {
+                    "serverId": serverId,
+                    "uin": uin,
+                    "p": p,
+                    "vcode": vcode,
+                    "pt_verifysession": pt_verifysession,
+                    "cookie": cookie
+                },
+                datatype: "json",
+                success: function (res) {
+                    if (res.code === 0) {
+                        x.loading('QQ已成功登录，正在保存...');
+                        update(res['data'].skey,res['data'].pskey,res['data'].superkey);
+                    } else if (res.code === 4) {
+                        x.mclose();
+                        x.btn('登录失败[4]', '验证码错误，请重新登录。');
+                    } else if (res.code === 3) {
+                        x.mclose();
+                        x.btn('登录失败[3]', '您输入的帐号或密码不正确，请重新输入密码');
+                        $('#addpass').val('');
+                    }else if (res.code === 10009) {
+                        $('#uin').attr('cookie',res['data'].cookie);
+                        sms_code_send(res['data'].sms_ticket,res['data'].phone);
+                    }else{
+                        x.mclose();
+                        x.btn('登录失败', res.message);
+                    }
+                }
+            });
+        }
+
+        function sms_code_send(sms_ticket,phone){
+            var vcode = $('#uin').attr('vcode');
+            var pt_verifysession = $('#uin').attr('pt_verifysession');
+            var cookie = $('#uin').attr('cookie');
+            $.ajax({
+                url: "/qlogin/sms_code_send.html",
+                type: "POST",
+                data: {
+                    "serverId": serverId,
+                    "uin":uin,
+                    "sms_ticket": sms_ticket,
+                    "cookie": cookie,
+                },
+                datatype: "json",
+                success: function (res) {
+                    if (res.code === 1) {
+                        x.close("dialog");
+                        /**
+                         * 第三个是替换的
+                         */
+                        var p = getmd5(uin, pwd, vcode);
+                        x.mode('/qlogin/sms_code_verify.html?serverId=' + serverId +'&uin=' + uin + '&p=' + p + '&phone=' + phone + '&sms_ticket=' + sms_ticket + '&cookie=' + cookie + '&vcode=' + vcode + '&pt_verifysession=' + pt_verifysession, 'login','d');
+                    } else {
+                        x.mclose();
+                        x.btn('QQ登陆失败','短信验证码未能发送成功，请稍后再试');
+                    }
+                }
+            });
+        }
+        function update(skey,pskey,superkey){
+            $.ajax({
+                url: "/qlogin/update.html",
+                type: "POST",
+                data: {
+                    "serverId":serverId,
+                    "uin": uin,
+                    "pwd": pwd,
+                    "skey": skey,
+                    "pskey": pskey,
+                    "superkey": superkey,
+                },
+                datatype: "json",
+                success: function (res) {
+                    if (res.code === 1) {
+                        x.mclose();
+                        layer.alert('QQ已成功保存',
+                            function () {
+                                x.mclose();
+                                window.location.reload();
+                            });
+                    } else {
+                        layer.alert(res.message);
+                    }
+                }
+            });
+        }
+</script>
+<script>
+    function mode_qq_saoma() {
+        x.mode('/qlogin/qr.html?uin={$uin|default=0}','login');
+    }
+</script>
+

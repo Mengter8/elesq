@@ -1,0 +1,78 @@
+<title>登陆保护验证 - {:config('conf.title')}</title>
+<div class="p6 t-c" id="codepage">
+    <div class="smscode">
+        <div class="f5 hong t-c">为保障帐号安全，本次登录需要进行验证</div>
+        <div class="mt3 f4 hui t-c">短信验证码已发送到<font class="lan bold">密保手机（{$phone}）</font>，请输入收到的验证码</div>
+        <hr/>
+        <div class="in-text mt5">
+            <dt class="bold bb pr2">验证码</dt>
+            <dd><input type="number" class="form h11 bb smsinput" name="smscode" placeholder="请输入短信验证码" value="" onkeypress="return x.ints(this,6);" autocomplete="off"></dd>
+        </div>
+        <button class="btn btn-dlan btn-block rx1 mt8 autoenter" onclick="sms_postcode();">确 认</button>
+        <div class="mt5 f3 hui t-l">注：验证码有效时间约为1分钟，请及时输入提交</div>
+    </div>
+</div>
+<script>
+    function sms_postcode() {
+        var code = x.getval('input[name="smscode"]', '请输入短信验证码');
+        if (!code) return;
+        login(code);
+    };
+    function login(code) {
+        x.msg('正在登录，请稍等...');
+        $.ajax({
+            url: "/qlogin/qqlogin.html",
+            type: "POST",
+            data: {
+                "serverId": {$serverId},
+                "uin": '{$uin}',
+                "p": '{$p}',
+                "vcode": '{$vcode}',
+                "pt_verifysession": '{$pt_verifysession}',
+                "cookie": '{$cookie}',
+                "sms_code": code,
+                "sms_ticket": '{$sms_ticket}',
+            },
+            datatype: "json",
+            success: function (res) {
+                if (res.code === 0) {
+                    x.loading('QQ已成功登录，正在保存...');
+                    update(res['data'].skey, res['data'].pskey, res['data'].superkey);
+                } else if (res.code === 4) {
+                    x.btn('登录失败[' + res.code + ']', '验证码错误，请重新登录。');
+                } else if (res.code === 3) {
+                    x.btn('登录失败[' + res.code + ']', '您输入的帐号或密码不正确，请重新输入密码');
+                } else{
+                    x.btn('登录失败[' + res.code + ']', res.message);
+                }
+            }
+        });
+    }
+    function update(skey,pskey,superkey){
+        $.ajax({
+            url: "/qlogin/update.html",
+            type: "POST",
+            data: {
+                "serverId": {$serverId},
+                "uin": uin,
+                "pwd": pwd,
+                "skey": skey,
+                "pskey": pskey,
+                "superkey": superkey
+            },
+            datatype: "json",
+            success: function (res) {
+                if (res.code === 1) {
+                    x.mclose();
+                    layer.alert('QQ已成功保存',
+                        function () {
+                            x.mclose();
+                            window.location.reload();
+                        });
+                } else {
+                    layer.alert(res.message);
+                }
+            }
+        });
+    }
+</script>

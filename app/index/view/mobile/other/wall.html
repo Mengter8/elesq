@@ -1,0 +1,87 @@
+<title>QQ秒赞墙 - {:config('conf.title')}</title>
+<div class="app-header t-v bg-bai dl2 bb">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">QQ秒赞墙</span>
+    <span class="header-r t-v t-r nowrap" onclick=""><i class="icon  f10"></i></span>
+</div>
+<div class="app-content bg-bai">
+    <div class="p4 f4 hui bb b-hui">
+        <p>1、本页面展示最近更新状态的秒赞QQ号</p>
+        <p>2、您可以添加以下QQ为好友,24小时秒赞空间动态</p>
+    </div>
+    <div class="tabBox">
+        <div class="swiper-tab">
+            <div class="tabindexList h8 t-v bg-bai dk">
+                <div class="wh t-v t-c bg-bai">急速服务器</div>
+                <div class="wh t-v t-c bl b-hei-a">VIP服务器</div>
+                <div class="wh t-v t-c bl b-hei-a">免费服务器</div>
+            </div>
+
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="in-list in-b in-bb">
+                        {foreach $jisuList as $jisu}
+                        <dl class="h12 in" onclick="mzq_mode_footer('{$jisu.uin}');">
+                            <dt><img class="w7 h7 r5 b b2 ml2 mr2" src="//q4.qlogo.cn/headimg_dl?dst_uin={$jisu.uin}&spec=40"></dt>
+                            <dt><p class="w15 f2 hui nowrap">{$jisu.nickname}</p><p class="w19 dzi">{$jisu.uin}</p></dt>
+                            <dt><p class="f2"><i class="icon icon-appreciate hui mr1"></i> <font class="lv">秒赞已开启</font>
+                            </p><p class="f2 hui"><i class="icon icon-time mr1"></i> {$jisu.last_time|date="m-d H:i"}</p></dt>
+                            <dd class="pl3 pr3 f2 hui t-r"><p>连续秒赞：{:data_Diff($jisu.update_time)}天</p><p>累计秒赞：{:data_Diff($jisu.create_time)}天</p></dd>
+                        </dl>
+                        {/foreach}
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <div class="in-list in-b in-bb">
+                        {foreach $vipList as $vip}
+                        <dl class="h12 in" onclick="mzq_mode_footer('{$vip.uin}');">
+                            <dt><img class="w7 h7 r5 b b2 ml2 mr2" src="//q4.qlogo.cn/headimg_dl?dst_uin={$vip.uin}&spec=40"></dt>
+                            <dt><p class="w15 f2 hui nowrap">{$vip.nickname}</p><p class="w19 dzi">{$vip.uin}</p></dt>
+                            <dt><p class="f2"><i class="icon icon-appreciate hui mr1"></i> <font class="lv">秒赞已开启</font>
+                            </p><p class="f2 hui"><i class="icon icon-time mr1"></i> {$vip.last_time|date="m-d H:i"}</p></dt>
+                            <dd class="pl3 pr3 f2 hui t-r"><p>连续秒赞：{:data_Diff($vip.update_time)}天</p><p>累计秒赞：{:data_Diff($vip.create_time)}天</p></dd>
+                        </dl>
+                        {/foreach}
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <div class="in-list in-b in-bb">
+                        {foreach $freeList as $free}
+                        <dl class="h12 in" onclick="mzq_mode_footer('{$free.uin}');">
+                            <dt><img class="w7 h7 r5 b b2 ml2 mr2" src="//q4.qlogo.cn/headimg_dl?dst_uin={$free.uin}&spec=40"></dt>
+                            <dt><p class="w15 f2 hui nowrap">{$free.nickname}</p><p class="w19 dzi">{$free.uin}</p></dt>
+                            <dt><p class="f2"><i class="icon icon-appreciate hui mr1"></i> <font class="lv">秒赞已开启</font>
+                            </p><p class="f2 hui"><i class="icon icon-time mr1"></i> {$free.last_time|date="m-d H:i"}</p></dt>
+                            <dd class="pl3 pr3 f2 hui t-r"><p>连续秒赞：{:data_Diff($free.update_time)}天</p><p>累计秒赞：{:data_Diff($free.create_time)}天</p></dd>
+                        </dl>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var swipertab = new Swiper('.swiper-tab', {
+            on: {
+                slideChangeTransitionStart: function () {
+                    $(".tabindexList div").removeClass("bg-bai").eq(this.activeIndex).addClass("bg-bai");
+                }
+            }
+        });
+        $(".tabindexList div").click(function () {
+            var index = $(this).index();
+            $(".tabindexList div").removeClass("bg-bai").eq(index).addClass("bg-bai");
+            swipertab.slideTo(index, 300, false);
+        });
+
+        function mzq_mode_footer(qq) {
+            var htmlcon = '';
+            htmlcon += '<li><p class="p3 f3 hui">QQ : ' + qq + '</p></li>';
+            htmlcon += '<li><a class="p3 lan bt b-hui footer in" onclick="x.mclose();" href="mqqwpa://im/chat?chat_type=wpa&uin=' + qq + '&version=1&src_type=web&web_src=oicqzone.com" target="_blank">加为好友</a></li>';
+            htmlcon += '<li><a class="p3 lan bt b-hui footer in" onclick="x.mclose();" href="http://' + qq + '.qzone.qq.com" target="_blank">查看空间</a></li>';
+            x.footer(htmlcon);
+        }
+    </script>
+</div>

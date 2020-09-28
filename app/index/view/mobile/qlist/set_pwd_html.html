@@ -1,0 +1,25 @@
+<title>补充QQ密码 - {:config('conf.title')}</title>
+<div class="app-header t-v bg-bai dl2 bb">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">补充QQ密码</span>
+    <span class="header-r t-v t-r nowrap" onclick=""><i class="icon  f10"></i></span>
+</div>
+<div class="app-content bg-bai">
+    <div class="p3">
+        <div class="mt2"><p class="bold hong t-c">QQ:{$uin} {$nickname} 请输入QQ密码</p>
+            <p class="f2 hui t-c">使用扫码添加QQ，补充密码后，当QQ状态失效时，系统可为您自动更新</p></div>
+        <div class="h10 mt3">
+            <input type="password" class="form wh p0 r0 bb" name="addpass" placeholder="请输入QQ密码" value="" maxlength="32">
+        </div>
+        <div class="mt7 mb3">
+            <button class="btn btn-qing btn-md w" onclick="ajax_add_mzqq();">确 定 补 充</button>
+        </div>
+    </div>
+</div>
+<script>
+    function ajax_add_mzqq() {
+        var pwd = x.getval('input[name="addpass"]', '请输入QQ密码');
+        if (!pwd) return;
+        x.ajax('/qlist/setPwd.html', 'uin={$uin}&pwd=' + encodeURIComponent(pwd));
+    }
+</script>

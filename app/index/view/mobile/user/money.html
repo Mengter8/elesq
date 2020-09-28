@@ -1,0 +1,45 @@
+<title>账户余额 - {:config('conf.title')}</title>
+<div class="app-header t-v bg-dlan dk b0 bb">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">账户余额</span>
+    <span class="header-r t-v t-r nowrap" onclick=""><i class="icon f10"></i></span>
+</div>
+<div class="app-content f5">
+    <div class="mb5 o-h">
+        <div class="p4 bg-dlan dk"><p class="mt2">账户余额（元）</p>
+            <p class="mt3 f18 userrmb">{:session('user.money')}</p></div>
+        <ul class="bb">
+            <li class="h9">
+                <span class="wh t-v bb" onclick="mode_shop_money();">
+                    <div class="w10 t-c"><i class="icon icon-moneybag f11 lan"></i></div>
+                    <div class="w20">充值余额</div> <div class="w40 f2 t-r"></div>
+                    <div class="w5 t-c f2 hui"><i class="icon icon-pright"></i></div>
+                </span>
+            </li>
+            <li class="h9">
+                <span class="wh t-v bb" onclick="mode_shop_vip();">
+                    <div class="w10 t-c"><i class="icon icon-vip f11 fen"></i></div>
+                    <div class="w20">开通会员</div>
+                    <div class="w40 f2 t-r"></div>
+                    <div class="w5 t-c f2 hui"><i class="icon icon-pright"></i></div>
+                </span>
+            </li>
+            <li class="h9">
+                <span class="wh t-v bb" onclick="mode_shop_cdkey();">
+                    <div class="w10 t-c"><i class="icon icon-form f11 cheng"></i></div>
+                    <div class="w20">使用卡密</div> <div class="w40 f2 t-r "></div>
+                    <div class="w5 t-c f2 hui"><i class="icon icon-pright"></i></div>
+                </span>
+            </li>
+        </ul>
+        <ul class="mt3 bt bb">
+            <li class="h9">
+                <span class="wh t-v" onclick="mode_note_money();">
+                    <div class="w10 t-c"><i class="icon icon-text f11 lv"></i></div>
+                    <div class="w20">余额记录</div> <div class="w40 f2 t-r "></div>
+                    <div class="w5 t-c f2 hui"><i class="icon icon-pright"></i></div>
+                </span>
+            </li>
+        </ul>
+    </div>
+</div>

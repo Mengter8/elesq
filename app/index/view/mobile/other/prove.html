@@ -1,0 +1,33 @@
+{if !Request()->isPost()}
+<title>QQ{$uin}的秒赞认证 - {:config('conf.title')</title>
+<div class="app-header t-v bg-bai dl2 bb">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">QQ{$uin}的秒赞认证</span>
+    <span class="header-r t-v t-r nowrap" onclick="mode_prove_query();"><i class="icon icon-search f10"></i></span></div>
+<div class="app-content bg-bai">
+{/if}
+    <div class="w67 p3 m4 bg-bai dl2 b b-hui rx4">
+        <div class="f8 hei"><img class="w9 h9 b b-hui r5 mr4" src="//q4.qlogo.cn/headimg_dl?dst_uin={$uin}&spec=100"> {$nickname|default="No"}
+        </div>
+        <div class="mt4"><font class="hui">秒赞 QQ ：</font><font class="bold dzi">{$uin}</font></div>
+        {if $uin_status == 1 && $task_status == 1}
+        <div class="mt2"><font class="hui">秒赞状态 ：</font><font class="bold lv">已开启 - {:getServerName($server)}</font></div>
+        {elseif $uin_status == 1 && $task_status === 0 /}
+        <div class="mt2"><font class="hui">秒赞状态 ：</font><font class="bold lv">未开启 - 状态正常但未开启秒赞</font></div>
+        {elseif $uin_status === 0 /}
+        <div class="mt2"><font class="hui">秒赞状态 ：</font><font class="bold lv">未开启 - 状态已失效</font></div>
+        {else /}
+        <div class="mt2"><font class="hui">秒赞状态 ：</font><font class="bold">未开启</font></div>
+        {/if}
+        {if $nickname}
+        <div class="mt2"><font class="hui">秒赞会员 ：</font>未开通 <a class="ml3 f3 lan" href="javascript:void(0);" onclick="mode_shop_vip();">开通秒赞VIP</a></div>
+        <div class="mt2"><font class="hui">秒赞信息 ：</font>连续秒赞：{:data_Diff($update_time)}天，累计{:data_Diff($create_time)}天</div>
+        {else /}
+        <div class="mt2"><font class="hui">秒赞信息 ：</font>尚未在{:config('conf.title')}开启秒赞功能</div>
+        {/if}
+        <div class="mt5 hui">查询时间 ：{:date('Y-m-d H:i:s')}</div>
+        <div class="mt2 f3 hui">{:config('conf.title')}（{:config('conf.host')}）为您的秒赞保驾护航</div>
+    </div>
+{if !Request()->isPost()}
+</div>
+{/IF}

@@ -1,0 +1,185 @@
+<title>用户首页 - {:config('conf.title')}</title>
+{block name="content"}
+<div class="o-h t-v t-t">
+    <div class="col-8 pr5 nowrap">
+        <div class="in-list o-h bg-bai b rx3" style="height:307px;">
+            <div class="in-bb">
+                <dl class="pl5 pr5 f6 bold" style="height:88px;">
+                    <dd>
+                        <span><img class="w9 h9 b b2 b-qing r5 mr4" src="//q4.qlogo.cn/headimg_dl?dst_uin={:session('user.qq')}&spec=100"></span>
+                        <span>{:session('user.nickname')}</span>
+                        <span>(平台用户)</span> <span class="f5 ml5 hui nobold">欢迎登陆</span>
+                    </dd>
+                    <dt>
+                        <a href="javascript:;" class="btn btn-sm btn-lv ml5 rx1" onclick="mode_qq_add(0);">添加秒赞QQ</a>
+                    </dt>
+                </dl>
+            </div>
+            <div class="in-b in-bb">
+                <dl class="p4"><i class="icon icon-notification lv"></i> 系统因更新，功能被清理，有需要请重新添加 部分功能陆续开放</dl>
+                <dl class="h10"><a class="in h pl4 pr4 hei dl" href="/user/doing/qd.html" data-pjax><i class="icon icon-hot hong"></i> <font class="hong"> [官方群]</font><font color="#f30ca8"> 点击进入亿乐云交流群，关注平台最新动态</font></a></dl>
+<!--                <dl class="h10"><a class="in h pl4 pr4 hei dl" href="https://www.52daigua.cc/" target="_blank"><i class="icon icon-hot hong"></i> <font class="hong">[我爱代挂网]</font> 全套QQ等级代挂，支持最新加速，欢迎使用</a></dl>-->
+            </div>
+            <div class="h11 t-v pl5 pr5 hui">
+                <div>快捷链接 :</div>
+                <a class="btn btn-xs btn-hui btn-1 rx1 ml3" href="https://jq.qq.com/?_wv=1027&k=5F72NRX" target="_blank" data-pjax>加入官方群</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 p6 o-h bg-bai hei b rx3 nowrap" style="height:307px;">
+        <div class="f8 hei">
+            <img class="w9 h9 r5 mr4" src="//q4.qlogo.cn/headimg_dl?dst_uin={:session('user.qq')}&spec=100">
+            {:session('user.nickname')}
+            <a class="ml3 f3 lan" href="https://u.istt.cn/login/api?mod=name&pid=10000&time=1587262707&url=https%3A%2F%2Fwww.xkmz.cc%2Findex%2Floginapi&zdy=%2Fuser%2Findex.html&sign=090525b1205339b02bb08a725d31448e&sign_type=MD5" target="_blank">修改</a><font class="ml3 f3 hui">UID:{:session('user.uid')}</font>
+        </div>
+        <div class="in-list top mt4">
+            <dl>
+                <dd>
+                    <p class="hui">账户积分 ：<font class="hong">{:session('user.score')}</font> <font class="f3">分</font></p>
+                    <p class="mt3 hui">账户余额 ：<font class="hong">{:session('user.money')}</font> <font class="f3">元</font></p>
+<!--                    <p class="mt3 hui">挂机配额 ：<font class="hong">*</font> <font class="f3">个</font><a class="ml5 f3 lan" href="/user/shop/peie.html" data-pjax>购买配额</a></p>-->
+                    <p class="mt3"><font class="hui">绑定 QQ ：</font>{:session('user.qq')} <a class="ml5 f3 lan" onclick="x.mode('/user/bindQq.html');">换绑</a></p>
+                    <p class="mt3"><font class="hui">平台会员 ：</font><font class="hong">VIP会员</font> {:date('Y-m-d',session('user.vip_end_time'))} 到期  <a class="ml5 f3 lan" href="/shop/vip.html" data-pjax>开通秒赞VIP</a></p>
+<!--                    <p class="mt3"><font class="hui">平台会员 ：</font>* <a class="ml5 f3 lan" href="/user/shop/vip.html" data-pjax>开通秒赞VIP</a></p>-->
+                    <p class="mt3"><font class="hui">注册时间 ：</font>{:date('Y-m-d H:i:s',session('user.reg_time'))}</p>
+                    <p class="mt3"><font class="hui">最近登陆 ：</font>{:date('Y-m-d H:i:s',session('user.last_time'))}</p>
+                    <p class="mt3"><font class="hui">代理等级 ：</font>{if findAgentLevel(session('user.agent'))}{:findAgentLevel(session('user.agent'))['name']}{else /}非代理{/if}</p>
+                </dd>
+                <dt>
+                    <button class="btn btn-bai btn-sm b b-hui rx1" onclick="x.ajax('/user/index');">刷新
+                    </button>
+                </dt>
+            </dl>
+        </div>
+    </div>
+</div>
+<div class="mt5 o-h t-v t-t">
+    <div class="col-5 pr5">
+        <div class="in-list top o-h bg-bai b rx3">
+            <div class="g-title pl4 pr4 t-v bb">
+                <div class="col-8 h t-v bold"><span class="mr10">CQY聊天室</span></div>
+<!--                <div class="col-4 t-v t-r"><a href="javascript:;" class="w15 h9 lan f3 t-v t-r" onclick="x.mode('/html/user/qun');">秒赞交流群</a></div>-->
+            </div>
+            <div class="h23 o-y chatscrool">
+                <div class="in-b in-p f3" id="chatheight"></div>
+            </div>
+            <dl>
+                <dd><input type="text" class="form no bt bt-hui" id="chatcon" placeholder="请在此输入聊天内容（禁止发广告）" value="" maxlength="32" required autocomplete="off"></dd>
+                <dt>
+                    <button class="btn btn-qing w13" onclick="ajax_post_chat();">发 送</button>
+                </dd> </dl>
+        </div>
+    </div>
+    <div class="col-7">
+        <div class="w h16 o-h t-v t-c bg-bai b rx3 pl3 pr3">
+            <div class="w">
+                <p class="f7">{$siteCount.user}</p>
+                <p class="mt2 hui"><i class="icon icon-my f5 nobold mr1"></i>用户数量</p>
+            </div>
+            <div class="w">
+                <p class="f7">{$siteCount.uin}</p>
+                <p class="mt2 hui"><i class="icon icon-qq f5 nobold mr1"></i>QQ数量</p>
+            </div>
+            <div class="w">
+                <p class="f7">{$siteCount.task}</p>
+                <p class="mt2 hui"><i class="icon icon-appreciate f5 nobold mr1"></i>累计任务</p>
+            </div>
+            <div class="w">
+                <p class="f7">{$siteCount.today}</p>
+                <p class="mt2 hui"><i class="icon icon-community f5 nobold mr1"></i>今日添加</p>
+            </div>
+        </div>
+        <div class="mt5 t-v">
+            <div class="col-6 pr3">
+                <div class="w o-h bg-bai b rx3">
+                    <div class="g-title pl4 pr4 t-v bb">
+                        <div class="col-8 h t-v bold"><span class="mr10">最新秒赞QQ</span></div>
+                        <div class="col-4 t-v t-r"><a class="w15 h9 lan f3 t-v t-r" href="/other/wall.html" data-pjax>QQ秒赞墙</a></div>
+                    </div>
+                    <div class="o-y in-list in-b in-p" style="height:318px;">
+                        {foreach $lastZan as $vo}
+                        <dl>
+                            <dt>
+                                <img class="w9 h9 b r5 mr3" src="//q4.qlogo.cn/headimg_dl?dst_uin={$vo.uin}&spec=40">
+                            </dt>
+                            <dd>
+                                <p class="lan bold"><i class="icon icon-qq"></i> {$vo.uin}</p>
+                                <p class="mt0 f3 hui"><i class="icon icon-time nobold"></i> {$vo.last_time|date="Y-m-d H:i:s"}</p>
+                            </dd>
+                            <dt>
+                                <a class="btn btn-xs btn-hei dl btn-1 rx1" href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin={$vo.uin}&website=www.elesq.cn" target="_blank">加好友</a>
+                            </dt>
+                        </dl>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 pl3">
+                <div class="w o-h bg-bai b rx3">
+                    <div class="g-title pl4 pr4 t-v bb">
+                        <div class="col-8  h t-v bold"><span class="mr10">积分排行榜</span></div>
+                        <div class="col-4 t-v t-r"><a class="w15 h9 lan f3 t-v t-r" href="/other/sign.html" data-pjax>获取积分</a></div>
+                    </div>
+                    <div class="o-y in-list in-b in-p" style="height:318px;">
+                        {foreach $scoreList as $key=>$value}
+                        <dl>
+                            <dt><p class="w6 p1 bg-qing t-c rx1 bold">{$key+1}</p></dt>
+                            <dt><img class="w6 h6 b ml3 mr3 r5" src="//q4.qlogo.cn/headimg_dl?dst_uin={$value.qq}&spec=40"></dt>
+                            <dd>{$value.nickname}</dd>
+                            <dt><span class="tag bg-hei">{$value.score}分</span></dt>
+                        </dl>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    ChatTime = '0';
+
+    function ChatScroolToEnd() {
+        var h = $("#chatheight").height() - $(".chatscrool").height(); // 获取总共需要滚动的距离
+        var t = h - $(".chatscrool").scrollTop();
+        if (t > 1000) {
+            $(".chatscrool").scrollTop(h);
+        } else if (h > 0) {
+            $(".chatscrool").animate({scrollTop: (h)}, t + 100);
+        }
+    }
+
+    function LoadChatList(l) {
+        x.gethtml('/html/user/chat?time=' + ChatTime, 'chatheight', l, 1);
+    }
+
+    $(function ($) {
+        _sys_cleartime();
+        LoadChatList(2);
+    });
+
+    function ajax_post_chat() {
+        var chatcon = x.getval('#chatcon', '请先输入内容!');
+        if (!chatcon) return;
+        _sys_cleartime();
+        x.ajax('/ajax/user/chat', 'act=add&chattime=' + ChatTime + '&chatcon=' + encodeURIComponent(trim(chatcon)));
+    }
+</script>
+{if condition="!session('user.qq')"}
+<script>
+    layer.confirm(
+        '<div><h4 class="mt0 mb5">请绑定QQ</h4></div><div>未绑定QQ将无法显示用户头像<br><font class="f3 hui">当绑定QQ后可使用QQ群机器人快捷扫码</font></div>',
+        {
+            btn: ['好 的', '取 消'],
+            btnAlign: 'c',
+            yes: function (i) {
+                x.close(i);
+                x.mode('/user/bindQq.html');
+                },
+            btn2: function (i) {
+                x.close(i);
+            }
+        }
+    );
+</script>
+{/if}
+{/block}

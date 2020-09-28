@@ -1,0 +1,146 @@
+<div class="bg-bai b rx3">
+    <div class="t-v t-t">
+        <div class="c-sidebar c-sidebar-h pb5 br">
+            <div class="c-sidebar-title t-v hui bb">福利中心</div>
+            <ul class="c-nav click-nav">
+                <li>
+                    <a href="/other/sign.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-write"></i></div>
+                        <div>每日签到</div>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/other/invite.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-present"></i></div>
+                        <div>推广有礼</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/other/redeem.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-duijie"></i></div>
+                        <div>积分兑换</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="c-content bl">
+            <div class="col-6 fl br" style="min-height:420px;">
+                <div class="g-title t-v pl4 bb">
+                    <div class="col-12 h t-v bold">推广有礼</div>
+                </div>
+
+                <div class="g-content o-h p5 f3 hui bb">
+                    <p>
+                        1、复制链接后，可以分享到QQ群、发给朋友
+                    </p>
+                    <p>
+                        2、如果有人成功通过你的链接注册用户，可被计为成功邀请
+                    </p>
+                    <!--并<font class="f5 hong mr2 userscore">添加QQ</font>-->
+                    <p>
+                        4、每成功邀请一个人可获得 <font class="f5 hong mr2 userscore">30</font>积分，无推广上限，奥利给！
+                    </p>
+                </div>
+                <div class="g-content h12 t-v bb">
+                    <div class="col-6 h9 t-v t-c br">已邀请用户：<font class="f5 hong mr2 vipDay">{$inviteCount}</font>天</div>
+                    <div class="col-6 h9 t-v t-c br">邀请用户添加QQ：<font class="f5 hong mr2 signDay">{$inviteQQCount}</font>天</div>
+                    <div class="col-6 h9 t-v t-c">拥有积分：<font class="f5 hong mr2 score">{$score|default="0"}</font>个</div>
+                </div>
+                <div class="g-content t-c p5 pt10 qdhtmlbtn">
+                    <button class="btn btn-qing btn-md w22 rx1" onclick="getShortUrl();">生成邀请链接
+                    </button>
+                </div>
+                <div id="yq_div" style="display:none">
+                    <div class="w67 p3 m4 bg-bai dl2 b b-hui rx4">
+                        <div class="t-v t-c">
+                            <font class="bold dzi">{:config('conf.title')}</font>
+                        </div>
+                        <div class="mt2 t-v t-c">每天扫一扫，轻松五千赞！</div>
+                        <div class="mt2 t-v t-c">还不快来用？互赞没烦恼！</div>
+                        <div class="mt2 t-v t-c">复制网址到浏览器打开：<font class="bold" id="yqlj"></font></div>
+                        <div class="mt2 t-v t-c">
+                            <a class="btn btn-xs btn-hui btn-1 rx1 ml3" data-clipboard-text="" id="text_1">复制链接</a>
+                            <a class="btn btn-xs btn-hui btn-1 rx1 ml3" data-clipboard-text="" id="text_2">复制广告语</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 fl bl" style="margin-left:-1px;">
+                <div class="g-title t-v pl4 bb">
+                    <div class="col-12 h t-v bold">邀请记录 <font class="ml5 f3 hui nobold">共有&nbsp;<span
+                            class="index_selcount">0</span>&nbsp;条&nbsp;/&nbsp;<span class="index_selpages">1</span>&nbsp;页</font>
+                        <select class="f3 index_selpagenum hide" onchange="page.setnum(this,'page','index')">
+                            <option value="0" selected="selected">10</option>
+                        </select></div>
+                </div>
+                <div class="g-content in-list in-p in-b" id="qdlistbody"></div>
+            </div>
+        </div>
+    </div>
+    <div class="c-pagination o-h t-v">
+        <div class="c-sidebar"></div>
+        <div class="c-content h11 o-h g-btn t-v bt bl">
+            <div class="col-6 h t-v f3 hui pl5 pr5"></div>
+            <div class="col-6 h no g-btn g-minhide t-v t-c">
+                <button class="btn btn-bai min" onclick="page.btn('first','index',index_page_html)">首页</button>
+                <button class="btn btn-bai min syy" onclick="page.btn('up','index',index_page_html)">上一页</button>
+                <div class="w16 t-c hui f4 bold">第 <span class="index_selpage">1</span> 页</div>
+                <button class="btn btn-bai min xyy" onclick="page.btn('down','index',index_page_html)">下一页</button>
+                <button class="btn btn-bai min" onclick="page.btn('final','index',index_page_html)">尾页</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function load_qdlist_html(l) {
+        l = l || 0;
+        var p = page.getpage();
+        x.gethtml('/other/inviteLogHtml.html?page=' + p, 'qdlistbody', l);
+    }
+
+    $(function ($) {
+        load_qdlist_html(2);
+    });
+
+    function index_page_html() {
+        load_qdlist_html(0);
+    }
+
+    invite = "{:url('/user/invite',['tid'=>session('user.uid')])->domain('www')}";
+
+    function getShortUrl() {
+        $.ajax({
+            url: api + "common/getShortUrl.html",
+            type: "POST",
+            data: {
+                'url': invite
+            },
+            datatype: "json",
+            success: function (ret) {
+                if (ret.code === 1) {
+                    $("#yq_div").show();
+                    $("#text_1").attr("data-clipboard-text", ret.data['short_url']);
+                    // $("#text_2").attr("data-clipboard-text", "可以试试这在线互赞助手，一键自动帮你互赞，轻松几千赞，链接：" + ret.data);
+                    $("#text_2").attr("data-clipboard-text", "每天扫一扫，轻松五千赞！\r\n" + "还不快来用？互赞没烦恼！\r\n" + "复制网址到浏览器打开：" + ret.data['short_url']);
+                    $("#yqlj").html(ret.data['short_url']);
+                }
+            }
+        });
+    }
+
+    var clipboard = new Clipboard('#text_1');
+    clipboard.on('success', function (e) {
+        x.msg("复制成功");
+    });
+    clipboard.on('error', function (e) {
+        x.msg("复制失败，请长按链接后手动复制");
+    });
+
+    var clipboard2 = new Clipboard('#text_2');
+    clipboard2.on('success', function (e) {
+        x.msg("复制成功");
+    });
+    clipboard2.on('error', function (e) {
+        x.msg("复制失败，请长按链接后手动复制");
+    });
+</script>

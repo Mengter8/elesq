@@ -1,0 +1,117 @@
+<title>ＱＱ管理 - {:config('conf.title')}</title>
+<div class="bg-bai b rx3">
+    <div class="t-v t-t">
+        <div class="c-sidebar c-sidebar-h pb5 br">
+            <div class="c-sidebar-title t-v hui bb">秒赞QQ管理</div>
+            <ul class="c-nav click-nav">
+                <li class="active">
+                    <a href="javascript:;" class="t-v" onclick="ajax_mode_html(0);">
+                        <div><i class="icon icon-list"></i></div>
+                        <div>全部QQ列表</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;" class="t-v" onclick="ajax_mode_html(1);">
+                        <div><i class="icon icon-roundcheck"></i></div>
+                        <div>正常QQ列表</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;" class="t-v" onclick="ajax_mode_html(2);">
+                        <div><i class="icon icon-roundclose"></i></div>
+                        <div>失效QQ列表</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="c-content bl">
+            <div class="g-title t-v bb">
+                <div class="col-8 g-btn h t-v">
+                    <button class="btn btn-bai active" onclick="mode_qq_add(0);">
+                        <i class="icon icon-add mr2"></i>点此添加秒赞QQ
+                    </button>
+                </div>
+                <div class="col-4 t-v t-r">
+                    <div class="g-search in-text w22 b b-hui mr5">
+                        <dd>
+                            <input type="number" class="form form-md pl4 pr4" id="index_search" placeholder="输入QQ号码进行搜索"
+                                   value="" onkeypress="return x.ints(this,10);" autocomplete="off"></dd>
+                        <dt>
+                            <button class="btn btn-bai btn-md" onclick="ajax_index_search(1);">
+                                <i class="icon icon-roundclose hui dl2 nobold"></i>
+                            </button>
+                        </dt>
+                        <dt>
+                            <button class="btn btn-bai btn-md pl5 pr6 bl" onclick="ajax_index_search();">
+                                <i class="icon icon-search"></i>
+                            </button>
+                        </dt>
+                    </div>
+                </div>
+            </div>
+            <div class="g-content in-list in-b in-bb" id="indexbody" mod="0">
+
+            </div>
+        </div>
+    </div>
+    <div class="c-pagination o-h t-v">
+        <div class="c-sidebar"></div>
+        <div class="c-content h11 o-h g-btn t-v bt bl">
+            <div class="col-4 h t-v t-r"></div>
+            <div class="col-8 h no g-btn g-minhide t-v t-r">
+                <div class="mr5 f4 hui">共有&nbsp;
+                    <span class="index_selcount">0</span>&nbsp;条&nbsp;/&nbsp;
+                    <span class="index_selpages">1</span>页<span class="page-minhide">&nbsp;/&nbsp;每页：
+                    <select class="f3 index_selpagenum" onchange="page.setnum(this,'page','index')">
+                    <option value="0" selected="selected">12</option>
+                    <option value="1">20</option>
+                    <option value="2">50</option>
+                    <option value="3">100</option>
+                </select>&nbsp;条</span>
+                </div>
+                <button class="btn btn-bai min" onclick="page.btn('first','index',index_page_html)">首页</button>
+                <button class="btn btn-bai min syy" onclick="page.btn('up','index',index_page_html)">上一页</button>
+                <div class="w16 t-c hui f4 bold">第 <span class="index_selpage">1</span> 页</div>
+                <button class="btn btn-bai min xyy" onclick="page.btn('down','index',index_page_html)">下一页</button>
+                <button class="btn btn-bai min" onclick="page.btn('final','index',index_page_html)">尾页</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // mod QQ列表分类
+    function load_index_html(l) {
+        l = l || 0;
+        var p = page.getpage();
+        var s = x.getval("#index_search");
+        var m = $("#indexbody").attr("mod");
+        x.gethtml('/qlist/listHtml?mod=' + m + '&page=' + p + '&search=' + s, 'indexbody', l);
+    }
+
+    function ajax_index_search(p) {
+        if (p) {
+            x.getval("#index_search", null);
+        } else {
+            if (!x.getval('#index_search', '请输入QQ号码进行搜索')) return;
+        }
+        page.setpage(1);
+        load_index_html(0);
+    }
+
+    $(function () {
+        load_index_html(2);
+    });
+
+    function ajax_mode_html(mod, l) {
+        page.setpage(1);
+        x.getval("#index_search", null);
+        $("#indexbody").attr("mod", mod);
+        load_index_html(l);
+    }
+
+    function index_page_html() {
+        load_index_html(0);
+    }
+</script>
+

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="Cache-Control" content="no-cache,no-store">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="keywords" content="{:config('conf.keywords')}"/>
+    <meta name="description" content="{:config('conf.description')}"/>
+    <title>{:config('conf.title')} - {:config('conf.sub_title')}</title>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <link rel="stylesheet" href="/static/index/pc/app.min.css"/>
+    <link rel="stylesheet" href="/static/index/pc/style.min.css"/>
+    <link rel="stylesheet" href="/static/index/pc/animate.css"/>
+    <link rel="stylesheet" href="/static/index/pc/iconfont.css"/>
+    <script type="text/javascript" src="/static/index/pc/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/static/index/pc/jquery.pjax.min.js"></script>
+    <script type="text/javascript" src="/static/index/pc/layer/layer.js"></script>
+    <script type="text/javascript" src="/static/index/pc/app.min.js"></script>
+    <style>
+        .header-wh {
+            width: 100%;
+            height: 625px;
+        }
+
+        .header-bg {
+            background: #060155 url(/static/index/pc/bg.jpg) no-repeat center;
+            background-clip: border-box;
+            background-size: cover;
+        }
+
+        .header-bg-dd {
+            position: relative;
+            background-image: url(/static/index/pc/dd3.png);
+        }
+
+        .header-bg-blur {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-bg-blur::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 625px;
+            min-width: 1300px;
+            background: #060155 url(/static/index/pc/bg.jpg) no-repeat center;
+            background-clip: border-box;
+            background-size: cover;
+            -webkit-filter: blur(5px);
+            filter: blur(5px);
+        }
+
+        .bgimghide {
+            position: relative;
+            width: 100%;
+            height: 40px;
+            margin-top: -10px;
+            z-index: 1;
+        }
+
+        .g-header {
+            background-color: hsla(0, 0%, 0%, 0.3);
+        }
+
+        .wenzi {
+            color: #FFF;
+            text-shadow: 0 1px 0 #525252, 2px 2px 3px rgba(0, 0, 0, 0.3), 0 2px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .wenzi h1 {
+            margin-top: 10px;
+            font-size: 68px;
+            letter-spacing: 8px;
+        }
+
+        .desc1, .desc2 {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .desc1 img, .desc2 div {
+            float: left;
+        }
+
+        .desc1 div, .desc2 img {
+            float: right;
+        }
+
+        hr {
+            width: 600px;
+            margin: 40px auto;
+        }
+    </style>
+</head>
+<body class="bg-bai dl2">
+<div class="g-main bg-bt2">
+    <div class="header-bg header-wh">
+        <div class="header-bg-blur header-wh">
+            <div class="header-bg-dd header-wh">
+                <div class="g-header  bg-hei ">
+                    <div class="g-1400 h d-c t-v">
+                        <div class="logo t-v ">
+                            <a href="/"><img class="w7 h7 mr3" src="/static/index/pc/ioc-p.png"></a>
+                            <a class="bai t-s" href="/"><p>{:config('conf.title')}</p>
+                                <p class="mt0 f3 nobold">{:config('conf.host')}</p></a>
+                            <!--                            <img class="w19 h9" src="/static/img/logo.png" alt="{:config('conf.title')}">-->
+                        </div>
+                        <div class="nav">
+                            <ul class="g-nav click-nav t-v fl ">
+                                <li class="active"><a class="t-v">首页</a></li>
+                                <li><a href="{:url('/qlist/index')}" class="t-v">QQ管理</a></li>
+                                <li><a class="t-v">QQ秒赞墙</a></li>
+                            </ul>
+                            <ul class="g-nav t-v fr">
+                                {if session('user')}
+                                <li class="">
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-0" data-toggle="dropdown">
+                                            <span><img class="w8 h8 b b2 b-bai r5 mr3" src="//q4.qlogo.cn/headimg_dl?dst_uin={:session('user.qq')}&spec=100">{:session('user.nickname')}</span>
+                                            <span class="caret ml2"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" style="min-width:138px;"> <span class="arrow top arrow-default"></span>
+                                            <li><a href="{:url('/user/index')}" data-pjax=""><i class="icon icon-home"></i> 用户首页</a></li>
+                                            <li><a href="#" target="_blank"><i class="icon icon-lock"></i> 修改密码</a></li>
+                                            <li><a href="{:url('/user/logout')}"><i class="icon icon-exit"></i> 退出登陆</a></li>
+                                        </ul>
+                                    </div>
+                                </li>                                {else}
+                                <li><a href="{:url('/user/login')}" class="t-v">登陆 / 注册</a></li>
+                                {/if}
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="g-1400 d-c pt12 bai t-c ">
+                    <div class="wenzi"><h1>{:config('conf.title')}</h1>
+                        <p class="mt10 f11">做最好用最稳定的免费秒赞平台</p>
+                        <p class="mt3 f7">稳定点赞／免费使用／简单上手／致力于提供稳定高效的秒赞服务</p></div>
+                    <div class="mt12">
+                        {if session('user')}
+                        <a class="btn btn-lg btn-bai b b-hui bold" href="{:url('/user/index')}" style="width:300px;">用 户 中 心</a>
+                        {else}
+                        <a class="btn btn-lg btn-bai b b-hui bold" href="{:url('/user/login')}" style="width:300px;">登 录　/　注 册</a>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!--<div class="bgimghide bg-bai dl2"></div>-->
+    <div class="w" style="margin-bottom:100px;">
+        <div class="w pt12 pb12  bg-bai">
+            <div class="g-1400  d-c t-c">
+                <div class="w  f8">{:config('conf.title')}提供快速专业的QQ空间秒赞秒评服务</div>
+                <hr>
+                <div class="t-v">
+                    <div class="w"><img class="w21 h20" src="/static/index/pc/icon_sms.png" alt="{:config('conf.title')}">
+                        <p class="hei f6 mb3">稳定使用</p>
+                        <p class="mb8 hui">QQ状态码过期提醒/不怕意外<br>1秒响应/实时反馈/稳定高效</p></div>
+                    <div class="w"><img class="w21 h20" src="/static/index/pc/icon_verify_code.png" alt="{:config('conf.title')}">
+                        <p class="hei f6 mb3">离线托管</p>
+                        <p class="mb8 hui">不管你在上班、上学、外出游玩<br>无需挂机/轻松离线秒赞</p></div>
+                    <div class="w"><img class="w21 h20" src="/static/index/pc/icon_global_sms.png" alt="{:config('conf.title')}">
+                        <p class="hei f6 mb3">分布式架构</p>
+                        <p class="mb8 hui">分布式监控系统/24小时不间断<br>服务器秒级切换/完美放手托管</p></div>
+                    <div class="w"><img class="w21 h20" src="/static/index/pc/icon_gprs.png" alt="{:config('conf.title')}">
+                        <p class="hei f6 mb3">节省流量</p>
+                        <p class="mb8 hui">不用下载任何软件/不挂机<br>电脑、手机、平板都可使用/免除流量</p></div>
+                </div>
+            </div>
+        </div>
+        <div class="w pt12 pb12 bg-bai dl">
+            <div class="g-1400  d-c o-h desc1">
+                <img class="h21" width="400px" src="/static/index/pc/index1.jpg" alt="{:config('conf.title')}">
+                <div><p class="mt4 "><font class="f6 bold"><i class="icon icon-squarecheck cheng f8 v-0 mr2"></i>智能点赞技术</font>
+                    <font class="hui">—— 采用动态执行方案，高度模拟真人手动点赞，做到不禁赞、不漏赞</font></p>
+                    <p class="mt4 "><font class="f6 bold"><i class="icon icon-squarecheck cheng f8 v-0 mr2"></i>杜绝重复技术</font>
+                        <font class="hui">—— 对每条动态的点赞、评论均做系统级记录，彻底杜绝重复点赞，重复评论</font></p>
+                    <p class="mt4 "><font class="f6 bold"><i class="icon icon-squarecheck cheng f8 v-0 mr2"></i>精准监控技术</font>
+                        <font class="hui">—— 不断调优的监控执行算法，确保每条秒赞准确执行，完美自动更新状态码</font></p>
+                    <p class="mt4 "><font class="f6 bold"><i class="icon icon-squarecheck cheng f8 v-0 mr2"></i>分布系统架构</font>
+                        <font class="hui">—— 采用分布式服务器架构，单台故障不影响整体运行，确保秒赞24小时稳定</font></p>
+                    <p class="mt4 "><font class="f6 bold"><i class="icon icon-squarecheck cheng f8 v-0 mr2"></i>原创秒赞程序</font>
+                        <font class="hui">—— 自研秒赞程序，时刻保持最新秒赞协议，比外包的云任务平台更安全更稳定</font></p></div>
+            </div>
+        </div>
+        <div class="w pt12 pb12  bg-bai">
+            <div class="g-1400  d-c t-v t-c">
+                <div class="w"><p class="f11 ">{:ceil((time()-strtotime("2019-12-29"))/60/60/24)-1}</p>
+                    <p class="mt7 f7 hui"><i class="icon icon-time f8 v-0 bold4 mr1"></i>运营天数</p></div>
+                <div class="w"><p class="f11 ">{$siteCount.user}</p>
+                    <p class="mt7 f7 hui"><i class="icon icon-my f8 v-0 bold4 mr1"></i>用户数量</p></div>
+                <div class="w"><p class="f11 ">{$siteCount.uin}</p>
+                    <p class="mt7 f7 hui"><i class="icon icon-qq f8 v-0 bold4 mr1"></i>QQ数量</p></div>
+                <div class="w"><p class="f11 ">{$siteCount.task}</p>
+                    <p class="mt7  f7 hui"><i class="icon icon-appreciate f8 v-0 bold4 mr1"></i>任务数量</p></div>
+                <div class="w"><p class="f11 ">{$siteCount.today}</p>
+                    <p class="mt7  f7 hui"><i class="icon icon-community f8 v-0 bold4 mr1"></i>今日增加</p></div>
+            </div>
+        </div>
+        <div class="w pt12 pb12 bg-dlan">
+            <div class="g-1400 d-c t-c pl3 pr3">
+                <div class="f9">TA们都在使用{:config('conf.title')}</div>
+                <div class="f6  mt5">运营1783天，我们已有{$siteCount.user}位用户和{$siteCount.uin}个秒赞QQ</div>
+                <hr>
+                <div class="o-h" style="height:282px;">
+                    {foreach $lastUser as $vo}
+                    <img class="w15 h15 m5 p1 r2 b b-bai cursor" onclick="index_tip('{$vo.nickname}','{$vo.reg_time|date="Y-m-d H:i:s"}');" src="//q2.qlogo.cn/headimg_dl?bs=qq&dst_uin={$vo.qq}&spec=100" alt="{:config('conf.title')}" title="昵称：{$vo.nickname} | 注册时间：{$vo.reg_time|date="Y-m-d H:i:s"} | {:config('conf.title')}">
+                    {/foreach}
+                </div>
+            </div>
+        </div>
+        <div class="w pt12 pb12 bg-bai">
+            <div class="g-1400 d-c t-c">
+                <div class="w f10">{:config('conf.title')}部分功能展示</div>
+                <hr>
+                <div class="t-v">
+                    <div class="w h19 p2"><img class="w13 h13" src="/static/img/iszan.png" alt="{:config('conf.title')}">
+                        <p class="hei f5">好友动态点赞</p>
+                        <p class="mt3 f3 hui">[24H自动] 为QQ空间好友发表的动态进行点赞</p></div>
+                    <div class="w h19 p2"><img class="w13 h13" src="/static/img/isreply.png" alt="{:config('conf.title')}">
+                        <p class="hei f5">好友动态评论</p>
+                        <p class="mt3 f3 hui">[24H自动] 评论QQ空间好友发表的动态</p></div>
+                    <div class="w h19 p2"><img class="w13 h13" src="/static/img/isshuo.png" alt="{:config('conf.title')}">
+                        <p class="hei f5">发表空间说说</p>
+                        <p class="mt3 f3 hui">[24H自动] 定时发表QQ空间说说</p></div>
+                    <div class="w h19 p2"><img class="w13 h13" src="/static/img/iszf.png" alt="{:config('conf.title')}">
+                        <p class="hei f5">转发空间说说</p>
+                        <p class="mt3 f3 hui">[24H自动] 转发他人QQ空间发表的说说</p></div>
+                    <div class="w h19 p2"><img class="w13 h13" src="/static/img/isqipao.png" alt="{:config('conf.title')}">
+                        <p class="hei f5">百变聊天气泡</p>
+                        <p class="mt3 f3 hui">[24H自动] 随机变换QQ聊天气泡</p></div>
+                </div>
+                <div class="mt3 t-v">
+                    <div class="w h19 p2"><img class="w13 h13" src="/static/img/isdel.png" alt="{:config('conf.title')}">
+                        <p class="hei f5">删除空间说说</p>
+                        <p class="mt3 f3 hui">[24H自动] 删除QQ空间说说(会保留最新10条)</p></div>
+                    <div class="w h19 p2"><img class="w13 h13" src="/static/img/isdelly.png" alt="{:config('conf.title')}">
+                        <p class="hei f5">删除空间留言</p>
+                        <p class="mt3 f3 hui">[24H自动] 删除QQ空间全部留言</p></div>
+                    <div class="w h19 p2"><img class="w13 h13" src="/static/img/isrenqi.png" alt="{:config('conf.title')}">
+                        <p class="hei f5">互刷空间人气</p>
+                        <p class="mt3 f3 hui">[24H自动] 站内QQ互刷空间人气（注：需开启空间访问权限，日限20次）</p></div>
+                    <div class="w h19 p2"><img class="w13 h13" src="/static/img/isly.png" alt="{:config('conf.title')}">
+                        <p class="hei f5">互刷空间留言</p>
+                        <p class="mt3 f3 hui">[24H自动] 站内QQ互刷空间留言（注：需开启空间访问和留言权限）</p></div>
+                    <div class="w h19 p2"><img class="w13 h13" src="/static/img/iszyz.png" alt="{:config('conf.title')}">
+                        <p class="hei f5">互赞空间主页</p>
+                        <p class="mt3 f3 hui">[24H自动] 站内QQ互赞空间主页（注：需开启空间访问权限）</p></div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-bai pt12 pb12  hide">
+            稳定实时／免费使用／简单上手
+            致力于帮助更多的秒赞秒评用户提供稳定高效的服务
+        </div>
+        <div class="w pt12 pb12 bg-bai dk ">
+            <div class="g-center t-v t-c f9">
+                更多功能请登陆体验，立即使用最好用的秒赞平台！<a class="btn btn-lg btn-cheng bold" href="{:url('/user/login')}" style="width:300px;">点 此 登 录</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="g-footer bg-hei ">
+    <div class="g-1400 h d-c  t-v t-c">
+        <div class="hui  dl"><p>{:config('conf.title')}，最专业、最稳定的QQ空间动态自动点赞平台</p>
+            <p>Copyright © 2020 {:config('conf.title')} {:config('conf.host')}</p>
+            <a class="cheng dl" href="http://www.beian.miit.gov.cn" title="{:config('conf.title')}" target="_blank"><u>{:config('conf.icp')}</u></a>
+        </div>
+    </div>
+</div>
+<div id="ajaxshow"></div>
+<script type="text/javascript" src="/static/index/pc/bootstrap.min.js"></script>
+<script type="text/javascript">
+    function index_tip(m, m2) {
+        x.tip('<p>用户昵称：' + m + '</p><p>注册时间：' + m2 + '</p>');
+    }
+</script>
+{:config('conf.footer')}
+</body>
+</html>

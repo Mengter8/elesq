@@ -1,0 +1,74 @@
+<title>互赞列表 - {:config('conf.title')}</title>
+<style>
+    .swiper-slide:nth-child(2n) {width: 2.2rem;}
+    .bg-dlan.dk,.btn-dlan.dk {
+        background: linear-gradient(to right, #92a1fb 1%, #8bbef8 100%);
+    }
+</style>
+<div class="app-header bg-dlan dk t-v">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    {if cookie('mpz_auto') == 'true'}
+    <span class="w19 h8 bai t-v t-c br b2 b-hei-a" onclick="tools.status(false);"><i class="icon icon-appreciate bold"></i>&nbsp;关闭互赞</span>
+    {else /}
+    <span class="w19 h8 bai t-v t-c br b2 b-hei-a" onclick="tools.status(true);"><i class="icon icon-appreciate bold"></i>&nbsp;自动互赞</span>
+    {/if}
+</div>
+<div class="app-content qqlist-refreshBox">
+    <div>
+        <div class="bg-bai in-text h19 bb">
+            <dt class="pl3 pr3"><img src="//q4.qlogo.cn/headimg_dl?dst_uin={$uin}&spec=100" class="b b-hui r5 w12 h12" style="border-width:0.04rem !important;"/></dt>
+            <dl class=" p3">
+                <dd>
+                    <p class="dzi bold"><font class="">{$content}</font></p>
+                    <p class="hui f3"><i class="icon icon-time"></i> <font class="">{$createTime|date="Y-m-d H:i:s"}</font></p>
+                    <p class="hui f3"><i class="icon icon-mobile"></i> <font class="">{$tid}</font></p>
+
+                </dd>
+            </dl>
+        </div>
+        <div class="in-bb" id="tools_qqlist_html"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    var tools = {
+        //获取点赞列表
+        html: function (uin, tid, l, m) {
+            x.gethtml('/tools/shuolistHtml.html?uin=' + uin + '&tid=' + tid, 'tools_qqlist_html', l, m);
+        },
+        refresh: function (){
+            x.mode('/tools/shuo.html?uin={$uin}&content={$content}&createTime={$createTime}&tid={$tid}&appid={$appid}','tools_shuo','d');
+        },
+        //点赞
+        zan: function (uin, qq) {
+            $.ajax({
+                url: '/tools/LikeShuo.html',
+                type: 'POST',
+                data: {
+                    'uin': uin,
+                    'qq': qq,
+                    'tid': '{$tid}',
+                },
+                dataType: 'json',
+                success: function (ret) {
+                    x.msg(ret.message);
+                    tools.html('{$uin}','{$tid}');
+                },
+                error: function () {
+                    x.btn('点赞失败');
+                }
+            });
+
+        },
+        //自动点赞 开启关闭
+        status: function (status) {
+            document.cookie = 'mpz_auto=' + status + '; path=/';
+            tools.refresh();
+        }
+    };
+
+    $(function(){
+        x.refreshBox("qqlist",function(){
+            tools.html('{$uin}','{$tid}',1,1);
+        },1,1);
+    });
+</script>

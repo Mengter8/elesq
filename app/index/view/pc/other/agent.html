@@ -1,0 +1,98 @@
+<div class="bg-bai b rx3">
+    <div class="t-v t-t">
+        <div class="c-sidebar c-sidebar-h pb5 br">
+            <div class="c-sidebar-title t-v hui bb">快捷连接</div>
+            <ul class="c-nav click-nav">
+                <li>
+                    <a href="/other/prove_query.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-medal"></i></div>
+                        <div>秒赞认证</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/other/agent_query.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-profile"></i></div>
+                        <div>代理认证</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/other/wall.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-cascades"></i></div>
+                        <div>QQ秒赞墙</div>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/other/agent.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-write"></i></div>
+                        <div>代理后台</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="c-content bl">
+            <div class="col-12 fl" style="min-height:420px;">
+                <div class="g-title t-v pl4 bb">
+                    <div class="col-12 h t-v bold">代理后台</div>
+                </div>
+                <div class="g-content h12 t-v bb">
+                    <div class="col-4 h9 t-v t-c br">我的余额：<font class="f5 hong mr2 userscore">{:session('user.money')}</font>元</div>
+                    <div class="col-4 h9 t-v t-c br">代理等级：<font class="f5 hong mr2 qdhtmlday">{if findAgentLevel(session('user.agent'))}{:findAgentLevel(session('user.agent'))['name']}{else /}非代理{/if}</font></div>
+                    <div class="col-4 h9 t-v t-c">充值折扣：<font class="f5 hong mr2 userscore">{if findAgentLevel(session('user.agent'))}{:findAgentLevel(session('user.agent'))['discount']}{else /}非代理{/if}</font>折</div>
+                </div>
+                <div class="g-content p5">
+                    <div class="in-text" style="width:580px;">
+                        <dt class="bold pr4">充值UID：</dt>
+                        <dd><input type="number" class="form p0 h11 bb bb-hui" name="uid" placeholder="请输入需要充值的用户UID" value="" onkeypress="return x.ints(this,8,1);" autocomplete="off"></dd>
+                    </div>
+                    <hr>
+                    <div class="in-text" style="width:580px;">
+                        <dt class="bold pr4">开通业务：</dt>
+                        <dd><select class="form w h8 bb" name="type">
+                            <option value="vip">VIP会员</option>
+                            <option value="peie">挂机配额</option>
+                        </select></dd>
+                    </div>
+                    <hr>
+                    <div id="show_m1" style="display: inherit">
+                        <div class="t-v">
+                            <div class="bold pr3">开通时间：</div>
+                            <div>
+                                <label class="i-checks"><input type="radio" name="vip_ver" value="1" onclick="ajax_get(1,0);"><i></i>包月VIP - 1个月</label>
+                                <label class="i-checks ml5"><input type="radio" name="vip_ver" value="2" onclick="ajax_get(2,0);"><i></i>包季VIP - 3个月</label>
+                                <label class="i-checks ml5"><input type="radio" name="vip_ver" value="3" onclick="ajax_get(3,0);" checked=""><i></i>双季VIP - 6个月</label>
+                                <label class="i-checks ml5"><input type="radio" name="vip_ver" value="4" onclick="ajax_get(4,0);"><i></i>年费VIP - 12个月</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="show_m2" style="display: none">
+                        <div class="t-v">
+                            <div class="bold pr3">购买数量：</div>
+                            <div>
+                                <label class="i-checks"><input type="radio" name="peie_ver" value="1" onclick="ajax_get(1,1);"><i></i>1个配额 - 永久</label>
+                                <label class="i-checks ml5"><input type="radio" name="peie_ver" value="2" onclick="ajax_get(2,1);" checked=""><i></i>3个配额 - 永久</label>
+                                <label class="i-checks ml5"><input type="radio" name="peie_ver" value="3" onclick="ajax_get(3,1);"><i></i>5个配额 - 永久</label>
+                                <label class="i-checks ml5"><input type="radio" name="peie_ver" value="4" onclick="ajax_get(4,1);"><i></i>10个配额 - 永久</label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="h7" id="jiage">-</div>
+                    <hr>
+                    <div class="mt8 t-v">
+                        <div class="bold pr4">支付方式：</div>
+                        <div>
+                            <button class="btn btn-qing btn-md mr5 rx1" onclick="ajax_cz();">余额支付
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="c-pagination o-h t-v">
+        <div class="c-sidebar"></div>
+        <div class="c-content h11 o-h g-btn t-v bt bl">
+            <div class="col-6 h t-v f3 hui pl5 pr5">提醒:发现充值后没有到账的情况,请快速联系站长QQ:1543797310</div>
+        </div>
+    </div>
+</div>

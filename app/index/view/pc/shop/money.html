@@ -1,0 +1,72 @@
+<div class="bg-bai b rx3">
+    <div class="t-v t-t">
+        <div class="c-sidebar c-sidebar-h pb5 br">
+            <div class="c-sidebar-title t-v hui bb">自助购买</div>
+            <ul class="c-nav click-nav">
+                <li>
+                    <a href="/shop/vip.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-vip"></i></div>
+                        <div>开通VIP会员</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/shop/cdkey.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-form"></i></div>
+                        <div>使用卡密开通</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/shop/agent.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-friend"></i></div>
+                        <div>开通平台代理</div>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/shop/money.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-moneybag"></i></div>
+                        <div>充值账户余额</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="c-content bl">
+            <div class="g-title t-v pl4 bb">
+                <div class="col-8 h t-v bold">充值账户余额</div>
+                <div class="col-4 t-v t-r"></div>
+            </div>
+            <div class="g-content p5 bb ">
+                当前账户余额：<font class="f5 hong bold">{:session('user.money')}</font> 元
+            </div>
+            <div class="g-content p5">
+                <div class="in-text" style="width:580px;">
+                    <dt class="bold pr4">充值金额：</dt>
+                    <dd><input type="number" class="form p0 h11 bb bb-hui" id="money" placeholder="请输入充值金额（元）" value="" onkeypress="return x.ints(this,8,1);" autocomplete="off"></dd>
+                </div>
+                <div class="mt8 t-v">
+                    <div class="bold pr4">支付方式：</div>
+                    <div>
+                        <button class="btn btn-qing btn-md mr5 rx1" onclick="ajax_shop_rmb('alipay');"><i class="icon icon-zfbpay f9 nobold mr2"></i>支付宝 [推荐]
+                        </button>
+                        <button class="btn btn-qing btn-md mr5 rx1" onclick="ajax_shop_rmb('wxpay');"><i class="icon icon-wxpay f9 nobold mr2"></i>微信支付
+                        </button>
+                        <button class="btn btn-qing btn-md mr5 rx1" onclick="ajax_shop_rmb('qqpay');"><i class="icon icon-qqpay f9 nobold mr2"></i>QQ支付
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="c-pagination o-h t-v">
+        <div class="c-sidebar"></div>
+        <div class="c-content h11 o-h g-page t-v bt bl bg-bai">
+            <div class="col-12 h pl5 t-v f3 hui">系统24小时自动处理订单，支付后自动为您的账户充值余额，无需等待。</div>
+        </div>
+    </div>
+</div>
+<script>
+    function ajax_shop_rmb(type) {
+        var money = x.getval('#money', '请输入充值金额');
+        if (!money) return;
+        x.ajax('/shop/submit.html', 'act=money&money=' + money + '&type=' + type);
+    }
+</script>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="font-size: 50px;">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="author" content="elesq"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0,uc-fitscreen=yes"/>
+    <meta name="theme-color" content="#000000"/>
+    <meta name="mobile-web-app-capable" content="yes"/> <!--UC star-->
+    <meta name="full-screen" content="yes"/>
+    <meta name="screen-orientation" content="portrait"/>
+    <meta name="browsermode" content="application"/>
+    <meta name="imagemode" content="force"/>
+    <meta name="nightmode" content="disable"/>
+    <meta name="layoutmode" content="fitscreen"/>
+    <meta name="wap-font-scale" content="no"/> <!--UC end--> <!--QQ star-->
+    <meta name="x5-fullscreen" content="true"/>
+    <meta name="x5-orientation" content="portrait"/>
+    <meta name="x5-page-mode" content="app"/> <!--QQ end--> <!--IOS star-->
+    <meta name="apple-mobile-web-app-title" content="{:config('conf.title')}"/>
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="format-detection" content="telphone=no, email=no"/> <!--IOS end-->
+    <title>{:config('conf.title')} - 最稳定的秒赞互赞平台</title>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <link rel="apple-touch-icon" href="/favicon.ico"/>
+    <link rel="apple-touch-icon-precomposed" href="/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/static/mobile/app.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/mobile/style.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/mobile/animate.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/mobile/iconfont.css"/>
+    <script type="text/javascript" src="/static/mobile/zepto.min.js"></script>
+    <script type="text/javascript" src="/static/mobile/swiper.min.js"></script>
+    <script type="text/javascript" src="/static/mobile/PullToRefresh.min.js"></script>
+    <script type="text/javascript" src="/static/mobile/layer.min.js"></script>
+    <script type="text/javascript" src="/static/mobile/app.min.js?ver=1.03"></script>
+    <script type="text/javascript" src="/static/mobile/jparticle.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+    <script src="/qq/getsid/login.js"></script>
+</head>
+<body ontouchstart="">
+<div class="app-mian">
+    <div id="container">{__CONTENT__}</div>
+    <div class="app-footer click-nav t-v t-c pl3 pr3">
+        <div class="w t-v t-c cursor navindex" onclick="x.html('/index/index');"><span><i class="icon icon-home f10"></i><p>首页</p></span></div>
+        <div class="w t-v t-c cursor navqlist" onclick="x.html('/qlist/index');"><span><i class="icon icon-qq f10"></i><p>管理</p></span></div>
+<!--        <div class="w t-v t-c cursor navmpz" onclick="x.html('/mpz/index');"><span><i class="icon icon-appreciate f10"></i><p>互赞</p></span></div>-->
+<!--        <div class="w t-v t-c cursor noclick" onclick="x.mode('/user/chat','chat');"><span><i class="icon icon-message f10"></i><p>聊天室</p></span>
+</div>-->
+        <div class="w t-v t-c cursor navother" onclick="x.html('/other/index');"><span><i class="icon icon-tag f10"></i><p>其它</p></span></div>
+        <div class="w t-v t-c cursor navuser" onclick="x.html('/user/index');"><span><i class="icon icon-my f10"></i><p>我的</p></span></div>
+    </div>
+</div>
+<style>
+    .app-content {
+        bottom: .9rem;
+    }
+
+    .mode-bottom {
+        bottom: 1.8rem;
+    }
+
+    .mode-footer {
+        position: absolute;
+        bottom: 0.9rem;
+        z-index: 1;
+    }
+</style>
+<script>
+    accessmode = 'app';  // 访问模式
+    // 初始化
+    $(function () {
+        fobidden_back();     // 监听浏览器后退事件
+        setTimeout(function () {
+            x.html(x.getcookie('domin_url') || '/index/index');
+        }, 10);  // 加载默认页面
+    });
+</script>
+<script>
+    /**
+     * 绑定QQ
+     */
+    function bindQq(){
+        x.mode('/user/bindQq.html','bing_qq');
+    }
+    /**
+     * VIP
+     */
+    function mode_shop_vip() {
+        x.mode('/shop/vip.html', 'shop_vip');
+    }
+
+    /**
+     * 添加QQ
+     */
+    function mode_qq_add(uin) {
+        x.mode('/qlogin/login.html?uin=' + uin,'login');
+    }
+    /**
+     * QQ删除
+     */
+    function ajax_qq_del(uin) {
+        x.del('/qlist/del.html', 'uin=' + uin);
+    }
+    /**
+     * VIP
+     */
+    function mode_tools_mpz(uin){
+        x.mode('/tools/mpz.html?uin=' + uin,'tools_mpz');
+    }
+    /**
+     * 说说互赞
+     */
+    function mode_tools_shuo(uin){
+        x.mode('/tools/shuoList?uin=' + uin,'tools_shuo_list');
+    }
+    /**
+     * 访问互刷
+     */
+    function mode_tools_visit(uin){
+        x.mode('/tools/visit?uin=' + uin,'tools_visit');
+    }
+    /**
+     * 评论互刷
+     */
+    function mode_tools_comment(uin){
+        x.mode('/tools/comment?uin=' + uin,'tools_comment');
+    }
+    /**
+     * 邀请有礼
+     */
+    function mode_invite(){
+        x.mode('/other/invite.html', 'other_invite');
+    }
+    function mode_invite_log(isMyLog = 'false'){
+        x.mode('/other/inviteLog.html?isMyLog=' + isMyLog, 'other_invite_log');
+    }
+    /**
+     * 每日签到
+     */
+    function mode_sign(){
+        x.mode('/other/sign.html', 'other_sign');
+    }
+    function mode_sign_log(){
+        x.mode('/other/signLog.html', 'other_sign_log');
+    }
+    /**
+     * 积分兑换
+     */
+    function mode_redeem(){
+        x.mode('/other/redeem.html', 'other_redeem');
+    }
+    function mode_redeem_log(isMyLog = 'false'){
+        x.mode('/other/redeemLog.html?isMyLog=' + isMyLog, 'other_redeem_log');
+    }
+
+    /**
+     *
+     * 秒赞认证查询
+     */
+    function mode_prove(uin) {
+        x.mode('/other/prove.html?uin=' + uin, 'other_prove');
+    }
+    function mode_shop_cdkey(){
+        x.mode('/shop/cdkey.html', 'other_prove');
+
+    }
+    /**
+     * 秒赞认证查询
+     */
+    function mode_prove_query() {
+        x.mode('/other/prove_query.html', 'other_prove_query');
+    }
+    /**
+     * 秒赞墙
+     */
+    function mode_wall(){
+        x.mode('/other/wall.html', 'other_wall');
+    }
+
+    /**
+     * 用户积分中心
+     */
+    function mode_user_score(){
+        x.mode('/user/score.html', 'user_score');
+    }
+    function mode_user_money(){
+        x.mode('/user/money.html', 'user_money');
+    }
+    /**
+     * 余额记录
+     */
+    function mode_note_money(){
+        x.mode('/user/moneyLog.html', 'user_money');
+    }
+    function mode_shop_money(){
+        x.mode('/shop/money.html', 'shop_money');
+
+    }
+    /**
+     * 我的积分记录
+     */
+    function mode_score_log(){
+        x.mode('/user/scoreLog.html', 'user_score_log');
+    }
+    function mode_user_vip(){
+        x.mode('/user/vip.html');
+    }
+    function mode_user_vipLog(){
+        x.mode('/user/vipLog.html');
+    }
+    var api = '{:url('/')->domain('api')}';
+    var session_id = '{:\\think\\facade\\Session::getId()}';
+</script>
+<span class="ajaxshow" id="ajaxshow"></span>
+<span class="ajaxshow" id="ajaxload"></span>
+<span class="ajaxshow" id="designationshow"></span>
+<script>
+    $('.app-content').on('touchmove', function (e) {
+        e.stopPropagation();
+    });     // 阻止事件冒泡
+    $('.layui-m-layer').on('touchstart touchmove touchend click', function (e) {
+        e.stopPropagation();
+    });  // 阻止事件冒泡
+    $(document).on('click', '.dropdown-list,.dropdown-desc', function (e) {
+        e.stopPropagation();
+    });
+
+    // 初始化
+    $(function () {
+        Initializepage(Zepto, window, document);// 初始化框架
+    });
+
+
+    function _sys_cleartime() {
+        typeof ChatTimeID != "undefined" && clearTimeout(ChatTimeID);
+    }
+</script>
+{:config('conf.footer')}
+</body>
+</html>

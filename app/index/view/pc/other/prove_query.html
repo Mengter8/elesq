@@ -1,0 +1,70 @@
+<title>快捷链接 - {:config('conf.title')}</title>
+<div class="bg-bai b rx3">
+    <div class="t-v t-t">
+        <div class="c-sidebar c-sidebar-h pb5 br">
+            <div class="c-sidebar-title t-v hui bb">快捷连接</div>
+            <ul class="c-nav click-nav">
+                <li class="active">
+                    <a href="/other/prove_query.html" class="t-v" data-pjax>
+                    <div><i class="icon icon-medal"></i></div>
+                    <div>秒赞认证</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/other/agent_query.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-profile"></i></div>
+                        <div>代理认证</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/other/wall.html" class="t-v" data-pjax>
+                    <div><i class="icon icon-cascades"></i></div>
+                    <div>QQ秒赞墙</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/other/agent.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-write"></i></div>
+                        <div>代理后台</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="c-content bl">
+            <div class="g-title t-v pl4 bb">
+                <div class="col-8 h t-v bold">秒赞认证查询</div>
+                <div class="col-4 t-v t-r"></div>
+            </div>
+            <div class="g-content p5 f3 hui bb "><p>1、输入对方QQ号码即可查询是否在{:config('conf.title')}开启秒赞功能</p></div>
+            <div class="g-content p5 pt8">
+                <div class="in-text" style="width:580px;">
+                    <dt class="bold pr4">QQ号码：</dt>
+                    <dd><input type="number" class="form p0 h11 bb bb-hui" id="uin" placeholder="请输入QQ号码查询秒赞认证" value="" onkeypress="return x.ints(this,10);" autocomplete="off"></dd>
+                    <dt>
+                        <button class="btn btn-qing btn-md rx1 ml5" onclick="ajax_dlyz_inquiry();">查询验证</button>
+                    </dt>
+                </div>
+            </div>
+            <div class="g-content p5 pt8" id="result"></div>
+        </div>
+    </div>
+</div>
+<script>
+    function ajax_dlyz_inquiry() {
+        var uin = x.getval('#uin', '请先输入要查询的QQ号码!');
+        if (!uin) return;
+        x.loading();
+        $.ajax({
+            url: "/other/prove.html",
+            type: "POST",
+            data: {
+                'uin': uin
+            },
+            datatype: "html",
+            success: function (ret) {
+                $("div#result").html(ret);
+            }
+        });
+        x.mclose();
+    }
+</script>

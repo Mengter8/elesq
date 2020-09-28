@@ -1,0 +1,191 @@
+<style>
+    .header-wh {
+        width: 100%;
+        height: 320px;
+        border-top-right-radius: 10px;
+    }
+
+    .header-bg {
+        background: url(//cdn.istt.cn/cdn/img/mz/qqsetbg.jpg) no-repeat center;
+        background-clip: border-box;
+        background-size: cover;
+    }
+
+    .header-bg-t {
+        background: url(//q4.qlogo.cn/headimg_dl?dst_uin={$uin}&spec=100) no-repeat center;
+        background-clip: border-box;
+        background-size: cover;
+    }
+
+    .header-bg-dd {
+        position: relative;
+        background: hsla(210, 0%, 0%, 0.02) url(//cdn.istt.cn/cdn/img/dd1.png);
+    }
+
+    .header-bg-blur {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .header-bg-blur::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 320px;
+        background: url(//q4.qlogo.cn/headimg_dl?dst_uin={$uin}&spec=100) no-repeat center;
+        background-clip: border-box;
+        background-size: cover;
+        -webkit-filter: blur(10px);
+        filter: blur(10px);
+    }
+
+    .header-bt {
+        position: relative;
+        margin-top: -80px;
+        height: 80px;
+        background: hsla(210, 10%, 15%, 0.6);
+    }
+</style>
+<div class="header-bg header-wh">
+    <div class="header-bg-t header-wh">
+        <div class="header-bg-blur header-wh">
+            <div class="header-bg-dd header-wh">
+                <div class="t-c pt6">
+                    <div>
+                        <img class="w16 h16 b b4 r5 box-shadow" src="//q4.qlogo.cn/headimg_dl?dst_uin={$uin}&spec=100">
+                    </div>
+                    <div class="mt4 f8 bold bai text-shadow">{$nickname}</div>
+                    <div class="f9 bold bai text-shadow">{$uin}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="g-content header-bt t-v t-c">
+    <div>
+        <div class="f6 bold">
+            {if condition="!$status"}
+            <font style="color:hsl(50,100%,50%);">QQ在线状态：已失效</font>
+            <button class="btn btn-xs btn-huang btn-1 rx1 ml2" onclick="mode_qq_add('{$uin}');">点此更新</button>
+            {else}
+            <font style="color:hsl(150,100%,50%);">QQ在线状态：正常在线中</font>
+            {/if}
+        </div>
+        <div class="mt1 bai">状态若显示失效请及时更新防止功能不运行</div>
+    </div>
+</div>
+<div class="g-title t-v bb">
+    <div class="col-8 h g-btn t-v">
+        <button class="btn btn-bai active br" onclick="getTaskList('{$uin}');"><i
+                class="icon icon-add mr2"></i>添加更多功能
+        </button>
+<!--        <button class="btn btn-bai br" onclick="x.btn('功能维护','QQ小工具功能维护中，暂时无法使用');"><i class="icon icon-footprint mr2"></i>QQ小工具</button>-->
+        <button class="btn btn-bai br" onclick="mode_qq_add('{$uin}');"><i class="icon icon-update mr2"></i>更新QQ</button>
+        <button class="btn btn-bai min br" onclick="mode_qq_mzrz('{$uin}');"><i class="icon icon-medal"></i></button>
+        <button class="btn btn-bai min br" onclick="ajax_qq_del('{$uin}');"><i class="icon icon-delete"></i>
+        </button>
+    </div>
+    <div class="col-4 t-v t-r">
+        <div class="g-search in-text w21 b b-hui mr5">
+            <dd><input type="number" class="form form-md pl4 pr4" id="qqset_search" placeholder="输入QQ号码进行搜索" value="" onkeypress="return x.ints(this,10);" autocomplete="off"></dd>
+            <dt>
+                <button class="btn btn-bai btn-md pl5 pr6 bl" onclick="ajax_qqset_search();">
+                    <i class="icon icon-search"></i>
+                </button>
+            </dt>
+        </div>
+    </div>
+</div>
+<div class="g-content in-list in-b">
+    {foreach :getTask() as $tasks}
+    {foreach $task as $vo}
+    {if $vo.type == $tasks.id}
+    <dl class="h12" id="is{$vo.type}">
+        <dt><img class="w9 h9 ml4 mr3" src="/static/img/is{$tasks.id}.png"></dt>
+        <dt>
+            <p class="lan bold">
+                <i class="icon icon-dian {if $vo.status == 1}lv{else/}hong{/if}"></i> {$tasks.name}
+                {if $tasks.id != 'auto'}
+                <font class="ml2 f3 hong nobold">[<a class="hong" href="javascript:;" onclick="runTask('{$uin}','{$tasks.id}')">手动执行</a>]</font>
+                {/if}
+            </p>
+            <p class="mt1 f3 hui" style="padding-left:1px;">
+                <i class="icon icon-time f3 nobold"></i> {$vo.last_time|date="Y-m-d H:i:s"}
+            </p>
+        </dt>
+        <dt>
+            <button class="btn btn-bai w12 h ml3" onclick="x.tip('{$tasks.tip}');">
+                <i class="icon icon-info hui dl nobold"></i>
+            </button>
+        </dt>
+        <dd>
+            <div class="t-v">
+                <div class="col-3"></div>
+                <div class="col-4 f3 hui pr5"><p></p></div>
+            </div>
+        </dd>
+        {php}
+        if (isset($tasks['onclick'])){
+        $onclick = $tasks['onclick'];
+        } else {
+        $onclick = "setTask('$uin','";
+        $onclick .= $tasks['id'] . "');";
+        }
+        {/php}
+        <dt>
+            <button class="btn btn-bai w12 h" onclick="{$onclick}">
+                <i class="icon icon-settings hui dl nobold"></i>
+            </button>
+        </dt>
+        <dt>
+            <div class="pl5 pr5">
+                <label class="i-switch i-switch-lg bg-lan" onclick="{$onclick}">
+                    <input type="checkbox" {if $vo.status == 1}checked="checked"{/if} disabled> <i></i>
+                </label>
+            </div>
+        </dt>
+    </dl>
+    {/if}
+    {/foreach}
+    {/foreach}
+
+</div>
+<script>
+    function getTaskList(uin){
+        x.mode('/task/getTaskList?uin=' + uin,'',500);
+    }
+    function runTask(uin,type){
+        x.mode('/task/runTask.html?type=' + type + '&uin=' + uin);
+    }
+    function setTask(uin,type){
+        if (type === 'zan' || type === 'qunqd'){
+            x.mode('/task/setTask.html?uin=' + uin + '&type=' + type, 'setTask');
+        } else if(type === 'auto' ) {
+            x.btn('状态更新无法关闭','本站已为所有用户开启了打码更新功能<br>保障您的QQ在线状态一直处于正常在线');
+        } else {
+            if ($("#is" +  type+ " input").prop("checked") === true){
+                x.ajax('/task/setTaskData.html','uin=' + uin + '&type=' + type + '&status=' + 0);
+            } else {
+                x.ajax('/task/setTaskData.html','uin=' + uin + '&type=' + type + '&status=' + 1);
+            }
+        }
+    }
+</script>
+{if condition="!$pwd"}
+<script>
+    layer.confirm(
+        '<div><h4 class="mt0 mb5">请补充密码</h4></div><div>您使用扫码添加的QQ，请补充QQ密码<br><font class="f3 hui">补充密码后，当QQ状态失效时，系统可为您自动更新QQ状态</font></div>',
+        {
+            btn: ['好 的', '取 消'],
+            btnAlign: 'c',
+            yes: function (i) {
+                x.close(i);
+                x.mode('/qlist/setPwdHtml.html?uin={$uin}', '');
+            },
+            btn2: function (i) {
+                x.close(i);
+            }
+        }
+    );
+</script>
+{/if}

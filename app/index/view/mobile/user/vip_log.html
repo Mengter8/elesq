@@ -1,0 +1,28 @@
+<title>会员开通记录 - {:config('conf.title')}</title>
+<div class="app-header t-v bg-bai dl2 bb">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">会员开通记录</span>
+    <span class="header-r t-v t-r nowrap" onclick=""><i class="icon f10"></i></span>
+</div>
+<div class="app-content note_vip-refreshBox" id="note_vip_param" mod="0">
+    <div>
+        <div class="bg-bai in-list in-p2 in-b in-bb" id="note_vip_html"></div>
+    </div>
+</div>
+<script>
+
+    var note_vip = {
+        html: function (l, m) {
+            x.gethtml('/user/vipLogHtml.html?page=' + loadpage["note_vip"], 'note_vip_html', l, m);
+        },
+    }
+
+
+    $(function () {
+        loadpage["note_vip"] = 1;
+        x.refreshBox("note_vip", function () {
+            note_vip.html(1, 1);
+        }, 1, 1);
+    });
+
+</script>

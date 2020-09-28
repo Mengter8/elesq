@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="author" content="xiaoke"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>{:config('conf.title')} - 最稳定的秒赞平台</title>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/static/pc/app.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/pc/style.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/pc/animate.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/pc/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/pc//bootstrap-slider.min.css"/>
+    <script type="text/javascript" src="/static/pc/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/static/pc/jquery.pjax.min.js"></script>
+    <script type="text/javascript" src="/static/pc/layer.min.js"></script>
+    <script type="text/javascript" src="/static/pc/app.min.js"></script>
+    <script type="text/javascript" src="/static/pc/bootstrap-slider.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+</head>
+<body class="bg-bai dl">
+<style type="text/css">
+    .msg h4 {
+        font-size: 26px;
+        margin-bottom: 25px;
+    }
+
+    .msg, .msg p {
+        font-size: 18px;
+    }
+</style>
+<div class="bg-qing dk m0 pt8 pb8 t-c"><h2>提示信息</h2></div>
+<div class="w400 pt11 pb12 d-c t-c"><h1 class="text-shadow2 bai" style="font-size: 130px;line-height:170px;"><i class="icon icon-info"></i></h1>
+    <div class="mt10 msg">
+        <div><h4 class="mt0 mb5">请先登录</h4></div>
+        <div>您还没有登陆或登陆会话失效，请重新登陆</div>
+    </div>
+    <div class="mt12"><a class="btn btn-bai btn-lg btn-block b b-hui rx2" href="/">返回首页</a></div>
+    <div>
+        <script>
+            layer.confirm(
+                '<div><h4 class="mt0 mb5">请先登录</h4></div><div>您还没有登陆或登陆会话失效，请重新登陆</div>',
+                {
+                    btn: ['登 录', '取 消'],
+                    btnAlign: 'c',
+                    yes: function (i) {
+                        x.close(i);
+                        x.url('/user/login.html', '');
+                    },
+                    no: function (i) {
+                        x.close(i);
+                    }
+                }
+            );
+        </script>
+    </div>
+</div>
+<span class="ajaxshow" id="ajaxshow"></span></body>
+</html>

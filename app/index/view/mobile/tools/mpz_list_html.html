@@ -1,0 +1,51 @@
+{if $list}
+{if cookie('mpz_auto') == 'true'}
+<script>tools.zan('{$uin}','{$list[0]['uin']}');</script>
+{/if}
+{foreach $list as $key=>$vo }
+<div class="swiper-container h12 del17338">
+    <div class="swiper-wrapper h">
+        <div class="swiper-slide t-v">
+            <div class="w10 h t-v t-c">
+                <img src="//q4.qlogo.cn/headimg_dl?dst_uin={$vo.uin}&spec=100" class="b b-hui r5 w7 h7"/>
+            </div>
+            <div class="w65 h t-v bb">
+                <div class="w25 f5">
+                    <ol class="w25">
+                        <li class="w15 f2 hui nowrap">{$vo.nickname}</li>
+                        <li class="dzi">{$vo.uin}</li>
+                    </ol>
+                </div>
+                <div class="w20 t-l bold nowrap qqzt17338">
+                    {if condition="$vo.status eq 1"}
+                    <font class="lv"><i class="icon icon-squarecheck f4 mr1"></i> 状态：正常</font>
+                    {else /}
+                    <font class="hong"><i class="icon icon-squarecheck f4 mr1"></i> 状态：失效</font>
+                    {/if}
+                </div>
+<!--                <div class="w20 t-r pr2 hui">01/22 16:07</div>-->
+                <div class="w20 t-r pr2 hui">
+                    <button onclick="tools.zan('{$uin}','{$vo.uin}')" class="btn btn-lan w h6 show t-v t-c" style="border: .0rem solid transparent;background: -webkit-linear-gradient(right,#92a1fb,#8bbef8 52%,#92a1fb);text-shadow: 5px 1px 6px #7b7b7b;">赞我</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    reBox['qqlist'].endUpLoading(false);
+</script>
+<script>
+    setTimeout(function () {
+        x.swiperlistleft();
+        }, 50);
+</script>
+{/foreach}
+{else}
+<script>reBox['qqlist'].endUpLoading(false);reBox['qqlist'].UpNoMoreNull();</script>
+<div class="in-list bg-bai t-c f10">
+    <dl class="h14 in"></dl>
+    <dl class="h14 in" onclick="mode_qq_add(0);">
+        <dd><i class="icon icon-info f13"></i> 当前系统匹配不到可用QQ为您点赞<br>快叫上你的朋友一起用吧!</dd>
+    </dl>
+</div>
+{/if}

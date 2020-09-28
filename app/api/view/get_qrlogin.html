@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>扫码登陆</title>
+    <link rel="stylesheet" href="https://cloud.qqlogin.com//static/css/iconfont.css">
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            background-color: #049fda;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif
+        }
+
+        .ui-flex-pack-center {
+            -webkit-box-pack: center;
+        }
+
+        .ui-flex-ver {
+            -webkit-box-orient: vertical;
+        }
+
+        .ui-flex-align-center {
+            -webkit-box-align: center;
+        }
+
+        h1, h2, h3, h4, h5 {
+            margin: 0;
+        }
+
+        .ui-panel {
+            display: -webkit-box;
+            width: 100%;
+            -webkit-box-sizing: border-box;
+        }
+
+        .icon-weixin2 {
+            font-size: 54px;
+            color: #46a638;
+        }
+
+        h1 {
+            font-size: 25px;
+        }
+
+        #ui-head {
+            background-color: white;
+            padding: 10px 0;
+        }
+
+        h2 {
+            font-size: 16px;
+            font-weight: normal;
+        }
+
+        .ui-weixinlogo {
+            width: 55px;
+            height: 55px;
+            background: url("https://cloud.qqlogin.com//static/image/qrlogin.png") 100% 100%;
+            margin: 5px;
+        }
+
+        .ui-tips {
+            background-color: white;
+            color: #46a638;
+            font-size: 20px;
+            text-align: center;
+            padding: 5px 0;
+            margin: 25px auto;
+            width: 240px;
+            border-radius: 20px;
+        }
+
+        .ui-qrcode {
+            background-color: white;
+            border-radius: 15px;
+            width: 230px;
+            height: 230px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .ui-qrcode img {
+            width: 210px;
+            height: 210px;
+            margin-top: 10px;
+        }
+
+        .ui-paytext {
+            border-bottom: 1px dotted white;
+            margin: 0 auto;
+            width: 210px;
+            height: 25px;
+        }
+
+        #ui-setps {
+            color: white;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        #ui-setps i {
+            font-size: 30px;
+        }
+
+        .ui-circle {
+            background-color: white;
+            border-radius: 50%;
+            color: #46a638;
+            text-align: center;
+            font-size: 11px;
+            width: 16px;
+            height: 16px;
+            line-height: 16px;
+            margin: 0 auto;
+            margin-bottom: 10px;
+        }
+
+        #ui-setps > div {
+            padding: 15px 10px 0 10px;
+        }
+
+        .ui-box {
+            -webkit-box-flex: 1;
+        }
+
+        .ui-padtop10 {
+            padding-top: 8px;
+        }
+    </style>
+</head>
+
+<body class="ui-panel ui-flex-ver">
+<div id="ui-head" class="ui-panel ui-flex-pack-center ui-flex-align-center">
+    <div class="ui-weixinlogo"><i class="logo"></i></div>
+    <div><h1>忆乐社区</h1>
+        <h2>Qrcode Login</h2></div>
+</div>
+<div class="ui-box ui-panel ui-flex-align-center">
+    <div id="ui-content" class="ui-panel ui-flex-ver ui-flex-pack-center">
+        <div class="ui-tips">请长按二维码</div>
+        <div class="ui-qrcode"><img src="data:image/png;base64,{$image}"/></div>
+        <div class="ui-paytext"></div>
+        <div id="ui-setps" class="ui-panel ui-flex-pack-center">
+            <div>
+                <div class="ui-circle">1</div>
+                <i class="icon iconfont icon-hcm-click-finger"></i>
+                <div class="ui-padtop10">长按屏幕</div>
+            </div>
+            <div>
+                <div class="ui-circle">2</div>
+                <i class="icon iconfont icon-qrcode"></i>
+                <div class="ui-padtop10">选择识别二维码</div>
+            </div>
+            <div>
+                <div class="ui-circle">3</div>
+                <i class="icon iconfont icon-ok"></i>
+                <div class="ui-padtop10">允许登录</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://open.mobile.qq.com/sdk/qqapi.js?_bid=152"></script>
+<script>
+    document.querySelector('body').addEventListener('touchmove', function (event) {
+        event.preventDefault();
+    });
+    mqq.ui.setTitleButtons({
+        right: {
+            hidden: true,
+        }
+    });
+</script>
+</body>
+</html>

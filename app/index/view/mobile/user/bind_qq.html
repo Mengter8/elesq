@@ -1,0 +1,75 @@
+<title>修改资料 - {:config('conf.title')}</title>
+<div class="app-header t-v bg-bai dl2 bb">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">修改资料</span>
+    <span class="header-r t-v t-r nowrap" onclick=""><i class="icon  f10"></i></span>
+</div>
+<div class="app-content bg-bai">
+    <div class="p3">
+        <div class="mt2">
+            <p class="f2 hui t-c">绑定QQ后可使用官方群内机器人 方便调用用户头像</p>
+        </div>
+        <div class="h10 mt3">
+            <font class="f4 bold">QQ</font>
+            <input type="text" class="form wh p0 r0 bb" name="uin" value="{:session('user.qq')}" placeholder="输入QQ号码" onkeyup="this.value=this.value.replace(/[^\d\.]/,'')" autocomplete="off"/>
+        </div>
+        <div class="h10 mt3">
+            <font class="f4 bold">昵称</font>
+            <input type="text" class="form wh p0 r0 bb" name="nickname" value="{:htmlentities(session('user.nickname'))}" placeholder="输入用户昵称" autocomplete="off"/>
+        </div>
+        <div class="mt7 mb3"><button class="btn btn-qing btn-md w" onclick="save();">确 定 补 充</button></div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("input[name=uin]").change(function(){
+            getNickName();
+        });
+    });
+
+    function getNickName(){
+        var uin = $('input[name="uin"]').val();
+        x.loading();
+        $.ajax({
+            url: api + "common/getNickName.html",
+            type: "POST",
+            data: {
+                'uin': uin
+            },
+            datatype: "json",
+            success: function (ret) {
+                x.mclose();
+                if (ret.code === 1) {
+                    $('input[name="nickname"]').val(ret.data);
+                }
+            }
+        });
+    }
+    function save() {
+        var uin = $('input[name="uin"]').val();
+        var nickname = $('input[name="nickname"]').val();
+        x.loading();
+        $.ajax({
+            url: "/user/update.html",
+            type: "POST",
+            data: {
+                'uin': uin,
+                'nickname':nickname
+            },
+            datatype: "json",
+            success: function (ret) {
+                x.mclose();
+                if (ret.code === 1) {
+                    x.btn("保存成功",'','',function() {
+                        x.mclose(moid['bing_qq']);
+                        x.html('/user/index');
+                    })
+                    // x.mclose();
+                    // x.html('/user/index');
+                } else {
+                    x.btn('绑定失败',ret.message);
+                }
+            }
+        });
+    }
+</script>

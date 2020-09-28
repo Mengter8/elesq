@@ -1,0 +1,31 @@
+<title>{$title} [手动执行] - {:config('conf.title')}</title>
+<div class="app-header t-v bg-bai dl2 bb">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">{$title} [手动执行]</span>
+    <span class="header-r t-v t-r nowrap" onclick=""><i class="icon  f10"></i></span>
+</div>
+<div class="app-content bg-bai">
+    <div class="p5 f5" id="debugbody">
+        <div class="w t-v t-c">
+            <span class="pt6 pb10 mb10">
+                <p class="h8">
+                    <span class="mode-loading"></span>
+                </p>
+                <p class="f6 t-c hui">正在执行，请稍后</p>
+            </span>
+        </div>
+    </div>
+</div>
+<script>
+
+    x.postData(
+        '/debug/{$type}','uin={$uin}', 1, 599999,
+        function (d) {
+            $("#debugbody").html(d);
+        },
+        function (d) {
+            $("#debugbody").html('<div class="w t-v t-c"><span class="pt6 pb10 mb10"><i class="icon icon-info f17 hui dl"></i><p class="f6 t-c mt4 hui">执行失败，请稍后重试</p></span></div>');
+        }
+    );
+
+</script>

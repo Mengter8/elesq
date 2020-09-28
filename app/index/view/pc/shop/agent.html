@@ -1,0 +1,119 @@
+<div class="bg-bai b rx3">
+    <div class="t-v t-t">
+        <div class="c-sidebar c-sidebar-h pb5 br">
+            <div class="c-sidebar-title t-v hui bb">自助购买</div>
+            <ul class="c-nav click-nav">
+                <li>
+                    <a href="/shop/vip.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-vip"></i></div>
+                        <div>开通VIP会员</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/shop/cdkey.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-form"></i></div>
+                        <div>使用卡密开通</div>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/shop/agent.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-friend"></i></div>
+                        <div>开通平台代理</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/shop/money.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-moneybag"></i></div>
+                        <div>充值账户余额</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="c-content bl">
+            <div class="g-title t-v pl4 bb">
+                <div class="col-8 h t-v bold">开通平台代理</div>
+                <div class="col-4 t-v t-r"></div>
+            </div>
+            <div class="g-content p5 f3 hui bb "><p>开通本站代理商可低价为其他用户充值商品，获取高额利润回报。</p></div>
+            <div class="g-content p5">
+                <div class="in-text">
+                    <dt class="top pr5">
+                        <p class="h9 t-v">请选择</p>
+                    </dt>
+                    <dd class="top bold pr5">
+                        {foreach :getAgent() as $value}
+                        <p class="p3"><img class="mr3 w6 h6 v-5" src="/static/img/agent/{$value.level}.png" />
+                            <label class="i-checks i-checks-md"><input type="radio" value="{$value.level}" name="level" onclick="ajax_get_agent()" checked="checked" /><i></i>{$value.name}</label>
+                            <span class="ml3 f3 nobold hui">赠送<font class="hong">{$value.give}</font>元余额 官方售价<font class="hong">{$value.discount}折</font>进行提取
+                            </span>
+                        </p>
+                        {/foreach}
+                    </dd>
+                </div>
+                <hr/>
+                <div class="h7" id="agentPrice">-</div>
+                <hr/>
+                <div class="t-v">
+                    <div class="bold pr4">支付方式：</div>
+                    <div>
+                        <button class="btn btn-qing btn-md mt2 mb2 mr5 rx1" onclick="ajax_shop_agent('alipay');">
+                            <i class="icon icon-zfbpay f9 nobold mr2"></i>支付宝 [推荐]
+                        </button>
+                        <button class="btn btn-qing btn-md mt2 mb2 mr5 rx1" onclick="ajax_shop_agent('qqpay');">
+                            <i class="icon icon-qqpay f9 nobold mr2"></i>QQ支付
+                        </button>
+                        <button class="btn btn-qing btn-md mt2 mb2 mr5 rx1" onclick="ajax_shop_agent('wxpay');">
+                            <i class="icon icon-wxpay f9 nobold mr2"></i>微信支付
+                        </button>
+                        <button class="btn btn-qing btn-md mt2 mb2 mr5 rx1" onclick="ajax_shop_agent('user');">
+                            <i class="icon icon-wxpay f9 nobold mr2"></i>账户余额
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="c-pagination o-h t-v">
+        <div class="c-sidebar"></div>
+        <div class="c-content h11 o-h g-page t-v bt bl">
+            <div class="col-12 h pl5 t-v f3 hui">系统24小时自动处理订单，支付后自动为您开通秒赞VIP会员，无需等待。</div>
+        </div>
+    </div>
+</div>
+<script>
+    function ajax_get_agent() {
+        var level = $('input:radio[name="level"]:checked').val();
+        x.loading();
+        $.ajax({
+            url: "/shop/price.html",
+            type: "POST",
+            data: {
+                'act':'agent',
+                'level': level
+            },
+            datatype: "json",
+            success: function (ret) {
+                x.mclose();
+                if (ret.code === 1) {
+                    if (ret.data['newPrice']){
+                        $("#agentPrice").html('<font class="bold pr3">开通价格：</font><font class="f6 hong">' + ret.data['newPrice']+ '</font> 元 <font class="f4 hui">原价<s> ' +ret.data['price']+' </s>元 ' + ret.data['discount'] + '折优惠中</font>');
+                    }else {
+                        $("#agentPrice").html('<font class="bold pr3">开通价格：</font><font class="f6 hong">' + ret.data['price']+ '</font> 元');
+                    }
+                } else {
+                    x.btn(ret.message);
+                }
+            }
+        });
+
+    }
+
+    function ajax_shop_agent(type) {
+        var level = $('input:radio[name="level"]:checked').val();
+        x.ajax('/shop/submit.html', 'act=agent&level=' + level + '&type=' + type);
+    }
+
+    $(function () {
+        ajax_get_agent();
+    });
+</script>

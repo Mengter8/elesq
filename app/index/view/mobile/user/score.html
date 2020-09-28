@@ -1,0 +1,38 @@
+<title>账户积分 - {:config('conf.title')}</title>
+<div class="app-header t-v bg-dlan dk b0 bb">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">账户积分</span>
+    <span class="header-r t-v t-r nowrap" onclick=""><i class="icon  f10"></i></span>
+</div>
+<div class="app-content f5">
+    <div class="mb5 o-h">
+        <div class="p4 bg-dlan dk"><p class="mt2">账户积分（个）</p>
+            <p class="mt3 f18 userscore">{:session('user.score')}</p></div>
+        <ul class="bb">
+            <li class="h9">
+                <span class="wh t-v bb" onclick="mode_sign();">
+                    <div class="w10 t-c"><i class="icon icon-write f11 zi"></i></div>
+                    <div class="w20">每日签到</div> <div class="w40 f2 t-r hui dl">签到获取平台免费VIP会员</div>
+                    <div class="w5 t-c f2 hui"><i class="icon icon-pright"></i></div>
+                </span>
+            </li>
+            <li class="h9">
+                <span class="wh t-v bb" onclick="mode_redeem();">
+                    <div class="w10 t-c"><i class="icon icon-duijie f11 cheng"></i></div>
+                    <div class="w20">积分兑换</div>
+                    <div class="w40 f2 t-r hui dl">使用积分兑换平台会员和挂机配额</div>
+                    <div class="w5 t-c f2 hui"><i class="icon icon-pright"></i></div>
+                </span>
+            </li>
+        </ul>
+        <ul class="mt3 bt bb">
+            <li class="h9">
+                <span class="wh t-v" onclick="mode_score_log();">
+                    <div class="w10 t-c"><i class="icon icon-text f11 lv"></i></div>
+                    <div class="w20">积分记录</div> <div class="w40 f2 t-r "></div>
+                    <div class="w5 t-c f2 hui"><i class="icon icon-pright"></i></div>
+                </span>
+            </li>
+        </ul>
+    </div>
+</div>

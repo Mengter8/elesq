@@ -1,0 +1,68 @@
+<div class="bg-bai b rx3">
+    <div class="t-v t-t">
+        <div class="c-sidebar c-sidebar-h pb5 br">
+            <div class="c-sidebar-title t-v hui bb">自助购买</div>
+            <ul class="c-nav click-nav">
+                <li>
+                    <a href="/shop/vip.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-vip"></i></div>
+                        <div>开通VIP会员</div>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/shop/cdkey.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-form"></i></div>
+                        <div>使用卡密开通</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/shop/agent.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-friend"></i></div>
+                        <div>开通平台代理</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/shop/money.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-moneybag"></i></div>
+                        <div>充值账户余额</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="c-content bl">
+            <div class="g-title t-v pl4 bb">
+                <div class="col-8 h t-v bold">使用卡密</div>
+                <div class="col-4 t-v t-r"></div>
+            </div>
+            <div class="g-content p5 f3 hong bb "><p>您购买的卡密可以在这里输入后使用，系统会自动识别卡密类型和数量。</p></div>
+            <div class="g-content p5 pt8">
+                <div class="in-text" style="width:580px;">
+                    <dt class="bold pr4">卡密：</dt>
+                    <dd><input type="text" class="form p0 h11 bb bb-hui" id="shopkm" placeholder="请输入卡密" value=""
+                               autocomplete="off"></dd>
+                    <dt>
+                        <button class="btn btn-qing btn-md rx1 ml5" onclick="ajax_shop_km();">确定使用</button>
+                    </dt>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function ajax_shop_km() {
+        var cdKey = x.getval('#shopkm', '请输入卡密');
+        if (!cdKey) return;
+        $.ajax({
+            url: "/shop/cdKeyAjax",
+            type: "POST",
+            data: {
+                'cdKey': cdKey
+            },
+            datatype: "json",
+            success: function (ret) {
+                x.mclose();
+                x.btn(ret.data['title'],ret.data['content']);
+            }
+        });
+    }
+</script>

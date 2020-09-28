@@ -1,0 +1,77 @@
+<title>开通VIP会员 - </title>
+<div class="app-header t-v bg-bai dl2 bb"><span class="header-l t-v nowrap" onclick="x.mclose();"><i
+        class="icon icon-pleft f9"></i>返回</span> <span class="header-c t-v t-c nowrap">开通VIP会员</span> <span
+        class="header-r t-v t-r nowrap" onclick=""><i class="icon  f10"></i></span></div>
+<div class="app-content bg-bai f6">
+    <div class="p4">
+        <div class="pb2">
+            {foreach :getPrice() as $value}
+            <div class="radio pt2 pb2"><i class="icon icon-vip qing f10 mr1 v-2"></i>
+                <label class="i-checks"> <input class="vipvar" type="radio" name="id" value="{$value.id}" onclick="ajax_get_vip();" {if $value.id == 1}checked{/if}><i></i> <b>{$value.name}</b>
+                    {if isset($value.discount)}<span class="ml3 f3 hong">优惠</span>{/if}
+                </label>
+            </div>
+
+            {/foreach}
+        </div>
+        <hr/>
+        <div class="pt4 pb4 f5" id="vipktjiage">-</div>
+        <hr/>
+        <div class="mt4 f3 hui">支付方式：</div>
+        <div class="mt1 f4"><label class="i-checks mr3"><input type="radio" name="vippay" value="alipay" checked><i></i>支付宝</label>
+            <label class="i-checks mr3"><input type="radio" name="vippay" value="wxpay"><i></i>微信支付</label>
+            <label class="i-checks mr3"><input type="radio" name="vippay" value="qqpay"><i></i>QQ支付</label>
+            <label class="i-checks mr3"><input type="radio" name="vippay" value="user"><i></i>账户余额</label>
+        </div>
+        <div class="mt6">
+            <button class="btn btn-qing btn-md w" onclick="ajax_shop_vip();">确 定 开 通</button>
+        </div>
+        <div class="in-list in-t top mt8 mb3 f2 hui">
+            <dl>
+                <dt>1、</dt>
+                <dd>开通秒赞VIP会员可使用本站所有功能，无任何限制，可加入会员售后群享受后续服务。</dd>
+            </dl>
+            <dl>
+                <dt>2、</dt>
+                <dd>一次性开通3个月及以上即可成为包季会员，可使用极速秒赞服务器，更高的权限，更低的价格。</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<script>
+    function ajax_get_vip() {
+        var id = $('input[name="id"]:checked').val();
+        x.loading();
+        $.ajax({
+            url: "/shop/price.html",
+            type: "POST",
+            data: {
+                'act':'vip',
+                'id': id
+            },
+            datatype: "json",
+            success: function (ret) {
+                x.mclose();
+                if (ret.code === 1) {
+                    if (ret.data['newPrice']){
+                        $("#vipktjiage").html('<font class="bold pr3">开通价格：</font><font class="f6 hong">' + ret.data['newPrice']+ '</font> 元 <font class="f4 hui">原价<s> ' +ret.data['price']+' </s>元 ' + ret.data['discount'] + '折优惠中</font>');
+                    }else {
+                        $("#vipktjiage").html('<font class="bold pr3">开通价格：</font><font class="f6 hong">' + ret.data['price']+ '</font> 元');
+                    }
+                } else {
+                    x.btn(ret.message);
+                }
+            }
+        });
+    }
+
+    function ajax_shop_vip() {
+        var id = $('input[name="id"]:checked').val();
+        var type = $('input[name="vippay"]:checked').val();
+        x.ajax('/shop/submit.html', 'act=vip&id=' + id + '&type=' + type);
+    }
+
+    $(function () {
+        ajax_get_vip(1);
+    });
+</script>

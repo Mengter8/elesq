@@ -1,0 +1,41 @@
+<title>功能设置</title>
+
+<div class="bg-bai b rx3">
+    <div class="t-v t-t">
+        <div class="c-sidebar c-sidebar-h max pb5 br">
+            <div class="c-sidebar-title t-v hui bb">QQ功能设置</div>
+            <ul class="c-nav click-nav">
+                {foreach $Qlist as $key=>$vo }
+                <li class="{eq name=":request()->get('uin')" value="$vo.uin"}active{/eq}">
+                    <a class="t-v" href="/qlist/qset.html?uin={$vo.uin}" data-pjax>
+                        <div style="width:35px;">
+                            <img class="w6 h6 b r5" src="//q4.qlogo.cn/headimg_dl?dst_uin={$vo.uin}&spec=40">
+                        </div>
+                        <div>
+                            <font class="v-1">{$vo.uin}</font>
+                        </div>
+                    </a>
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+        <div class="c-content bl" id="qqsetbody"></div>
+    </div>
+</div>
+<script>
+    function load_qqset_html(uin, l, ts) {
+        l = l || 0;
+        ts = ts || 0;
+        x.gethtml('/qlist/setHtml.html?uin=' + uin + '&ts=' + ts, 'qqsetbody', l, 0);
+    }
+
+    function ajax_qqset_search() {
+        var qq = x.getval('#qqset_search', '请输入QQ号码进行搜索');
+        if (!qq) return;
+        x.ajax('/ajax/user/searchqq', 'qq=' + qq);
+    }
+
+    $(function () {
+        load_qqset_html({:Request()->get('uin')}, 2, 1);
+    });
+</script>

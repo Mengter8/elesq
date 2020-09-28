@@ -1,0 +1,117 @@
+<title>QQ秒赞墙 - {:config('conf.title')}</title>
+<div class="bg-bai b rx3">
+    <div class="t-v t-t">
+        <div class="c-sidebar c-sidebar-h pb5 br">
+            <div class="c-sidebar-title t-v hui bb">快捷连接</div>
+            <ul class="c-nav click-nav">
+                <li>
+                    <a href="/other/prove_query.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-medal"></i></div>
+                        <div>秒赞认证</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/other/agent_query.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-profile"></i></div>
+                        <div>代理认证</div>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/other/wall.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-cascades"></i></div>
+                        <div>QQ秒赞墙</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/other/agent.html" class="t-v" data-pjax>
+                        <div><i class="icon icon-write"></i></div>
+                        <div>代理后台</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="c-content bl">
+            <div class="g-title t-v pl4 bb">
+                <div class="col-8 h t-v bold">QQ秒赞墙</div>
+                <div class="col-4 t-v t-r"></div>
+            </div>
+            <div class="g-content o-h p5 f3 hui bb "><p>1、本页面展示最近更新状态的1200个秒赞QQ号</p>
+                <p>2、您可以添加以下QQ为好友,24小时秒赞空间动态</p></div>
+            <div class="g-content o-h tabpanel">
+                <div class="g-title p0 t-v bb">
+                    <div class="col-8 h g-btn tablist t-v bold">
+                        <a class="btn btn-bai br active" tabid="tab1">急速服务器</a>
+                        <a class="btn btn-bai br" tabid="tab2">VIP服务器</a>
+                        <a class="btn btn-bai br" tabid="tab3">免费服务器</a>
+                    </div>
+                    <div class="col-4 t-v t-r"></div>
+                </div>
+                <div class="tabcontent">
+                    <div class="tab1 in-list in-b active">
+                        {foreach $jisuList as $jisu}
+                        <dl class="p4">
+                            <dt><img class="w9 h9 b r5 ml1 mr5" src="//q4.qlogo.cn/headimg_dl?dst_uin={$jisu.uin}&spec=40"></dt>
+                            <dd>
+                                <div class="t-v">
+                                    <div class="col-4"><p class="f3 hui" style="padding-left:1px;"><i class="icon icon-my mr1"></i> {$jisu.nickname}
+                                    </p>
+                                        <p class="mt0 dzi bold"><i class="icon icon-qq"></i> <font class="">{$jisu.uin}</font></p></div>
+                                    <div class="col-4 f3"><p><i class="icon icon-appreciate mr1"></i> <font class="lv">秒赞已开启</font>
+                                    </p>
+                                        <p class="mt0 hui"><i class="icon icon-time mr1"></i> {$jisu.last_time|date="m-d H:i"}</p></div>
+                                    <div class="col-4 f3 hui"><p>连续秒赞：{:data_Diff($jisu.update_time)}天</p>
+                                        <p class="mt0">累计秒赞：{:data_Diff($jisu.create_time)}天</p></div>
+                                </div>
+                            </dd>
+                            <dt><a class="btn btn-sm btn-hei dl btn-1 rx1 mr3" href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin={$jisu.uin}&website=www.mz.com" target="_blank">加好友</a></dt>
+                            <dt><a class="btn btn-sm btn-fen dl btn-1 rx1 mr3" href="http://{$jisu.uin}.qzone.qq.com" target="_blank">看空间</a></dt>
+                        </dl>
+                        {/foreach}
+                    </div>
+                    <div class="tab2 in-list in-b">
+                        {foreach $vipList as $key=>$vip}
+                        <dl class="p4">
+                            <dt><img class="w9 h9 b r5 ml1 mr5" src="//q4.qlogo.cn/headimg_dl?dst_uin={$vip.uin}&spec=40"></dt>
+                            <dd>
+                                <div class="t-v">
+                                    <div class="col-4"><p class="f3 hui" style="padding-left:1px;"><i class="icon icon-my mr1"></i> {$vip.nickname}
+                                    </p>
+                                        <p class="mt0 dzi bold"><i class="icon icon-qq"></i> <font class="">{$vip.uin}</font></p></div>
+                                    <div class="col-4 f3"><p><i class="icon icon-appreciate mr1"></i> <font class="lv">秒赞已开启</font>
+                                    </p>
+                                        <p class="mt0 hui"><i class="icon icon-time mr1"></i> {$vip.last_time|date="m-d H:i"}</p></div>
+                                    <div class="col-4 f3 hui"><p>连续秒赞：{:data_Diff($vip.update_time)}天</p>
+                                        <p class="mt0">累计秒赞：{:data_Diff($vip.create_time)}天</p></div>
+                                </div>
+                            </dd>
+                            <dt><a class="btn btn-sm btn-hei dl btn-1 rx1 mr3" href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin={$vip.uin}&website=www.mz.com" target="_blank">加好友</a></dt>
+                            <dt><a class="btn btn-sm btn-fen dl btn-1 rx1 mr3" href="http://{$vip.uin}.qzone.qq.com" target="_blank">看空间</a></dt>
+                        </dl>
+                        {/foreach}
+                    </div>
+                    <div class="tab3 in-list in-b">
+                        {foreach $freeList as $key=>$free}
+                        <dl class="p4">
+                            <dt><img class="w9 h9 b r5 ml1 mr5" src="//q4.qlogo.cn/headimg_dl?dst_uin={$free.uin}&spec=40"></dt>
+                            <dd>
+                                <div class="t-v">
+                                    <div class="col-4"><p class="f3 hui" style="padding-left:1px;"><i class="icon icon-my mr1"></i> {$free.nickname}
+                                    </p>
+                                        <p class="mt0 dzi bold"><i class="icon icon-qq"></i> <font class="">{$free.uin}</font></p></div>
+                                    <div class="col-4 f3"><p><i class="icon icon-appreciate mr1"></i> <font class="lv">秒赞已开启</font>
+                                    </p>
+                                        <p class="mt0 hui"><i class="icon icon-time mr1"></i> {$free.last_time|date="m-d H:i"}</p></div>
+                                    <div class="col-4 f3 hui"><p>连续秒赞：{:data_Diff($free.update_time)}天</p>
+                                        <p class="mt0">累计秒赞：{:data_Diff($free.create_time)}天</p></div>
+                                </div>
+                            </dd>
+                            <dt><a class="btn btn-sm btn-hei dl btn-1 rx1 mr3" href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin={$free.uin}&website=www.mz.com" target="_blank">加好友</a></dt>
+                            <dt><a class="btn btn-sm btn-fen dl btn-1 rx1 mr3" href="http://{$free.uin}.qzone.qq.com" target="_blank">看空间</a></dt>
+                        </dl>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

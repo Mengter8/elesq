@@ -1,0 +1,49 @@
+{if condition="$Qlist"}
+{foreach $Qlist as $key=>$vo }
+<div class="swiper-container h12" id="uin{$vo.uin}">
+    <div class="swiper-wrapper h">
+        <a class="swiper-slide t-v" href="javascript:;" onclick="x.mode('{:url('/qlist/setHtml',['uin'=>$vo.uin])}','qqset');">
+            <div class="w10 h t-v t-c">
+                <img src="//q4.qlogo.cn/headimg_dl?dst_uin={$vo.uin}&spec=100" class="b b-hui r5 w7 h7"/>
+            </div>
+            <div class="w65 h t-v bb">
+                <div class="w25 f5">
+                    <ol class="w25">
+                        <li class="w15 f2 hui nowrap">{$vo.nickname}</li>
+                        <li class="dzi">{$vo.uin}</li>
+                    </ol>
+                </div>
+                <div class="w20 t-l bold nowrap qqzt17338">
+                    {if condition="$vo.status eq 1"}
+                    <font class="lv"><i class="icon icon-squarecheck f4 mr1"></i> 状态：正常</font>
+                    {else /}
+                    <font class="hong"><i class="icon icon-squarecheck f4 mr1"></i> 状态：失效</font>
+                    {/if}
+                </div>
+                <div class="w20 t-r pr2 hui">{$vo.last_time|date="m/d H:i"}</div>
+            </div>
+        </a>
+        <div class="swiper-slide t-v">
+            <span class="wh bg-lv t-v t-c" onclick="mode_qq_add('{$vo.uin}');"><i class="icon icon-update f10"></i></span>
+            <span class="wh bg-hong t-v t-c" onclick="ajax_qq_del('{$vo.uin}');"><i class="icon icon-delete f10"></i></span>
+        </div>
+    </div>
+</div>
+<script>
+    reBox['qqlist'].endUpLoading(false);
+</script>
+<script>setTimeout(function () {
+    x.swiperlistleft();
+}, 50)</script>
+{/foreach}
+{else}
+<script>
+    reBox['qqlist'].endUpLoading(false);
+    reBox['qqlist'].UpNoMoreNull();
+</script>
+<div class="in-list bg-bai t-c f10">
+    <dl class="h14 in" onclick="mode_qq_add(0);">
+        <dd><i class="icon icon-add f13"></i> 添加一个QQ</dd>
+    </dl>
+</div>
+{/if}
