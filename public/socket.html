@@ -8,21 +8,15 @@
 <script>
     const socket = io('http://192.168.1.105', {transports: ['websocket']});
     socket.emit("join",{"room":"chat"})
-    socket.emit("chat", {"asd": "我是内容"})
+    socket.emit("chat", {"content": "我是内容"})
+
+    // socket.emit("leave",{"room":["chat"]})
 
     socket.on('callback', data => {
         //监听浏览器通过msg事件发送的信息
-        console.log(data);//你好浏览器
+        console.log(data);
     });
 
 </script>
 </body>
 </html>
-
-<!--
-    socket.emit("test",{"asd":"我是内容"})
-    socket.emit("join",{"room":"room"})
-    加入房间
-    socket.emit("leave",{"room":["room"]})
-    离开房间
--->

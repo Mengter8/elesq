@@ -1,5 +1,5 @@
 <?php
-declare (strict_types = 1);
+declare (strict_types=1);
 
 namespace app\listener;
 
@@ -14,6 +14,7 @@ class RoomLeave
     {
         $this->websocket = $container->make(Websocket::class);
     }
+
     /**
      * 事件监听处理
      *
@@ -24,7 +25,8 @@ class RoomLeave
         $this->websocket->leave($event['room']);
 
         $fd = $this->websocket->getSender();
-        $this->websocket->emit("callback", ['fd' => $fd,'message'=>"leave for {$event['room']} is success!"]);
+        $this->websocket->emit("callback", ['fd' => $fd, 'message' => "leave for {$event['room']} is success!"]);
+        $this->websocket->close();
 
     }
 }
