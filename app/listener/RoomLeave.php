@@ -21,7 +21,10 @@ class RoomLeave
      */
     public function handle($event)
     {
-        //
         $this->websocket->leave($event['room']);
+
+        $fd = $this->websocket->getSender();
+        $this->websocket->emit("callback", ['fd' => $fd,'message'=>"leave for {$event['room']} is success!"]);
+
     }
 }

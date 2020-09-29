@@ -46,7 +46,9 @@ return [
             ],
         ],
         'listen'        => [
-            'test' => \app\listener\WebsocketTest::class,  //这里将事件名称和事件处理类进行注册
+            'chat' => \app\listener\RoomChat::class,  //这里将事件名称和事件处理类进行注册
+            'join'  => \app\listener\RoomJoin::class,
+            'leave' => \app\listener\RoomLeave::class,
         ],
         'subscribe'     => [],
     ],

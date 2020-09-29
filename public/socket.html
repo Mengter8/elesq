@@ -3,18 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="https://cdn.bootcdn.net/ajax/libs/socket.io/2.3.0/socket.io.js"></script><body>
+    <script src="https://cdn.bootcdn.net/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<body>
 <script>
-    const socket = io('http://192.168.1.105',{transports: ['websocket']});
-    socket.emit("test",{"asd":"我是内容"})
-    socket.on("test",function(res){
-        console.log(res)
-    });
+    const socket = io('http://192.168.1.105', {transports: ['websocket']});
+    socket.emit("join",{"room":"chat"})
+    socket.emit("chat", {"asd": "我是内容"})
 
-    socket.on('testcallback',(data)=>{
+    socket.on('callback', data => {
         //监听浏览器通过msg事件发送的信息
         console.log(data);//你好浏览器
     });
+
 </script>
 </body>
 </html>
+
+<!--
+    socket.emit("test",{"asd":"我是内容"})
+    socket.emit("join",{"room":"room"})
+    加入房间
+    socket.emit("leave",{"room":["room"]})
+    离开房间
+-->

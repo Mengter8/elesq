@@ -1,5 +1,5 @@
 <?php
-declare (strict_types = 1);
+declare (strict_types=1);
 
 namespace app\listener;
 
@@ -14,6 +14,7 @@ class RoomJoin
     {
         $this->websocket = $container->make(Websocket::class);
     }
+
     /**
      * 事件监听处理
      *
@@ -21,7 +22,10 @@ class RoomJoin
      */
     public function handle($event)
     {
-        //
         $this->websocket->join($event['room']);
+
+        $fd = $this->websocket->getSender();
+        $this->websocket->emit("callback", ['fd' => $fd, 'message' => "join to {$event['room']} is success!"]);
+
     }
 }
