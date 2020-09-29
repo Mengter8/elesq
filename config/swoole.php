@@ -1,12 +1,17 @@
 <?php
 
+use app\listener\WsClose;
+use app\listener\WsConnect;
+use app\listener\WsRoomJoin;
+use app\listener\WsRoomLeave;
+use app\listener\WsSendMsg;
 use think\swoole\websocket\socketio\Handler;
 use think\swoole\websocket\socketio\Parser;
 
 return [
     'server'     => [
-        'host'      => env('SWOOLE_HOST', '192.168.1.105'), // 监听地址
-        'port'      => env('SWOOLE_PORT', 80), // 监听端口
+        'host'      => env('SWOOLE_HOST', '0.0.0.0'), // 监听地址
+        'port'      => env('SWOOLE_PORT', 9501), // 监听端口
         'mode'      => SWOOLE_PROCESS, // 运行模式 默认为SWOOLE_PROCESS
         'sock_type' => SWOOLE_SOCK_TCP, // sock type 默认为SWOOLE_SOCK_TCP
         'options'   => [

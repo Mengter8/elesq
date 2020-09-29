@@ -25,7 +25,9 @@ class RoomJoin
         $this->websocket->join($event['room']);
 
         $fd = $this->websocket->getSender();
-        $this->websocket->emit("callback", ['fd' => $fd, 'message' => "join to {$event['room']} is success!"]);
+        $this->websocket->emit("JoinCallback", ['fd' => $fd, 'message' => "join to {$event['room']} is success!"]);
+        $this->websocket->to($event['room'])->emit("SysChatCallback", ["message" => "fd {$fd} 加入了本房间"]);
+//        $this->websocket->to($event['room'])->emit("SysChatCallback", ["message" => $this->websocket->getTo()]);
 
     }
 }
