@@ -6,7 +6,7 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 <body>
 <script>
-    const socket = io('http://192.168.1.105', {transports: ['websocket']});
+    const socket = io('ws://192.168.1.105:9501', {transports: ['websocket']});
     socket.emit("join",{"room":"chat"})
     socket.emit("chat", {"content": "我是内容"})
 

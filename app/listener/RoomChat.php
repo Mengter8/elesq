@@ -35,8 +35,7 @@ class RoomChat
         $this->websocket->to('chat')->emit("callback", ["message" => $event['content']]);
 
         //指定客户端发送，假设已知某一客户端连接fd为1，则发送如何
-        $this->websocket->setSender(28)->emit("callback", ['guangbo' => 1, 'getdata' => $event['asd']]);
-
+//        $this->websocket->setSender(1)->emit("callback", ['getdata' => $event['content']]);
 
         //关闭指定客户端连接，参数为fd，默认为当前链接
         //        $this->websocket->close();
