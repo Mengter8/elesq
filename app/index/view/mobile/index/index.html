@@ -11,23 +11,8 @@
             <i class="icon icon-pullright f9 nobold v-1 mr3"></i>点此加入互赞<i class="icon icon-pullleft f9 nobold v-1 ml3"></i>
         </button>
     </div>
-    <div class="p4 bg-bai bb">
-        <p class="f8 hong">系统公告</p>
-        <p class="f5 mt3">
-            欢迎使用 <font color="#f30ca8">{:config('conf.title')} 秒赞，互赞</font><br/>
-            我们的初衷 : <font class="hong"><b>便捷 急速 安全 稳定</b></font><br>
-            为了用户体验，我们重新升级优化，平台功能免费，欢迎体验</p>
-    </div>
     <div class="in-list in-b in-bb bg-bai">
-        <dl class="h10">
-            <a class="in h pl4 pr4 hei dl" data-pjax="">
-                <dt><i class="icon icon-notification lv f7 mr2"></i></dt>
-                <dd>
-                    <p><font color="#f30ca8"> 系统已更新，功能陆续开放</font></p>
-                </dd>
-                <dt><i class="icon icon-pright hui f7"></i></dt>
-            </a>
-        </dl>
+
         <dl class="h10">
             <a class="in h pl4 pr4 hei dl" href="https://jq.qq.com/?_wv=1027&k=5vjg6UX" target="_blank" data-pjax="">
                 <dt><i class="icon icon-hot hong f7 mr2"></i></dt>
@@ -38,7 +23,38 @@
             </a>
         </dl>
     </div>
+    <div class="mt3 pan bt bb">
+        <div class="pan-title f4">
+            <div>公告信息</div>
+        </div>
+        <li>
+            <div class="t-v p2 bb"> <div class="f8 t-c"><i class="icon icon-comment mr2 lan"></i>
+            </div>
+                <font class="fen">欢迎使用亿乐社区，我们的初衷 : <font class="hong"><b>便捷 快速 安全 稳定</b></font> 。</font>
+            </div>
+        </li>
+        <li>
+            <div class="t-v p2 bb"> <div class="f8 t-c"><i class="icon icon-comment mr2 lan"></i>
+            </div>
+                <font class="lan">为了用户更简单高效的体验，已剔除无用功能(签到/积分兑换/积分)。</font>
+            </div>
+        </li>
+        <li>
+            <div class="t-v p2 bb"> <div class="f8 t-c"><i class="icon icon-comment mr2 lan"></i>
+            </div>
+                <font class="lan">系统已更新，功能陆续开放，平台功能免费，欢迎体验。</font> </div> </li>
+        <li>
+    </div>
+
+
+    <div class="mt3 pan bt bb">
+        <div class="pan-title f4">
+            <div>网站统计</div>
+        </div>
+    </div>
+
     <div class="bg-bai pt3 pb3 t-v bb">
+
         <div class="w37 t-c br">
             <div class="f6 hong">
                 <span class="qdhtmlday">{$siteCount.user}</span> 人
@@ -72,6 +88,37 @@
             </div>
         </div>
     </div>
+
+
+    <div class="mt3 pan bt bb">
+        <div class="pan-title f4">
+            <div>秒赞墙</div>
+        </div>
+    </div>
+
+    <div class="bg-bai pt3 pb3 t-v bb">
+
+
+        <div class="in-list in-b in-bb">
+            {foreach $lastUser as $vo}
+            <dl class="h12 in" onclick="mzq_mode_footer('{$vo.uin}');">
+                <dt><img class="w7 h7 r5 b b2 ml2 mr2" src="//q4.qlogo.cn/headimg_dl?dst_uin={$vo.uin}&spec=40"></dt>
+                <dt><p class="w15 f2 hui nowrap">{$vo.nickname}</p><p class="w19 dzi">{$vo.uin}</p></dt>
+                <dt><p class="f2"><i class="icon icon-appreciate hui mr1"></i> <font class="lv">秒赞已开启</font>
+                </p><p class="f2 hui"><i class="icon icon-time mr1"></i> {$vo.last_time|date="m-d H:i"}</p></dt>
+                <dd class="pl3 pr3 f2 hui t-r"><p>连续秒赞：{:data_Diff($vo.update_time)}天</p><p>累计秒赞：{:data_Diff($vo.create_time)}天</p></dd>
+            </dl>
+            {/foreach}
+
+
+            <div class="p2 bg-bai b t-c">
+                <a onclick="mode_wall();" class="btn btn-sm btn-dlan w40 h7 btn-1 rx3"><i class="icon icon-cascades mr2"></i>查看更多秒赞QQ</a>
+            </div>
+        </div>
+
+
+    </div>
+
     <div class="dixian t-v t-c">
         <hr>
         <p>到底了哦</p>

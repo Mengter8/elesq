@@ -4,7 +4,6 @@ declare (strict_types=1);
 namespace app\index\controller;
 
 use app\model\Qq;
-use app\model\Server;
 use app\model\Task;
 use app\model\User;
 use think\facade\View;
@@ -21,14 +20,13 @@ class Index
         $siteCount['today'] = User::where('reg_time', '>=', strtotime(date("Y-m-d 00:00:00")))->count();
         $siteCount['uin'] = Qq::count();
         $siteCount['task'] = Task::count();
-        if (!\think\facade\Request::isMobile()) {
+        if (Request()->isMobile()) {
+            $lastUser = (new Task())->getZanWall();
+        } else {
             $lastUser = (new User)->getLastUser();
-            View::assign([
-                'lastUser' => $lastUser,
-            ]);
-
         }
         View::assign([
+            'lastUser' => $lastUser,
             'siteCount' => $siteCount,
         ]);
         return autoTemplate();
