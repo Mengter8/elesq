@@ -29,6 +29,6 @@ class WebsocketTest
         //回复客户端消息
         $this->websocket->emit("testcallback", ['aaaaa' => 1, 'getdata' => $event['asd']]);
         //不同于HTTP模式，这里可以进行多次发送
-        $this->websocket->emit("testcallback", ['aaaaa' => 1, 'getdata' => $event['asd']]);
+        $this->websocket->emit("test", ['aaaaa' => 1, 'getdata' => $event['asd']]);
     }
 }
