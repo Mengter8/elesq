@@ -19,7 +19,7 @@ return [
         'QiPao' => 'app\command\QiPao',
         //群签到
         'Qunqd'=> 'app\command\Qunqd',
-        //ck fuzz
+        //WebSocket
         'WebSocket' => 'app\command\WebSocket',
 
     ],
