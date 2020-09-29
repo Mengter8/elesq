@@ -50,7 +50,7 @@ class Common
         $pwd = escapeshellcmd($pwd);
         $vcode = escapeshellcmd($vcode);
 
-        $p = exec("/www/server/nvm/versions/node/v12.16.1/bin/node /www/wwwroot/server/server.js {$uin} {$pwd} {$vcode}",$output,$return_var);
+        $p = exec("/www/server/nvm/versions/node/v12.18.3/bin/node /www/wwwroot/server/server.js {$uin} {$pwd} {$vcode}",$output,$return_var);
         if ($return_var == 0){
             return resultJson(1, '获取成功！', $p);
         } else {

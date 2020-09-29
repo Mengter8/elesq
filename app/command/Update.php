@@ -77,6 +77,7 @@ class Update extends Command
                 $pwd = strtoupper(md5($value['pwd']));
                 if (\think\facade\Request::env('APP_DEBUG') == true) {
                     $res = get_curl("https://api.elesq.cn/common/getPCode.html", "uin={$uin}&pwd={$pwd}&vcode={$vcode}");
+//                    dump($vcode);
                     $json = json_decode($res, true);
                     $p = $json['data'];
                 } else {
@@ -89,13 +90,6 @@ class Update extends Command
                 $qqlogin = $Qlogin->qqlogin($uin, $p, $vcode, $pt_verifysession, $cookie);
                 if ($qqlogin['code'] == 0) {
                     (new Qq())->add('',$sid,$uin,'',$qqlogin['data']['skey'],$qqlogin['data']['pskey'],$qqlogin['data']['superkey']);
-//                    Qq::update([
-//                        'nick' => get_qqnick($uin),
-//                        'skey' => $qqlogin['data']['skey'],
-//                        'pskey' => $qqlogin['data']['pskey'],
-//                        'superkey' => $qqlogin['data']['superkey'],
-//                        'status' => 1,
-//                        'fail' => 0], ["uin" => $uin]);
                     $output->writeln($uin . ' 更新成功');
                     (new Task())->setTaskTime($uin, 'auto');
                 } elseif($qqlogin['code'] == -6){

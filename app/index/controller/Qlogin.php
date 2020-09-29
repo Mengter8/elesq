@@ -54,35 +54,68 @@ class Qlogin
 
         $uin = "941334412";
         $pwd = "123456789.";
-        $uin = "1543797310";
-        $pwd = "elesq.cn";
+//        $uin = "1543797310";
+//        $pwd = "elesq.cn";
+        $uin = "2665627212";
+        $pwd = "xjh123.0";
 
         $this->Qlogin->setLoginApi((new Server())->getId($serverId)['api']);
-        echo $this->Qlogin->get_curl_proxy("https://2020.ip138.com/");
+        echo $this->Qlogin->get_curl_proxy("https://202020.ip138.com");
 
         $checkvc = $this->Qlogin->checkvc($uin);
-//        dump($checkvc);die();
         dump($checkvc);
-        $cap_cd = $checkvc['data']['cap_cd'];
-        $cookie = $checkvc['data']['cookie'];
+        if ($checkvc['code'] == 1){
+
+            //可直接登录
+            $vcode = $checkvc['data']['vcode'];
+            $pt_verifysession = $checkvc['data']['pt_verifysession'];
+            $cookie = $checkvc['data']['cookie'];
+
+        } else {
+            //开始循环 滑块验证
+            $cap_cd = $checkvc['data']['cap_cd'];
+            $cookie = $checkvc['data']['cookie'];
+
+            for ($i = 1; $i <= 5; $i++) {
+                if (!isset($sess, $sid)) {
+                    $getvc = $this->Qlogin->getvc($uin, $cap_cd);
+                    $sid = $getvc['data']['sid'];
+                    $sess = $getvc['data']['sess'];
+                    $collectname = $getvc['data']['collectname'];
+                } else {
+                    $getvc = $this->Qlogin->getvc($uin, $cap_cd, $sess, $sid);
+                    $sess = $getvc['data']['sess'];
+                }
+//                    dump($getvc);
+                if ($getvc['code'] == 0) {
+                    echo "GetVC Error!";
+                }
+                $dovc = $this->Qlogin->dovc($uin, $getvc['data']['ans'], $cap_cd, $sess, $sid, $collectname);
+                if ($dovc['code'] == 0) {
+                    //验证通过
+                    $vcode = $dovc['data']['vcode'];
+                    $pt_verifysession = $dovc['data']['pt_verifysession'];
+                    echo("{$uin} 验证通过滑块");
+                    break;
+                } else {
+                    echo( "{$uin} {$dovc['message']}");
+                }
+            }
+        }
+        if (isset($vcode, $pt_verifysession, $cookie)) {
+            dump($vcode, $pt_verifysession, $cookie);
+            $pwd = strtoupper(md5($pwd));
+            $res = get_curl("https://api.elesq.cn/common/getPCode.html", "uin={$uin}&pwd={$pwd}&vcode={$vcode}");
+            $json = json_decode($res, true);
+            $p = $json['data'];
+            dump($res);
+            $qqlogin = $this->Qlogin->qqlogin($uin, $p, $vcode, $pt_verifysession, $cookie);
+            dump($qqlogin);
+        } else {
+            echo "error";
+        }
 
 
-        $getvc = $this->Qlogin->getvc($uin, $cap_cd);
-
-        dump($getvc);
-
-        $dovc = $this->Qlogin->dovc($uin, $getvc['data']['ans'], $cap_cd, $getvc['data']['sess'], $getvc['data']['sid'], $getvc['data']['collectname']);
-        dump($dovc);
-
-        $vcode = $dovc['data']['vcode'];
-        $pt_verifysession = $dovc['data']['pt_verifysession'];
-        $pwd = strtoupper(md5($pwd));
-        $res = get_curl("https://api.elesq.cn/common/getPCode.html", "uin={$uin}&pwd={$pwd}&vcode={$vcode}");
-        $json = json_decode($res, true);
-        $p = $json['data'];
-        $qqlogin = $this->Qlogin->qqlogin($uin, $p, $vcode, $pt_verifysession, $cookie);
-
-        dump($qqlogin);
     }
 
     /**

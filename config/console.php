@@ -20,7 +20,6 @@ return [
         //群签到
         'Qunqd'=> 'app\command\Qunqd',
         //ck fuzz
-        'fuzz' => 'app\command\Fuzz',
         'WebSocket' => 'app\command\WebSocket',
 
     ],
