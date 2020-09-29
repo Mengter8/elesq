@@ -5,7 +5,7 @@ use think\swoole\websocket\socketio\Parser;
 
 return [
     'server'     => [
-        'host'      => env('SWOOLE_HOST', '127.0.0.1'), // 监听地址
+        'host'      => env('SWOOLE_HOST', '192.168.1.105'), // 监听地址
         'port'      => env('SWOOLE_PORT', 80), // 监听端口
         'mode'      => SWOOLE_PROCESS, // 运行模式 默认为SWOOLE_PROCESS
         'sock_type' => SWOOLE_SOCK_TCP, // sock type 默认为SWOOLE_SOCK_TCP
@@ -25,7 +25,7 @@ return [
         ],
     ],
     'websocket'  => [
-        'enable'        => false,
+        'enable'        => true,
         'handler'       => Handler::class,
         'parser'        => Parser::class,
         'ping_interval' => 25000,
@@ -45,7 +45,9 @@ return [
                 'max_wait_time' => 5,
             ],
         ],
-        'listen'        => [],
+        'listen'        => [
+            'test' => \app\listener\WebsocketTest::class,  //这里将事件名称和事件处理类进行注册
+        ],
         'subscribe'     => [],
     ],
     'rpc'        => [

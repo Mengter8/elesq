@@ -36,11 +36,9 @@ class Index
     }
 
     public function test(){
-
         echo get_qqnick('204461275');
-                echo get_qqnick('123456');
+        echo get_qqnick('123456');
 
-        die();
         $task = new Task();
         $res = $task->where('type','=','auto')->select()->toArray();
         dump($res);
