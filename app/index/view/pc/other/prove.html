@@ -15,9 +15,9 @@
             {elseif $uin_status === 0 /}
             <div class="mt3"><font class="hui">秒赞状态 ：</font><font class="bold lv">未开启 - 状态已失效</font></div>
             {else /}
-            <div class="mt3"><font class="hui">秒赞状态 ：</font><font class="bold">未开启</font></div>
+            <div class="mt3"><font class="hui">秒赞状态 ：</font><font class="bold">未加入</font></div>
             {/if}
-            {if $nickname}
+            {if $update_time}
             <div class="mt3"><font class="hui">秒赞会员 ：</font>未开通 <a class="ml3 f3 lan" href="javascript:void(0);" onclick="mode_shop_vip();">开通秒赞VIP</a></div>
             <div class="mt3"><font class="hui">秒赞信息 ：</font>连续秒赞：{:data_Diff($update_time)}天，累计{:data_Diff($create_time)}天</div>
             {else /}
