@@ -25,7 +25,7 @@ class User
         cookie('domin_url', '/user/index');
 
         (new \app\model\User())->updateMyInfo();
-        if (!\think\facade\Request::isMobile()) {
+        if (!Request()->isMobile()) {
             $siteCount['user'] = \app\Model\User::count();
             $siteCount['today'] = \app\model\User::where('reg_time', '>=', strtotime(date("Y-m-d 00:00:00")))->count();
             $siteCount['uin'] = Qq::count();
@@ -33,7 +33,7 @@ class User
             View::assign([
                 'siteCount' => $siteCount,
                 'lastZan' => (new task())->getLastZan(),//最新秒赞QQ
-                'scoreList' => (new \app\model\User())->getScoreList(),
+                'scoreList' => (new \app\model\User())->getLastUser(),
             ]);
         }
         return autoTemplate();

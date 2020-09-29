@@ -109,36 +109,6 @@ class User extends Model
     }
 
     /**
-     * 增加我的用户积分
-     * @param int $uid
-     * @param int $score 积分数量
-     * @param string $name
-     */
-    public function addUserScore($uid, $score, $name)
-    {
-        $this->where('uid', '=', $uid)
-            ->inc('score', $score)
-            ->update();
-        (new Log())->createLog($uid, $score, $name, 'score', 1);
-        $this->updateMyInfo();
-    }
-
-    /**
-     * 减少用户积分
-     * @param int $uid
-     * @param int $score 积分数量
-     * @param string $class 类型
-     */
-    public function decUserScore($uid, $score, $name)
-    {
-        $this->where('uid', '=', $uid)
-            ->dec('score', $score)
-            ->update();
-        (new Log())->createLog($uid, $score, $name, 'score', 0);
-        $this->updateMyInfo();
-    }
-
-    /**
      * 获取用户邀请数量
      */
     public function getInviteCount()
@@ -217,14 +187,6 @@ class User extends Model
         }
     }
 
-    /**
-     * 获取积分排行榜
-     */
-    public function getScoreList()
-    {
-        return $this->order('score', 'desc')
-            ->select();
-    }
 
     /**
      * 查询代理信息

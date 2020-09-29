@@ -35,12 +35,9 @@
         <div class="in-list top mt4">
             <dl>
                 <dd>
-                    <p class="hui">账户积分 ：<font class="hong">{:session('user.score')}</font> <font class="f3">分</font></p>
                     <p class="mt3 hui">账户余额 ：<font class="hong">{:session('user.money')}</font> <font class="f3">元</font></p>
-<!--                    <p class="mt3 hui">挂机配额 ：<font class="hong">*</font> <font class="f3">个</font><a class="ml5 f3 lan" href="/user/shop/peie.html" data-pjax>购买配额</a></p>-->
                     <p class="mt3"><font class="hui">绑定 QQ ：</font>{:session('user.qq')} <a class="ml5 f3 lan" onclick="x.mode('/user/bindQq.html');">换绑</a></p>
                     <p class="mt3"><font class="hui">平台会员 ：</font><font class="hong">VIP会员</font> {:date('Y-m-d',session('user.vip_end_time'))} 到期  <a class="ml5 f3 lan" href="/shop/vip.html" data-pjax>开通秒赞VIP</a></p>
-<!--                    <p class="mt3"><font class="hui">平台会员 ：</font>* <a class="ml5 f3 lan" href="/user/shop/vip.html" data-pjax>开通秒赞VIP</a></p>-->
                     <p class="mt3"><font class="hui">注册时间 ：</font>{:date('Y-m-d H:i:s',session('user.reg_time'))}</p>
                     <p class="mt3"><font class="hui">最近登陆 ：</font>{:date('Y-m-d H:i:s',session('user.last_time'))}</p>
                     <p class="mt3"><font class="hui">代理等级 ：</font>{if findAgentLevel(session('user.agent'))}{:findAgentLevel(session('user.agent'))['name']}{else /}非代理{/if}</p>
@@ -117,8 +114,7 @@
             <div class="col-6 pl3">
                 <div class="w o-h bg-bai b rx3">
                     <div class="g-title pl4 pr4 t-v bb">
-                        <div class="col-8  h t-v bold"><span class="mr10">积分排行榜</span></div>
-                        <div class="col-4 t-v t-r"><a class="w15 h9 lan f3 t-v t-r" href="/other/sign.html" data-pjax>获取积分</a></div>
+                        <div class="col-8  h t-v bold"><span class="mr10">最新用户</span></div>
                     </div>
                     <div class="o-y in-list in-b in-p" style="height:318px;">
                         {foreach $scoreList as $key=>$value}
@@ -126,7 +122,7 @@
                             <dt><p class="w6 p1 bg-qing t-c rx1 bold">{$key+1}</p></dt>
                             <dt><img class="w6 h6 b ml3 mr3 r5" src="//q4.qlogo.cn/headimg_dl?dst_uin={$value.qq}&spec=40"></dt>
                             <dd>{$value.nickname}</dd>
-                            <dt><span class="tag bg-hei">{$value.score}分</span></dt>
+                            <dt><span class="tag bg-qing">{$value.vip_end_time|date='Y-m-d'}</span></dt>
                         </dl>
                         {/foreach}
                     </div>
