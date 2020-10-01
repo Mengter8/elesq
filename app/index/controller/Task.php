@@ -190,7 +190,7 @@ class Task
         $uin = Request::post('uin');
         $type = Request::post('type');
 
-        if ((new \app\model\Task())->DelTask($type, $uin) == 1) {
+        if ((new \app\model\Task())->DeleteTask($type, $uin) == 1) {
             return "<script>x.msg('删除成功');$('#is{$type}').remove();</script>";
         } else {
             return "<script>x.msg('删除失败');$('#is{$type}').remove();</script>";

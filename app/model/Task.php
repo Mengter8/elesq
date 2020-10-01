@@ -169,12 +169,18 @@ class Task extends Model
         }
     }
 
-    public function DelTask($type, $uin)
+    /**
+     * 删除任务
+     * @param string|null $type 删除的type字段 可为空
+     * @param int $uin 删除的qq
+     */
+    public function DeleteTask($type, $uin)
     {
-        $ret = $this->where('type', '=', $type)
-            ->where('uin', '=', $uin)
-            ->delete();
-        return $ret;
+        $ret = $this->where('uin', '=', $uin);
+        if ($type){
+            $ret->where('type', '=', $type);
+        }
+        $ret->delete();
     }
 
     /**
