@@ -107,7 +107,7 @@ class Task
             'uin' => $uin,
             'type' => $type,
             'dataset' => '',
-            'create_time'=> time(),
+            'create_time' => time(),
             'last_time' => time(),
             'next_time' => time()
         ]);
@@ -190,7 +190,7 @@ class Task
         $uin = Request::post('uin');
         $type = Request::post('type');
 
-        if ((new \app\model\Task())->DeleteTask($type, $uin) == 1) {
+        if ((new \app\model\Task())->DeleteTask($uin, $type) == 1) {
             return "<script>x.msg('删除成功');$('#is{$type}').remove();</script>";
         } else {
             return "<script>x.msg('删除失败');$('#is{$type}').remove();</script>";

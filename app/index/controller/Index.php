@@ -59,9 +59,10 @@ class Index
         foreach ($allTask as $value){
 
             $res = $qq->where('uin','=',$value['uin'])->select()->toArray();
+            dump($res);
             if (!$res){
                 dump("{$value['uin']} qq数据库没有该信息 已删除该任务");
-                $task->DeleteTask(NULL,$value['uin']);
+                $task->DeleteTask($value['uin'],NULL);
             }
         }
         dump(count($allQq));

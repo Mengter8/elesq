@@ -171,13 +171,13 @@ class Task extends Model
 
     /**
      * 删除任务
-     * @param string|null $type 删除的type字段 可为空
      * @param int $uin 删除的qq
+     * @param string|null $type 删除的type字段 可为空
      */
-    public function DeleteTask($type, $uin)
+    public function DeleteTask($uin, $type)
     {
         $ret = $this->where('uin', '=', $uin);
-        if ($type){
+        if ($type) {
             $ret->where('type', '=', $type);
         }
         $ret->delete();
@@ -189,7 +189,7 @@ class Task extends Model
      * @param string $type 任务类型
      * @param array $dataset 数据集
      */
-    public function createTask($uin, $type,$dataset = array())
+    public function createTask($uin, $type, $dataset = array())
     {
         $this->create([
             'uin' => $uin,
