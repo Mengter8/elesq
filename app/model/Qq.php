@@ -3,6 +3,7 @@ declare (strict_types=1);
 
 namespace app\model;
 
+use qq\login;
 use think\Model;
 
 /**
@@ -92,7 +93,12 @@ class Qq extends Model
      */
     public function add($uid,$sid,$uin,$pwd,$skey,$pskey,$superkey)
     {
-        //验证CK
+        //验证CK有效性
+        $login = new login($uin,$skey,$pskey,$superkey);
+        if ($login->checkLogin() == false){
+            return resultJson(0, '登录信息验证失败');
+        }
+
         $task = new Task();
         $res = $this->getByUin($uin);
         if (!$uid) {

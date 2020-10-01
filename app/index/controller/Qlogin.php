@@ -36,11 +36,9 @@ class Qlogin
         }
         if (isset($serverId)) {
             if (defined('proxy') == false) {
-                $ret = (new Server())->getId($serverId);
-                if ($ret) {
+                if ($ret = (new Server())->getId($serverId)) {
                     $this->Qlogin->setLoginApi($ret['api']);
-                }
-                if (!$ret) {
+                } else  {
                     return resultJson(0, '服务器ID错误');
                 }
             }
