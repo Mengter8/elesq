@@ -49,24 +49,26 @@ class Index
             $res = $task->where('uin','=',$value['uin'])->where('type','=','auto')->select()->toArray();
             if (!$res){
                 dump("{$value['uin']} auto任务不存在 已创建");
-                //创建auto
                 $task->createTask($value['uin'], 'auto',array());
+            }
+            $res = $task->where('uin','=',$value['uin'])->where('type','=','zan')->select()->toArray();
+            if (!$res){
+                dump("{$value['uin']} zan任务不存在 已创建");
+                $task->createTask($value['uin'], 'zan',array("server"=>0,"mode"=>0,"qqlist"=>""));
+
             }
         }
 
-        $allTask = $task->where('type','=','auto')->select()->toArray();
+        $allTask = $task->select()->toArray();
 
         foreach ($allTask as $value){
-
             $res = $qq->where('uin','=',$value['uin'])->select()->toArray();
-            dump($res);
             if (!$res){
                 dump("{$value['uin']} qq数据库没有该信息 已删除该任务");
                 $task->DeleteTask($value['uin'],NULL);
             }
         }
-        dump(count($allQq));
-        dump(count($allTask));
+
         {
             $output = \think\facade\Console::call('QiPao');
             return $output->fetch();
