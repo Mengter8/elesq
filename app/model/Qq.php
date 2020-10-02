@@ -32,8 +32,11 @@ class Qq extends Model
      * @param int $mod
      * @param null $search
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getMyUin($mod = NULL, $search = NULL)
+    public function getMyUin($mod = 0, $search = NULL)
     {
         $uid = session('user.uid');
         if ($mod == 1) {
