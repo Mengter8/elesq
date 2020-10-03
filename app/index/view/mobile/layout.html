@@ -136,24 +136,6 @@
     function mode_invite_log(isMyLog = 'false'){
         x.mode('/other/inviteLog.html?isMyLog=' + isMyLog, 'other_invite_log');
     }
-    /**
-     * 每日签到
-     */
-    function mode_sign(){
-        x.mode('/other/sign.html', 'other_sign');
-    }
-    function mode_sign_log(){
-        x.mode('/other/signLog.html', 'other_sign_log');
-    }
-    /**
-     * 积分兑换
-     */
-    function mode_redeem(){
-        x.mode('/other/redeem.html', 'other_redeem');
-    }
-    function mode_redeem_log(isMyLog = 'false'){
-        x.mode('/other/redeemLog.html?isMyLog=' + isMyLog, 'other_redeem_log');
-    }
 
     /**
      *
@@ -180,11 +162,8 @@
     }
 
     /**
-     * 用户积分中心
+     * 用户余额中心
      */
-    function mode_user_score(){
-        x.mode('/user/score.html', 'user_score');
-    }
     function mode_user_money(){
         x.mode('/user/money.html', 'user_money');
     }
@@ -197,12 +176,6 @@
     function mode_shop_money(){
         x.mode('/shop/money.html', 'shop_money');
 
-    }
-    /**
-     * 我的积分记录
-     */
-    function mode_score_log(){
-        x.mode('/user/scoreLog.html', 'user_score_log');
     }
     function mode_user_vip(){
         x.mode('/user/vip.html');
