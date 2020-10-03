@@ -36,7 +36,7 @@
                     <label class="i-checks ml4"><input type="radio" name="mode" onclick="$('#need').show();" value="2" {if isset($data.mode) && $data.mode == 2}checked{/if}><i></i>黑名单</label>
                 </dd>
             </div>
-            <div id="need" {if $data.mode == 0}style="display: none;"{/if}>
+            <div id="need" {if !isset($data.mode) ||  $data.mode == 0}style="display: none;"{/if}>
             <div class="pl2 ml12 mt1 f2 hui dl">白名单：仅签列表QQ群；黑名单：不签列表QQ群</div>
             <div class="mt3"><font class="f4 bold">QQ群列表</font><font class="ml4 f2 hui dl">（多个群号之间请使用逗号或小数点隔开）</font></div>
             <div class="mt2"><textarea type="text" class="form w b" name="qunlist" placeholder="输入QQ群" rows="3" onkeyup="this.value=this.value.replace(/[^\d,，.]/,'')" autocomplete="off">{$data.qunlist|default=""}</textarea></div>

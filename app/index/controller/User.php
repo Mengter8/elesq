@@ -126,7 +126,6 @@ class User
             ]);
             if ($ret->uid) {
                 //增加积分
-                $user->addUserScore(session::get('tid', 0), 30, '推广好友');
                 session::set('user', $ret->toArray());
                 return redirect((string)url('/user/index'));
             } else {
@@ -194,11 +193,19 @@ class User
         return autoTemplate();
     }
 
+    /**
+     * 会员开通日志
+     * @return string|\think\response\Redirect
+     */
     public function vipLog()
     {
         return autoTemplate();
     }
 
+    /**
+     * 会员开通日志Html
+     * @return string|\think\response\Redirect
+     */
     public function vipLogHtml()
     {
         $log = new log();
@@ -216,16 +223,29 @@ class User
         return autoTemplate();
     }
 
+    /**
+     * 账户余额页面
+     * @return string|\think\response\Redirect
+     */
     public function money()
     {
         return autoTemplate();
     }
 
+    /**
+     * 余额日志
+     * @return string|\think\response\Redirect
+     */
     public function moneyLog()
     {
         return autoTemplate();
     }
 
+    /**
+     * 余额日志Html
+     * @return string|\think\response\Redirect
+     * @throws \think\db\exception\DbException
+     */
     public function moneyLogHtml()
     {
         $log = new log();

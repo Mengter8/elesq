@@ -567,6 +567,11 @@ function getRuntimeCache($type, $filename)
  */
 function putRuntimeCache($type, $filename, $content)
 {
+    $path = root_path() . "runtime" . DIRECTORY_SEPARATOR . $type;
+    if (!is_dir($path)) {
+        mkdir($path, 0777, true);
+    }
+
     $path = root_path() . "runtime" . DIRECTORY_SEPARATOR . $type . DIRECTORY_SEPARATOR . $filename;
     file_put_contents($path, $content);
     return $path;

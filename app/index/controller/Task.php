@@ -99,7 +99,6 @@ class Task
             ->whereType($type)
             ->whereUin($uin)
             ->find();
-//        print_r(unserialize($res['dataset']));
         if ($res and $res->ToArray()) {
             return '<script>x.msg(\'请不要重复添加\');</script>';
         }
@@ -137,6 +136,7 @@ class Task
             'data' => $res['dataset'],
             'uin' => $uin
         ]);
+        dump($res['dataset']);
         if (Request::isMobile()) {
             View::config(['view_dir_name' => 'view' . DIRECTORY_SEPARATOR . 'mobile']);
             return View::fetch($type);
