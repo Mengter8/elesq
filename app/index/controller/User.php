@@ -165,43 +165,6 @@ class User
     }
 
     /**
-     * 积分兑换
-     */
-    public function score()
-    {
-        return autoTemplate();
-    }
-
-    /**
-     * 我的积分记录
-     */
-    public function scoreLog()
-    {
-        return autoTemplate();
-    }
-
-    /**
-     * 积分兑换日志 HTML
-     */
-    public function scoreLogHtml()
-    {
-        $log = new log();
-        $type = Request::get('type');
-        $page = Request::get('page');
-
-        $listRows = 12;
-        $list = $log->getScoreLog($listRows, $type);
-        $isLoadingSuccess = ceil($list->total() / $listRows) <= $page;
-
-        View::assign([
-            'list' => $list,
-            'count' => $list->total(),
-            'isLoadingSuccess' => $isLoadingSuccess
-        ]);
-        return autoTemplate();
-    }
-
-    /**
      * 我的会员中心
      */
     public function vip()

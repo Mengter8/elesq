@@ -33,43 +33,6 @@ class log extends Model
     }
 
     /**
-     * 获取积分日志
-     * @param string $listRows vip/score
-     * @param int $type 增加或减少
-     */
-    public function getScoreLog($listRows,$type){
-         $sql = $this->where('class','=','score');
-         if ($type == 1){
-             $sql = $sql->where('type','=',1);
-         } elseif($type ==2){
-             $sql = $sql->where('type','=',0);
-         }
-
-         return $sql->order('create_time','desc')->paginate($listRows);
-    }
-    public function User()
-    {
-        return $this->hasOne(User::class, 'uid');
-    }
-
-    /**
-     * 获取兑换记录
-     * @param string $listRows 每页数量
-     * @param bool $isMyLog 是否是自己的日志
-     */
-    public function getRedeemLog($listRows,$isMyLog)
-    {
-        $sql = $this->hasWhere('User')
-            ->where('class','=','redeem')
-            ->tableField('nickname,qq', 'User')
-            ->order('create_time', 'desc');
-        if ($isMyLog) {
-            $sql = $sql->where('User.uid', '=', session::get('user.uid'));
-        }
-        return $sql->paginate($listRows);
-    }
-
-    /**
      * 获取VIP日志
      * @param $listRows
      */
@@ -80,7 +43,14 @@ class log extends Model
             ->paginate($listRows);
     }
 
-    public function getMoneyLog($listRows,$type){
+    /**
+     * 获取余额日志
+     * @param int $listRows 每页数量
+     * @param string $type 类型 1/增加 2/减少
+     * @return \think\Paginator
+     * @throws \think\db\exception\DbException
+     */
+    public function getMoneyLog($listRows, $type){
         $sql = $this->where('class','=','money');
         if ($type == 1){
             $sql = $sql->where('type','=',1);

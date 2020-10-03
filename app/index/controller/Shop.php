@@ -94,7 +94,7 @@ class Shop
     {
         $user = new \app\model\User();
         $user->updateMyInfo();
-        $action = input('act');
+        $action = input('act'); //购买类型
         $id = input('id');
         $type = input('type'); //支付方式
 
@@ -140,14 +140,10 @@ class Shop
                 $user->decUserMoney(session('user.uid'), $res['price'], $res['name']);
                 //自动开通
                 $res['type'] = $action;
-                $open = new class() {
-                    public $dataset;
-                    public $uid;
-                    public $method;
-                };
-                $open->dataset = $res;
-                $open->uid = session('user.uid');
-                $open->method = $method;
+                $open = array();
+                $open['dataset'] = $res;
+                $open['uid'] = session('user.uid');
+                $open['method'] = $method;
                 (new Order())->autoOpen($open);
                 return "<script>x.btn('充值成功','OK!');</script>";
             }
@@ -192,7 +188,7 @@ class Shop
             $order = new Order();
             $res = $order->getOrderId($out_trade_no);
             if ($res) {
-                if ($_GET['trade_status'] == 'TRADE_SUCCESS' && $res) {
+                if ($_GET['trade_status'] == 'TRADE_SUCCESS') {
                     if ($res['status'] == 0) {
                         $order->updateOrder($out_trade_no, [
                             'status' => 1,
