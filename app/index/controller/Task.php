@@ -136,7 +136,7 @@ class Task
             'data' => $res['dataset'],
             'uin' => $uin
         ]);
-        dump($res['dataset']);
+//        dump($res['datas  et']);
         if (Request::isMobile()) {
             View::config(['view_dir_name' => 'view' . DIRECTORY_SEPARATOR . 'mobile']);
             return View::fetch($type);
