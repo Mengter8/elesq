@@ -133,12 +133,10 @@ class sign extends login
         $post = json_encode(array('uin' => $this->uin, 'type' => 1, 'qua' => 'V1_AND_SQ_8.4.8_1492_YYB_D'));
 
         $addheader = array("Content-Type: application/json; charset=utf-8");
-
         $referer = "https://ti.qq.com/signin/public/indexv2.html?_wv=1090532257&_wwv=13";
         $data = get_curl($url, $post, $referer, $this->cookie, 0, 0, 0, $addheader);
 
         $arr = json_decode($data, true);
-        dump($arr);
         if (array_key_exists('ret', $arr) && $arr['ret'] == 0) {
             if ($arr['data'] && $arr['data']['retCode'] == 0) {
                 $this->msg[] = 'QQ每日打卡成功！已打卡' . $arr['data']['totalDays'] . '天';
@@ -582,20 +580,20 @@ class sign extends login
 //        $id=6141;
         $ua = 'Mozilla/5.0 (Linux; Android 10; MI 9 Build/QKQ1.190825.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.126 MQQBrowser/6.2 TBS/045008 Mobile Safari/537.36 V1_AND_SQ_8.2.0_1296_YYB_D QQ/8.2.0.4310 NetType/WIFI WebP/0.3.0 Pixel/1080 StatusBarHeight/75 SimpleUISwitch/0';
 
-        $url = 'https://g.vip.qq.com/bubble/bubbleSetup?uin=' . $this->uin . '&adtag=%5Badtag%5D&client=androidQQ&version=8.2.0&platformId=2&_bid=undefined&_lv=0&format=json&t=' . time() . '214&id=' . $id . '&platformId=2&uin=' . $this->uin . '&g_tk=' . $this->gtk;
+        $url = "https://g.vip.qq.com/bubble/bubbleSetup?uin={$this->uin}&adtag=%5Badtag%5D&client=androidQQ&version=8.2.0&platformId=2&_bid=undefined&_lv=0&format=json&t=" . time() . "214&id={$id}&platformId=2&uin={$this->uin}&g_tk={$this->gtk}";
         $data = get_curl($url, 0, 'https://zb.vip.qq.com/sonic/bubble?_wv=16778243', $this->cookie, 0, $ua);
-        $arr = json_decode($data, true);
-
-        if (json_decode($data, true) && array_key_exists('ret', $arr) && $arr['ret'] == 0) {
-            $this->msg[] = '更换气泡成功！';
-        } elseif ($arr['ret'] == 5002) {
-            $this->msg[] = '气泡更换失败！需参与活动';
-        } elseif ($arr['ret'] == 2002) {
-            $this->msg[] = '气泡更换失败！你不是会员';
-        } elseif ($arr['ret'] == -100001) {
-            $this->fail = true;
-            $this->qipao_login();
-            $this->msg[] = '更换气泡失败！SKEY过期';
+        if ($arr = json_decode($data, true)){
+            if (array_key_exists('ret', $arr) && $arr['ret'] == 0) {
+                $this->msg[] = '更换气泡成功！';
+            } elseif ($arr['ret'] == 5002) {
+                $this->msg[] = '气泡更换失败！需参与活动';
+            } elseif ($arr['ret'] == 2002) {
+                $this->msg[] = '气泡更换失败！你不是会员';
+            } elseif ($arr['ret'] == -100001) {
+                $this->fail = true;
+                $this->qipao_login();
+                $this->msg[] = '更换气泡失败！SKEY过期';
+            }
         } else {
             $this->qipao_login();
             $this->msg[] = '更换气泡失败！' . $arr['msg'];
