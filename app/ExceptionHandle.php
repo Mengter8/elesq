@@ -36,6 +36,8 @@ class ExceptionHandle extends Handle
      */
     public function report(Throwable $exception): void
     {
+        //记录报错日志
+        putRuntimeCache("Debug", time() . ".txt", $exception);
         // 使用内置的方式记录异常日志
         parent::report($exception);
     }
@@ -51,7 +53,6 @@ class ExceptionHandle extends Handle
     public function render($request, Throwable $e): Response
     {
         // 添加自定义异常处理机制
-        dump($e);
 
         // 其他错误交给系统处理
         return parent::render($request, $e);
