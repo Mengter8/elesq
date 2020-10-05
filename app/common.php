@@ -192,7 +192,7 @@ function get_qqnick($uin)
 
     $nickname = json_decode($ret, true);
 //    dump($nickname);
-    if ($nickname){
+    if ($nickname) {
         return $nickname[$uin][6];
     } else {
         return "[NULL]";
@@ -543,6 +543,50 @@ function findAgentLevel($level)
 }
 
 /**
+ * 获取会员信息
+ * @param $startTime
+ * @param $endTime
+ * @param int $agentLevel
+ * @return array
+ */
+function getVipLevel($startTime, $endTime,$agentLevel = 0)
+{
+    if ($agentLevel != 0) {
+        $info['title'] = findAgentLevel($agentLevel)['name'];
+        $info['chat_color'] = "cheng bold";
+    } else {
+        if (time() > $endTime) {
+            $info['title'] = '已过期'; //标题
+            $info['color'] = 'hui';//手机模板颜色
+            $info['chat_color'] = 'hui';//聊天室文字颜色
+            $info['diff'] = 0;//剩余时间
+        } else {
+            $diff = data_Diff($startTime, $endTime);
+            if ($diff >= 1 && $diff < 30) {
+                $info['color'] = 'lan';
+                $info['chat_color'] = 'lan';
+                $info['title'] = '体验VIP';
+            } elseif ($diff < 90) {
+                $info['color'] = 'lan';
+                $info['chat_color'] = 'lan bold';
+                $info['title'] = '包月VIP';
+            } elseif ($diff < 365) {
+                $info['color'] = 'zi';
+                $info['chat_color'] = 'zi bold';
+                $info['title'] = '包季VIP';
+            } elseif ($diff >= 365) {
+                $info['color'] = 'huang';
+                $info['chat_color'] = 'zi bold';
+                $info['title'] = '年费VIP';
+            }
+            $info['diff'] = ceil(($endTime - time()) / 86400);
+        }
+    }
+
+    return $info;
+}
+
+/**
  * 读取临时文件
  * @param string $type 类型
  * @param string $filename 文件名称
@@ -626,10 +670,11 @@ function resultJson($code, $message, $data = NULL)
     ]);
 }
 
-function resultArray($code,$message, $data = NULL){
-        return [
-            'code' => $code,
-            'message' => $message,
-            'data' => $data
-        ];
+function resultArray($code, $message, $data = NULL)
+{
+    return [
+        'code' => $code,
+        'message' => $message,
+        'data' => $data
+    ];
 }
