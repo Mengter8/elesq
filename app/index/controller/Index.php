@@ -43,12 +43,9 @@ class Index
         $qq = new Qq();
 //        $res = $qq->getByUin('1543797310')->toArray();
         $res = $qq->getByUin('466645214')->toArray();
-        dump($res);
-
         $sign = new sign($res['uin'], $res['skey'], $res['pskey'], $res['superkey']);
 
         $sign->qipao();
-        //可能是feeType
         dump($sign->msg);
 
     }

@@ -145,7 +145,7 @@
     }
 
     function LoadChatList(l) {
-        x.gethtml('/html/user/chat?time=' + ChatTime, 'chatheight', l, 1);
+        x.gethtml('/chat/index?time=' + ChatTime, 'chatheight', l, 1);
     }
 
     $(function ($) {
@@ -157,7 +157,7 @@
         var chatcon = x.getval('#chatcon', '请先输入内容!');
         if (!chatcon) return;
         _sys_cleartime();
-        x.ajax('/ajax/user/chat', 'act=add&chattime=' + ChatTime + '&chatcon=' + encodeURIComponent(trim(chatcon)));
+        x.ajax('/chat/submit', 'act=add&chattime=' + ChatTime + '&chatcon=' + encodeURIComponent(trim(chatcon)));
     }
 </script>
 {if condition="!session('user.qq')"}

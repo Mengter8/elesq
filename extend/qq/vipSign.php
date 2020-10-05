@@ -365,7 +365,6 @@ class vipSign extends login
         $data = get_curl($url, 0, $url, $this->cookie);
         preg_match('/QZOutputJson=\((.*?)\)/is', $data, $json);
         $arr = json_decode($json[1], true);
-//        dump($arr);
         if (array_key_exists('ret', $arr) && $arr['ret'] == 0) {
             $this->msg[] = $this->uin . ' 腾讯视频VIP会员签到成功！获得' . $arr['checkin_score'] . '成长值';
         } elseif ($arr['ret'] == -10006) {
