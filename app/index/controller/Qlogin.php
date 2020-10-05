@@ -48,12 +48,6 @@ class Qlogin
     public function test()
     {
         $serverId = input('get.serverId');
-
-
-        $uin = "941334412";
-        $pwd = "123456789.";
-//        $uin = "1543797310";
-//        $pwd = "elesq.cn";
         $uin = "2665627212";
         $pwd = "xjh123.0";
 
@@ -63,7 +57,6 @@ class Qlogin
         $checkvc = $this->Qlogin->checkvc($uin);
         dump($checkvc);
         if ($checkvc['code'] == 1){
-
             //可直接登录
             $vcode = $checkvc['data']['vcode'];
             $pt_verifysession = $checkvc['data']['pt_verifysession'];

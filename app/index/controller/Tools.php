@@ -27,7 +27,7 @@ class Tools
                 'status' => $res['status'],
             ]);
         }
-        dump(cookie('mpz_auto'));
+//        dump(cookie('mpz_auto'));
         return autoTemplate();
     }
 
