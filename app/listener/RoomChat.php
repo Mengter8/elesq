@@ -28,27 +28,26 @@ class RoomChat
      */
     public function handle($event)
     {
-        //获取当前客户端fd
-        $fd = $this->websocket->getSender();
-        //获取当前room?
-        $room = $this->websocket->getTo();
-        //发送消息
-        //如果没有加入Room 只返回消息 自己可见
-        //如果加入Room 则群发加入的Room 消息
-        $chat = new Chat();
-        $user = $chat->getUserInfo($event['token']);
-        $ret = $chat->createChat($user['uid'], $event['content']);
+        if (isset($event['content'], $event['token'])) {
+            $fd = $this->websocket->getSender();
+            $chat = new Chat();
+            $user = $chat->getUserInfo($event['token']);
+            $ret = $chat->createChat($user['uid'], $event['content']);
 
+            //发送消息
+            //如果没有加入Room 只返回消息 自己可见
+            //如果加入Room 则群发加入的Room 消息
+            $this->websocket->emit("ChatCallback", ['fd' => $fd, 'message' => "{$event['content']}"]);
 
-        $this->websocket->emit("ChatCallback", ['fd' => $fd, 'message' => "{$event['content']}", 'time' => date('m-d H:i', $ret->time), "user" => $user]);
+            //进行对指定Room 进行群发
+            $this->websocket->to('chat')->emit("SysChatCallback", ['fd' => $fd, "message" => "{$event['content']}", 'time' => date('m-d H:i', $ret->time), "user" => $user]);
+            /*
+            //指定客户端发送(FD)
+            $this->websocket->setSender(1)->emit("callback", ['getdata' => $event['content']]);
 
-//        //进行对指定Room 进行群发
-        $this->websocket->to('chat')->emit("SysChatCallback", ['fd' => $fd, "message" => "{$event['content']}", 'time' => date('m-d H:i', $ret->time), "user" => $user]);
-//
-//        //指定客户端发送(FD)
-//        $this->websocket->setSender(1)->emit("callback", ['getdata' => $event['content']]);
-//
-//        //关闭指定客户端连接，参数为fd，默认为当前链接
-//        $this->websocket->close();
+            //关闭指定客户端连接，参数为fd，默认为当前链接
+            $this->websocket->close();
+            */
+        }
     }
 }

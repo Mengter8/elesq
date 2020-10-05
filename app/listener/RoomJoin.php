@@ -24,14 +24,13 @@ class RoomJoin
      */
     public function handle($event)
     {
-        $this->websocket->join($event['room']);
-        $chat = new Chat();
-        $user = $chat->getUserInfo($event['token']);
-
-        $fd = $this->websocket->getSender();
-        $this->websocket->emit("JoinCallback", ['fd' => $fd, 'message' => "join to {$event['room']} is success!",'data'=>$user]);
-        $this->websocket->to($event['room'])->emit("SysChatCallback", ['fd' => $fd, "message" => "用户 {$user['nickname']} 加入了本房间"]);
-//        $this->websocket->to($event['room'])->emit("SysChatCallback", ["message" => $this->websocket->getTo()]);
-
+        if (isset($event['token'],$event['room'])) {
+            $this->websocket->join($event['room']);
+            $chat = new Chat();
+            $user = $chat->getUserInfo($event['token']);
+            $fd = $this->websocket->getSender();
+            $this->websocket->emit("JoinCallback", ['fd' => $fd, 'message' => "join to {$event['room']} is success!", 'data' => $user]);
+            $this->websocket->to($event['room'])->emit("SystemCallback", ['fd' => $fd, "message" => "用户 {$user['nickname']} 加入了本房间"]);
+        }
     }
 }
