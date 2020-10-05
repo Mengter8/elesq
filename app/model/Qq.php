@@ -60,12 +60,8 @@ class Qq extends Model
      */
     public function findMyUin($uin)
     {
-        if ($res = $this->where('uin', '=', $uin)->find()) {
-            if ($res->toArray()['uid'] == session('user.uid')) {
-                return $res->toArray();
-            } else {
-                return false;
-            }
+        if ($res = $this->where('uin', '=', $uin)->where('uid','=',session('user.uid'))->find()) {
+            return true;
         } else {
             return false;
         }

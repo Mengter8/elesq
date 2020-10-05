@@ -26,6 +26,14 @@ class CheckSafeChallenge
                 exit(':-) SafeChallenge');
             }
         }
+
+        //判断task任务是否存在
+        $this->type = Request::param('type');
+        if ($this->type) {
+            if (!findTask($this->type)) {
+                abort(401, '请勿恶意操作');
+            }
+        }
         // 继续执行进入到控制器
         return $next($request);
     }

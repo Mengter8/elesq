@@ -125,7 +125,6 @@ class User
                 'vip_end_time' => time() + (7 * 24 * 60 * 60),
             ]);
             if ($ret->uid) {
-                //增加积分
                 session::set('user', $ret->toArray());
                 return redirect((string)url('/user/index'));
             } else {

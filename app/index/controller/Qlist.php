@@ -10,28 +10,15 @@ use think\facade\View;
 
 class Qlist
 {
-    private $res;
-    private $uin;
     protected $request;
 
-    protected $middleware = ['app\index\middleware\CheckLoginUser'];
+    protected $middleware = ['app\index\middleware\CheckLoginUser','app\index\middleware\CheckSafeChallenge'];
 
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->initialize();
     }
 
-    protected function initialize()
-    {
-        $this->uin = Request::param('uin');
-        if ($this->uin) {
-            $this->res = (new Qq())->findMyUin($this->uin);
-            if (!$this->res) {
-                abort(401, '请勿恶意操作');
-            }
-        }
-    }
 
     public function index()
     {
@@ -67,10 +54,11 @@ class Qlist
      */
     public function del()
     {
-        $ret = Qq::where('uin', '=', $this->uin)->delete();
-        $ret = Task::where('uin', '=', $this->uin)->delete();
+        $uin = Request::param('uin');
+        $ret = Qq::where('uin', '=', $uin)->delete();
+        $ret = Task::where('uin', '=', $uin)->delete();
         if ($ret != 0) {
-            return "<script>x.mclose();x.msg('删除成功');$('#uin{$this->uin}').remove();</script>";
+            return "<script>x.mclose();x.msg('删除成功');$('#uin{$uin}').remove();</script>";
         } else {
             return json(["ret" => 0, "msg" => "删除失败！"]);
         }
@@ -89,14 +77,17 @@ class Qlist
 
     public function setHtml()
     {
-        $task = Task::whereUin($this->uin)->select();
+        $uin = Request::param('uin');
+        $res = (new Qq())->getByUin($uin);
+
+        $task = Task::whereUin($uin)->select();
         View::assign([
-            'uin' => $this->res['uin'],
-            'pwd' => $this->res['pwd'],
-            'nickname' => $this->res['nickname'],
-            'status' => $this->res['status'],
-            'skey' => $this->res['skey'],
-            'pskey' => $this->res['pskey'],
+            'uin' => $res['uin'],
+            'pwd' => $res['pwd'],
+            'nickname' => $res['nickname'],
+            'status' => $res['status'],
+            'skey' => $res['skey'],
+            'pskey' => $res['pskey'],
             'task' => $task,
         ]);
         return autoTemplate();

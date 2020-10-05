@@ -29,7 +29,7 @@ class Debug
     {
         $this->uin = Request::post('uin');
         if (Request::has('uin')) {
-            $this->res = (new Qq())->findMyUin($this->uin);
+            $this->res = (new Qq())->getByUin($this->uin);
             if (!$this->res) {
                 abort(401, '请勿恶意操作');
             }

@@ -642,25 +642,6 @@ function data_Diff($timestamp, $timestamp2 = NULL)
 }
 
 
-/**
- * 取昨天时间戳
- * @return false|int
- */
-function getYesterdayTimestamp()
-{
-    return strtotime(date("Y-m-d 00:00:00", strtotime("-1 day")));
-}
-
-/**
- * 取今天时间戳
- * @return false|int
- */
-function getTodayTimestamp()
-{
-    return strtotime(date("Y-m-d 00:00:00", strtotime("today")));
-}
-
-
 function resultJson($code, $message, $data = NULL)
 {
     return json([

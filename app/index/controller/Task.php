@@ -3,7 +3,6 @@ declare (strict_types=1);
 
 namespace app\index\controller;
 
-use app\model\Qq;
 use think\facade\Request;
 use think\facade\View;
 
@@ -12,31 +11,9 @@ class Task
     /**
      * @var Request
      */
-    private $request;
 
-    public function __construct(\think\Request $request)
-    {
-        $this->request = $request;
+    protected $middleware = ['app\index\middleware\CheckLoginUser','app\index\middleware\CheckSafeChallenge'];
 
-        $this->initialize();
-    }
-
-    // 初始化
-    protected function initialize()
-    {
-        $this->uin = Request::param('uin');
-        if ($this->uin) {
-            if (!(new Qq())->findMyUin($this->uin)) {
-                abort(401, '请勿恶意操作');
-            }
-        }
-        $this->type = Request::param('type');
-        if ($this->type) {
-            if (!findTask($this->type)) {
-                abort(401, '请勿恶意操作');
-            }
-        }
-    }
 
     /**
      * 执行任务pjax
@@ -68,7 +45,7 @@ class Task
      */
     public function getTaskList()
     {
-        $uin = $this->request->get('uin');
+        $uin = Request::get('uin');
         $task = (new \app\model\Task())
             ->Field('type')
             ->whereUin($uin)->select()->toArray();
@@ -92,8 +69,8 @@ class Task
      */
     public function addTask()
     {
-        $uin = $this->request->post('uin');
-        $type = $this->request->post('type');
+        $uin = Request::post('uin');
+        $type = Request::post('type');
 
         $res = (new \app\model\Task)
             ->whereType($type)
@@ -126,7 +103,7 @@ class Task
         $uin = request::param('uin');
         $type = Request::param('type');
         $res = (new \app\model\Task)->getTaskData($type, $uin);
-//        dump($res);
+
         if (!$res) {
             //未添加
             return 'error';
@@ -136,7 +113,7 @@ class Task
             'data' => $res['dataset'],
             'uin' => $uin
         ]);
-//        dump($res['datas  et']);
+
         if (Request::isMobile()) {
             View::config(['view_dir_name' => 'view' . DIRECTORY_SEPARATOR . 'mobile']);
             return View::fetch($type);
