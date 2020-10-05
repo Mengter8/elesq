@@ -168,27 +168,11 @@ class User
      */
     public function vip()
     {
-        $diff = data_Diff(session::get('user.vip_start_time'), session::get('user.vip_end_time'));
-        if ($diff < 0) {
-            $coler = 'lan';
-            $title = '已过期';
-        } elseif ($diff >= 1 && $diff < 30) {
-            $coler = 'lan';
-            $title = '体验VIP';
-        } elseif ($diff < 90) {
-            $coler = 'lan';
-            $title = '包月VIP';
-        } elseif ($diff < 365) {
-            $coler = 'zi';
-            $title = '包季VIP';
-        } elseif ($diff >= 365) {
-            $coler = 'huang';
-            $title = '年费VIP';
-        }
+        $data = getVipLevel(session::get('user.vip_start_time'), session::get('user.vip_end_time'));
         View::assign([
-            'coler' => $coler,
-            'title' => $title,
-            'diff' => $diff
+            'coler' => $data['coler'],
+            'title' => $data['title'],
+            'diff' => $data['diff']
         ]);
         return autoTemplate();
     }

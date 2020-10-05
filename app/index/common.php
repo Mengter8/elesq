@@ -37,14 +37,16 @@ function autoTemplate()
     return View::fetch();
 
 }
-function resultMsg($title,$content,$icon ='check lv'){
+
+function resultMsg($title, $content, $icon = 'check lv')
+{
     View::assign([
         'title' => $title,
         'content' => $content,
-        'icon'=>$icon
+        'icon' => $icon
     ]);
     if (request()->isMobile()) {
-        if  (!request()->isAjax()){
+        if (!request()->isAjax()) {
             View::layout('mobile/layout');
             return View::fetch('other/msg');
         } else {
@@ -54,27 +56,6 @@ function resultMsg($title,$content,$icon ='check lv'){
     } else {
         View::layout('pc/layout');
         return View::fetch('other/msgPc');
-    }
-}
-
-/**
- * 随机抽奖 返回$key
- * @param $proArr
- * @return int|string
- */
-function get_rand($proArr)
-{
-    $forKey = 0;
-    $proSum = array_sum($proArr); //概率数组的总概率精度
-    $randKey = $randNum = mt_rand(1, 100);
-    if ($randNum > $proSum) return false;
-    //概率数组循环
-    foreach ($proArr as $key => $value) {
-        $forKey = ($forKey + $value);
-//        echo($forKey . "|");
-        if ($randKey <= $forKey) {
-            return $key;
-        }
     }
 }
 

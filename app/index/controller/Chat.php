@@ -3,6 +3,8 @@ declare (strict_types = 1);
 
 namespace app\index\controller;
 
+use think\facade\View;
+
 /**
  * 聊天室基础控制器
  * Class Chat
@@ -15,14 +17,11 @@ class Chat
      * @return string|\think\response\Redirect
      */
     public function index(){
-        return autoTemplate();
-    }
-
-    /**
-     * 提交聊天室
-     * @return string|\think\response\Redirect
-     */
-    public function submit(){
+        $chat = new \app\model\Chat();
+        $ret = $chat->queryAllChat();
+        View::assign([
+            'list' => $ret
+        ]);
         return autoTemplate();
     }
 }

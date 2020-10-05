@@ -42,7 +42,10 @@ class User extends Model
                 ->update();
         } else {
             $this->where('uid', '=', $uid)
-                ->update(['vip_end_time' => time() + $times]);
+                ->update([
+                    'vip_start_time' => time(),
+                    'vip_end_time' => time() + $times
+                ]);
         }
         (new Log())->createLog($uid, $day, $name, 'vip', 1);
     }
@@ -72,7 +75,7 @@ class User extends Model
      * @param float $money
      * @param string $name 事件名称
      */
-    public function addUserMoney($uid, $money,$name)
+    public function addUserMoney($uid, $money, $name)
     {
         $this->where('uid', '=', $uid)
             ->inc('money', (float)$money)
@@ -88,7 +91,7 @@ class User extends Model
      * @param float $money
      * @param string $name 事件名称
      */
-    public function decUserMoney($uid, $money,$name)
+    public function decUserMoney($uid, $money, $name)
     {
         $this->where('uid', '=', $uid)
             ->dec('money', (float)$money)

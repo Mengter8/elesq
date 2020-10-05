@@ -157,7 +157,7 @@
         var chatcon = x.getval('#chatcon', '请先输入内容!');
         if (!chatcon) return;
         _sys_cleartime();
-        x.ajax('/chat/submit', 'act=add&chattime=' + ChatTime + '&chatcon=' + encodeURIComponent(trim(chatcon)));
+        socket.emit("chat", {"content": chatcon, "token":token})
     }
 </script>
 {if condition="!session('user.qq')"}

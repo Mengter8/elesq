@@ -170,11 +170,11 @@ class Qq extends Model
      */
     public function queryUinForServer($uin)
     {
-        $sql = $this->hasWhere('Server')
+        $res = $this->hasWhere('Server')
             ->where('uin','=',$uin)
             ->where('uid','=',session('user.uid'))
-            ->tableField('name,api', 'Server');
-        $res = $sql->find();
+            ->tableField('name,api', 'Server')
+            ->find();
         if ($res){
             return $res->toArray();
         } else {
