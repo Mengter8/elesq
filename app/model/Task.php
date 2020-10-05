@@ -79,12 +79,14 @@ class Task extends Model
 
     /**
      * 保存任务数据
+     * @param string $type 功能类型
+     * @param int $uin 保存QQ
+     * @param array $dataset 保存数据
+     * @param int $status 开启状态
+     * @return Task
      */
     public function setTaskData($type, $uin, $dataset, $status)
     {
-        dump($type);
-        dump($uin);
-        dump(json_encode($dataset));
         $ret = $this->where('type', '=', $type)
             ->where('uin', '=', $uin)
             ->update([

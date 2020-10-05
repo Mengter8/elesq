@@ -37,6 +37,10 @@ class login {
         $this->qzoneToken = $this->getQzoneToken();
     }
 
+    /**
+     * 判断Cookie有效性
+     * @return bool
+     */
     public function checkLogin(){
         $url = "https://h5.qzone.qq.com/webapp/json/mqzone_feeds/getActiveFeeds?qzonetoken={$this->qzoneToken}&g_tk={$this->gtk2}";
         $post = 'res_type=0&res_attach=&refresh_type=2&format=json&attach_info=';

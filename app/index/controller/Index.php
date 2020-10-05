@@ -6,6 +6,7 @@ namespace app\index\controller;
 use app\model\Qq;
 use app\model\Task;
 use app\model\User;
+use qq\sign;
 use think\facade\View;
 
 class Index
@@ -31,11 +32,29 @@ class Index
         ]);
         return autoTemplate();
     }
-    public function phpinfo(){
+
+    public function phpinfo()
+    {
         phpinfo();
     }
 
-    public function test(){
+    public function qipao()
+    {
+        $qq = new Qq();
+//        $res = $qq->getByUin('1543797310')->toArray();
+        $res = $qq->getByUin('466645214')->toArray();
+        dump($res);
+
+        $sign = new sign($res['uin'], $res['skey'], $res['pskey'], $res['superkey']);
+
+        $sign->qipao();
+        //可能是feeType
+        dump($sign->msg);
+
+    }
+
+    public function test()
+    {
         //取昵称
         echo get_qqnick('204461275');
         echo get_qqnick('123456');
@@ -45,27 +64,27 @@ class Index
         $qq = new Qq();
         $allQq = $qq->select()->toArray();
 
-        foreach ($allQq as $value){
-            $res = $task->where('uin','=',$value['uin'])->where('type','=','auto')->select()->toArray();
-            if (!$res){
+        foreach ($allQq as $value) {
+            $res = $task->where('uin', '=', $value['uin'])->where('type', '=', 'auto')->select()->toArray();
+            if (!$res) {
                 dump("{$value['uin']} auto任务不存在 已创建");
-                $task->createTask($value['uin'], 'auto',array());
+                $task->createTask($value['uin'], 'auto', array());
             }
-            $res = $task->where('uin','=',$value['uin'])->where('type','=','zan')->select()->toArray();
-            if (!$res){
+            $res = $task->where('uin', '=', $value['uin'])->where('type', '=', 'zan')->select()->toArray();
+            if (!$res) {
                 dump("{$value['uin']} zan任务不存在 已创建");
-                $task->createTask($value['uin'], 'zan',array("server"=>0,"mode"=>0,"qqlist"=>""));
+                $task->createTask($value['uin'], 'zan', array("server" => 0, "mode" => 0, "qqlist" => ""));
 
             }
         }
 
         $allTask = $task->select()->toArray();
 
-        foreach ($allTask as $value){
-            $res = $qq->where('uin','=',$value['uin'])->select()->toArray();
-            if (!$res){
+        foreach ($allTask as $value) {
+            $res = $qq->where('uin', '=', $value['uin'])->select()->toArray();
+            if (!$res) {
                 dump("{$value['uin']} qq数据库没有该信息 已删除该任务");
-                $task->DeleteTask($value['uin'],NULL);
+                $task->DeleteTask($value['uin'], NULL);
             }
         }
 
