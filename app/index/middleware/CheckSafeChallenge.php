@@ -31,7 +31,7 @@ class CheckSafeChallenge
         $this->type = Request::param('type');
         if ($this->type) {
             if (!findTask($this->type)) {
-                abort(401, '请勿恶意操作');
+                exit(':-) SafeChallenge');
             }
         }
         // 继续执行进入到控制器
