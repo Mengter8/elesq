@@ -20,30 +20,26 @@
 
         socket.on('ChatCallback', data => {
             //成功发送
-            //监听浏览器通过msg事件发送的信息
-            // console.log(data);
-            // var jq = $.parseJSON(data);
             $("#chatcon").val("");
         });
         socket.on('SysChatCallback', data => {
-            //监听浏览器通过msg事件发送的信息
-            // console.log(data);
-            // var jq = $.parseJSON(data);
-            console.log("系统聊天回调:" + data.message);
             if (data.user.level){
                 $("#chatheight").append('<dl><dt><img class=\"w9 h9 b r5 mr3\" src=\"\/\/q4.qlogo.cn\/headimg_dl?dst_uin=' + data.user.qq + '&spec=40\"><\/dt><dt><p class=\"\"><font class=\"hong bold\"><i class=\"icon icon-my\"><\/i> ' + data.user.nickname + '<\/font><span class="bg-lan f3 pl1 pr1 rx1 ml2">' + data.user.level+ '</span> ：<\/p><p class=\"f3 hui\"><i class=\"icon icon-time nobold\"><\/i> ' + data.time + '<\/p><\/dt><dd><font class=\"' + data.user.color + '\">'+ data.message+'<\/font><\/dd><\/dd><\/dl>  ');
-
             } else {
                 $("#chatheight").append('<dl><dt><img class=\"w9 h9 b r5 mr3\" src=\"\/\/q4.qlogo.cn\/headimg_dl?dst_uin=' + data.user.qq + '&spec=40\"><\/dt><dt><p class=\"\"><font class=\"\"><i class=\"icon icon-my\"><\/i> ' + data.user.nickname + '<\/font> ：<\/p><p class=\"f3 hui\"><i class=\"icon icon-time nobold\"><\/i> ' + data.time + '<\/p><\/dt><dd><font class=\"\">'+ data.message+'<\/font><\/dd><\/dd><\/dl>  ');
             }
             ChatScroolToEnd();
         });
+        socket.on('SystemCallback', data => {
+            //系统消息
+            console.log("系统消息:" + data.message);
+        });
         socket.on('JoinCallback', data => {
-            //监听浏览器通过msg事件发送的信息
+            //加入房间回调
             console.log("加入房间回调:" + data.message);
         });
         socket.on('LeaveCallback', data => {
-            //监听浏览器通过msg事件发送的信息
+            //离开房间回调
             console.log("离开房间回调:" + data.message);
         });
     </script>
