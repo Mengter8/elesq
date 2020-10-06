@@ -60,7 +60,11 @@ class Chat extends Model
 
         if ($ret) {
             $vipInfo = getVipLevel($ret['vip_start_time'], $ret['vip_end_time'], $ret['agent']);
-            $info['level'] = $vipInfo['title'];
+
+            if ($vipInfo['title'] != "已过期") {
+                $info['level'] = $vipInfo['title'];
+            }
+            $info['color_m'] = $vipInfo['chat_color_m'];
             $info['color'] = $vipInfo['chat_color'];
             $info['uid'] = $ret['uid'];
             $info['nickname'] = $ret['nickname'];

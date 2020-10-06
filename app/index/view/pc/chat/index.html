@@ -11,10 +11,10 @@
     <script>ChatScroolToEnd();</script>
     <script>
         token = "{:session('user.openid')}";
-        // const socket = io('wss://wss.elesq.cn', {transports: ['websocket']});
-        socket = io('ws://192.168.1.106:9501', {transports: ['websocket']});
+        socket = io('wss://wss.elesq.cn', {transports: ['websocket']});
+        // socket = io('ws://192.168.1.106:9501', {transports: ['websocket']});
         socket.emit("join",{"room":"chat", "token":token})
-        socket.emit("chat", {"content": "我是内容", "token":token})
+        // socket.emit("chat", {"content": "我是内容", "token":token})
 
         // socket.emit("leave",{"room":["chat"]})
 

@@ -132,8 +132,6 @@
     </div>
 </div>
 <script>
-    ChatTime = '0';
-
     function ChatScroolToEnd() {
         var h = $("#chatheight").height() - $(".chatscrool").height(); // 获取总共需要滚动的距离
         var t = h - $(".chatscrool").scrollTop();
@@ -145,7 +143,7 @@
     }
 
     function LoadChatList(l) {
-        x.gethtml('/chat/index?time=' + ChatTime, 'chatheight', l, 1);
+        x.gethtml('/chat/index', 'chatheight', l, 1);
     }
 
     $(function ($) {

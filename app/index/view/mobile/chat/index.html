@@ -2,16 +2,10 @@
 <div class="app-header t-v bg-bai dl2 bb">
     <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
     <span class="header-c t-v t-c nowrap">CQY聊天室</span>
-    <span class="header-r t-v t-r nowrap" onclick="x.mode('/user/qun')"><i class="icon icon-group f10"></i></span>
+<!--    <span class="header-r t-v t-r nowrap" onclick="x.mode('/user/qun')"><i class="icon icon-group f10"></i></span>-->
 </div><div class="app-content mode-b9 chatscrool bg-bai dk">
     <div class="in-list top" id="chatheight" onclick="$('#chatcon').blur();">
         <dl class="w pt2 pb3">
-            <dt><p class="w10 t-c"><img class="w7 h7 b r5" src="//q4.qlogo.cn/headimg_dl?dst_uin=2859446512&spec=40"></p></dt>
-            <dd>
-                <p class="f2"><span class="bg-lan pl1 pr1 rx1 mr1">银牌代理</span><font class="hong bold">槿柒</font></p>
-                <p><span class="inline bg-huang dl2 p2 rx3">扩列</span></p>
-            </dd>
-            <dt><p class="w10"></p></dt>            </dl><dl class="w pt2 pb3">
         <dt><p class="w10 t-c"><img class="w7 h7 b r5" src="//q4.qlogo.cn/headimg_dl?dst_uin=1083735215&spec=40"></p></dt>
         <dd>
             <p class="f2"><font class="">国警&#39;39&#39;naa</font></p>
@@ -305,7 +299,18 @@
             <p class="f2"><span class="bg-lan pl1 pr1 rx1 mr1">体验VIP</span><font class="">Fantastic baby</font></p>
             <p><span class="inline bg-bai p2 rx3">1746119846 mz+</span></p>
         </dd>
-        <dt><p class="w10"></p></dt>            </dl>    </div>
+        <dt><p class="w10"></p></dt>            </dl>
+        {foreach $list as $vo}
+        <dl class="w pt2 pb3">
+            <dt><p class="w10 t-c"><img class="w7 h7 b r5" src="//q4.qlogo.cn/headimg_dl?dst_uin={$vo['qq']}&spec=40"></p></dt>
+            <dd>
+                <p class="f2"><span class="bg-lan pl1 pr1 rx1 mr1">{:getVipLevel($vo['vip_start_time'],$vo['vip_end_time'],$vo['agent'])['title']}</span><font class="hong bold">{$vo['nickname']}</font></p>
+                <p><span class="inline bg-{:getVipLevel($vo['vip_start_time'],$vo['vip_end_time'],$vo['agent'])['chat_color_m']} dl2 p2 rx3">{$vo['content']}</span></p>
+            </dd>
+            <dt><p class="w10"></p></dt>
+        </dl>
+        {/foreach}
+    </div>
 </div>
 <div class="mode-footer w h9 in-text">
     <form action="" onsubmit="return false;">
@@ -314,7 +319,67 @@
     </form>
 </div>
 <script>
-    ChatTime='1601899262098';
+
+    token = "{:session('user.openid')}";
+    // socket = io('wss://wss.elesq.cn', {transports: ['websocket']});
+    socket = io('ws://192.168.1.106:9501', {transports: ['websocket']});
+    socket.emit("join",{"room":"chat", "token":token})
+    // socket.emit("chat", {"content": "我是内容", "token":token})
+
+    // socket.emit("leave",{"room":["chat"]})
+
+    socket.on('ChatCallback', data => {
+        if (token == data.token){
+            $("#chatheight").append(
+                '<dl class="w pt2 pb3">\n' +
+                '            <dt><p class="w10 t-c"><img class="w7 h7 b r5" src="//q4.qlogo.cn/headimg_dl?dst_uin=' + data.user.qq + '&amp;spec=40"></p></dt>\n' +
+                '            <dd>\n' +
+                '                <p class="f2"><span class="bg-lan pl1 pr1 rx1 mr1">' + data.user.level + '</span><font class="hong bold">' + data.user.nickname + '</font></p>\n' +
+                '                <p><span class="inline bg-' + data.color_m+' dl2 p2 rx3">' + data.message + '</span></p>\n' +
+                '            </dd>\n' +
+                '            <dt><p class="w10"></p></dt>\n' +
+                '        </dl>');
+            $("#chatcon").val("");
+        }
+        //成功发送
+    });
+    socket.on('SysChatCallback', data => {
+            if (data.user.level){
+                level = '<span class="bg-lan pl1 pr1 rx1 mr1">' + data.user.level + '</span>';
+                font = "hong bold"
+            }
+            $("#chatheight").append(
+                '<dl class="pt2 pb3">' +
+                '<dt>' +
+                '<p class="w10"></p>' +
+                '</dt>' +
+                '<dd class="t-r">' +
+                '<p class="f2">' + level +
+                '<font class="' + font +'">' + data.user.nickname + '</font></p>' +
+                '<p><span class="inline bg-' +data.user.color_m +' p2 rx3">' + data.message + '</span><\/p>' +
+                '</dd>' +
+                '<dt><p class="w10 t-c">' +
+                '<img class="w7 h7 b r5" src="//q4.qlogo.cn/headimg_dl?dst_uin=' + data.user.qq + '&spec=40"></p>' +
+                '</dt>' +
+                '</dl>');
+
+        ChatScroolToEnd();
+    });
+    socket.on('SystemCallback', data => {
+        //系统消息
+        console.log("系统消息:" + data.message);
+    });
+    socket.on('JoinCallback', data => {
+        //加入房间回调
+        console.log("加入房间回调:" + data.message);
+    });
+    socket.on('LeaveCallback', data => {
+        //离开房间回调
+        console.log("离开房间回调:" + data.message);
+    });
+
+
+
     function ChatScroolToEnd() {
         var h = $("#chatheight").height()-$(".chatscrool").height(); // 获取总共需要滚动的距离
         var t = h-$(".chatscrool").scrollTop();
@@ -324,16 +389,12 @@
             x.scroll('.chatscrool',h,t+100);
         }
     }
-    function LoadChatList(l) {
-        if($("#chatheight").length>0){
-            x.gethtml('/chat/index?time='+ChatTime,'chatheight',l,1,'CQY聊天室加载失败，请点击此处刷新重试');
-        }else{
-            _sys_cleartime();
-        }
-    }
+
     $(function() {
         ChatScroolToEnd();  // 聊天框滚动条
-        ChatTimeID=setTimeout(function(){LoadChatList(1);},5000);
+        if($("#chatheight").length<0){
+            x.gethtml('/chat/index','chatheight',1,1,'CQY聊天室加载失败，请点击此处刷新重试');
+        }
     });
 
     function ajax_post_chat(){
@@ -341,7 +402,7 @@
         xhr.abort();
         _sys_cleartime();
         $('#chatcon').focus().val("");
-        x.ajax('/chat/submit','act=add&chattime='+ChatTime+'&chatcon='+encodeURIComponent(trim(chatcon)));
+        socket.emit("chat", {"content": chatcon, "token":token})
     }
 
 </script>
