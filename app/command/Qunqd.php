@@ -28,7 +28,7 @@ class Qunqd extends Command
         $res = $task->getAllTask('qunqd');
         foreach ($res as $v) {
             $do = new sign($v->uin, $v->skey, $v->pskey);
-            $dataset = unserialize($v->dataset);
+            $dataset = $v->dataset;
             $data = qunFindId($dataset['tid']);
             $content = !empty($dataset['content']) ? $dataset['content'] : $data['text'];
             $category_id = isset($data['category_id']) ? $data['category_id'] : '';

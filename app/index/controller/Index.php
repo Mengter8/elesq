@@ -38,18 +38,6 @@ class Index
         phpinfo();
     }
 
-    public function qipao()
-    {
-        $qq = new Qq();
-//        $res = $qq->getByUin('1543797310')->toArray();
-        $res = $qq->getByUin('466645214')->toArray();
-        $sign = new sign($res['uin'], $res['skey'], $res['pskey'], $res['superkey']);
-
-        $sign->qipao();
-        dump($sign->msg);
-
-    }
-
     public function test()
     {
         //取昵称
@@ -66,12 +54,6 @@ class Index
             if (!$res) {
                 dump("{$value['uin']} auto任务不存在 已创建");
                 $task->createTask($value['uin'], 'auto', array());
-            }
-            $res = $task->where('uin', '=', $value['uin'])->where('type', '=', 'zan')->select()->toArray();
-            if (!$res) {
-                dump("{$value['uin']} zan任务不存在 已创建");
-                $task->createTask($value['uin'], 'zan', array("server" => 0, "mode" => 0, "qqlist" => ""));
-
             }
         }
 

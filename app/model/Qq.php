@@ -132,7 +132,6 @@ class Qq extends Model
             $res = $this->create($data);
             //创建自动更新任务
             $task->createTask($uin, 'auto',array());
-            $task->createTask($uin, 'zan',array("server"=>0,"mode"=>0,"qqlist"=>""));
         }
         if ($res) {
             return resultJson(1, '更新成功');
