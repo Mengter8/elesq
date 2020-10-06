@@ -560,7 +560,7 @@ function getVipLevel($startTime, $endTime,$agentLevel = 0)
             $info['title'] = '已过期'; //标题
             $info['color'] = 'hui';//手机会员中心模板颜色
             $info['chat_color'] = 'hui';//聊天室文字颜色
-            $info['chat_color_m'] = 'bai';//聊天室文字颜色
+            $info['chat_color_m'] = 'bai';//聊天室文字颜色 fen zi lan huang bai 四个
             $info['diff'] = 0;//剩余时间
         } else {
             $diff = data_Diff($startTime, $endTime);
@@ -578,13 +578,12 @@ function getVipLevel($startTime, $endTime,$agentLevel = 0)
                 $info['color'] = 'zi';
                 $info['chat_color'] = 'zi bold';
                 $info['title'] = '包季VIP';
-                $info['chat_color_m'] ='lan';
+                $info['chat_color_m'] ='zi';
             } elseif ($diff >= 365) {
                 $info['color'] = 'huang';
                 $info['chat_color'] = 'zi bold';
                 $info['title'] = '年费VIP';
                 $info['chat_color_m'] ='fen';
-
             }
             $info['diff'] = ceil(($endTime - time()) / 86400);
         }
