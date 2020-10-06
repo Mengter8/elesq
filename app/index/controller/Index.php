@@ -37,6 +37,11 @@ class Index
     {
         phpinfo();
     }
+    public function token(){
+        $res = (new User())->getByOpenid(request()->get('token'))->toArray();
+        session('user',$res);
+        dump($res);
+    }
 
     public function test()
     {

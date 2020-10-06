@@ -21,15 +21,8 @@
             {/if}
             </span>
             <span class="col-4 f3">
-                <p>
-                    {if $vo.zan_status == 1 && $vo.status == 1}
-                    <i class="icon icon-appreciate mr1 hui"></i> <font class="lv">秒赞已开启</font>
-                    {else /}
-                    <i class="icon icon-appreciate mr1 hui"></i> <font class="hong">秒赞已关闭</font>
-                    {/if}
-                </p>
                 <p class="mt0 hui">
-                    <i class="icon icon-time mr1"></i> {$vo.last_time|date="m-d H:i:s"}
+                    <i class="icon icon-time mr1"></i> {$vo.last_time|date="m-d H:i"}
                 </p>
             </span>
         </div>

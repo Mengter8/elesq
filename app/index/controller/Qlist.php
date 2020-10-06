@@ -31,17 +31,9 @@ class Qlist
         $mod = Request::get('mod');
         $search = Request::get('search');
         $list = (new Qq)->getMyUin($mod,$search);
-        if (Request::isMobile()){
-            foreach ($list as $item=>$value){
-                $ret = (new Task())->findTypeUin('auto',$value['uin']);
-                $list[$item]['last_time']=$ret['last_time'];
-            }
-        } else {
-            foreach ($list as $item=>$value){
-                $ret = (new Task())->findTypeUin('zan',$value['uin']);
-                $list[$item]['zan_status']=$ret['status'];
-                $list[$item]['last_time']=$ret['last_time'];
-            }
+        foreach ($list as $item=>$value){
+            $ret = (new Task())->findTypeUin('auto',$value['uin']);
+            $list[$item]['last_time']=$ret['last_time'];
         }
         View::assign([
             'Qlist' => $list
