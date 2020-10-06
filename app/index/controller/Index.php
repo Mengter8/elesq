@@ -67,12 +67,6 @@ class Index
                 dump("{$value['uin']} auto任务不存在 已创建");
                 $task->createTask($value['uin'], 'auto', array());
             }
-            $res = $task->where('uin', '=', $value['uin'])->where('type', '=', 'zan')->select()->toArray();
-            if (!$res) {
-                dump("{$value['uin']} zan任务不存在 已创建");
-                $task->createTask($value['uin'], 'zan', array("server" => 0, "mode" => 0, "qqlist" => ""));
-
-            }
         }
 
         $allTask = $task->select()->toArray();
