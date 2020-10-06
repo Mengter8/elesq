@@ -565,7 +565,11 @@ class sign extends login
     }
 
 
-    public function qipao()
+    /**
+     * 百变气泡
+     * @param $mode
+     */
+    public function qipao($mode)
     {
         if (getRuntimeCache('cookie', "{$this->uin}.txt")) {
             $this->cookie = getRuntimeCache('cookie', "{$this->uin}.txt");
@@ -573,18 +577,21 @@ class sign extends login
             $this->getCookie('qipao');
             return;
         }
-        $str = '4271|4270|3433|3434|4171|3466|3467|4135|3719|3941|3565|4084|4083|4116|4117|4113|4112|3592|3729|3590|3591|3904|3732|3424|3772|2941|3656|3647|3022|3566|3601|3448|3447|3384|3241|3242|3247|3271|3264|2822|3139|3214|2903|3212|3103|3133|3097|3086|3087|3048|3045|3001|2982|2889|2859|500035|500023|600025|500010|2827|2826|2819|2814|2809|2792|2726|2765|2795|2669|2648|2625|2578|2575|2561|2562|2547|2531|2532|2533|2492|2507|2512|2423|2285|2279|2280|2281|2257|2210|2180|2145|2134|547|335|2001|2018|4316|3873|3563|4085|4086|3382|3263|3228|3119|3112|3096|3082|2946|2950|2908|2910|2913|2895|2880|2877|2860|2851|2843|2832|500034|600026|500011|2824|2783|2766|2767|2725|2764|2670|2668|2664|2665|2649|2650|2643|2645|2630|2626|2588|2579|2574|2553|2554|2523|2435|2195|2397|2380|2377|2363|2352|2335|2331|2327|2315|2311|2300|2298|2287|2286|2278|2270|2266|2254|2258|2218|2216|2215|2208|2181|2182|2158|2157|528|2133|368|2049|2131|233|2560|470';
-        $str = "11|12|34|41|46|50|53|54|57|60|62|63|70|77|84|93|96|104|107|110|114|117|129|135|137|139|141|145|148|153|154|158|168|179|183|188|189|193|197|204|210|211|212|215|216|222|224|225|231|236|243|246|250|255|260|262|263|266|270|273|280|283|285|291|294|299|301|307|312|319|329|332|333|338|341|344|347|360|367|394|398|400|407|410|452|467|469|474|477|484|490|493|496|503|517|526|533|539|544|2004|2007|2010|6385|6386|6390|6391|6394|6397|";
+        if ($mode = 0) {
+            $str = "11|12|34|41|46|50|53|54|57|60|62|63|70|77|84|93|96|104|107|110|114|117|129|135|137|139|141|145|148|153|154|158|168|179|183|188|189|193|197|204|210|211|212|215|216|222|224|225|231|236|243|246|250|255|260|262|263|266|270|273|280|283|285|291|294|299|301|307|312|319|329|332|333|338|341|344|347|360|367|394|398|400|407|410|452|467|469|474|477|484|490|493|496|503|517|526|533|539|544|2004|2007|2010|6385|6386|6390|6391|6394|6397|";
+        } elseif ($mode = 1 || $mode = 2) {
+            $str = '4271|4270|3433|3434|4171|3466|3467|4135|3719|3941|3565|4084|4083|4116|4117|4113|4112|3592|3729|3590|3591|3904|3732|3424|3772|2941|3656|3647|3022|3566|3601|3448|3447|3384|3241|3242|3247|3271|3264|2822|3139|3214|2903|3212|3103|3133|3097|3086|3087|3048|3045|3001|2982|2889|2859|500035|500023|600025|500010|2827|2826|2819|2814|2809|2792|2726|2765|2795|2669|2648|2625|2578|2575|2561|2562|2547|2531|2532|2533|2492|2507|2512|2423|2285|2279|2280|2281|2257|2210|2180|2145|2134|547|335|2001|2018|4316|3873|3563|4085|4086|3382|3263|3228|3119|3112|3096|3082|2946|2950|2908|2910|2913|2895|2880|2877|2860|2851|2843|2832|500034|600026|500011|2824|2783|2766|2767|2725|2764|2670|2668|2664|2665|2649|2650|2643|2645|2630|2626|2588|2579|2574|2553|2554|2523|2435|2195|2397|2380|2377|2363|2352|2335|2331|2327|2315|2311|2300|2298|2287|2286|2278|2270|2266|2254|2258|2218|2216|2215|2208|2181|2182|2158|2157|528|2133|368|2049|2131|233|2560|470';
+        }
+
         $strarr = explode('|', $str);
         $id = $strarr[array_rand($strarr)];
-        $id = 2010;
         $ua = 'Mozilla/5.0 (Linux; Android 10; MI 9 Build/QKQ1.190825.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.126 MQQBrowser/6.2 TBS/045008 Mobile Safari/537.36 V1_AND_SQ_8.2.0_1296_YYB_D QQ/8.2.0.4310 NetType/WIFI WebP/0.3.0 Pixel/1080 StatusBarHeight/75 SimpleUISwitch/0';
         $url = "https://g.vip.qq.com/bubble/bubbleSetup?uin={$this->uin}&adtag=%5Badtag%5D&client=androidQQ&version=8.2.0&platformId=2&_bid=undefined&_lv=0&format=json&t=" . time() . "214&id={$id}&platformId=2&uin={$this->uin}&g_tk={$this->gtk}";
-        dump($url,$this->cookie);
+//        dump($url, $this->cookie);
         $data = get_curl($url, 0, 'https://zb.vip.qq.com/sonic/bubble?_wv=16778243', $this->cookie, 0, $ua);
-        dump($this->getQipaoInfo($id));
+//        dump($this->getQipaoInfo($id));
 
-        if ($arr = json_decode($data, true)){
+        if ($arr = json_decode($data, true)) {
             if (array_key_exists('ret', $arr) && $arr['ret'] == 0) {
                 $this->msg[] = "更换气泡成功！气泡名称 {$this->getQipaoInfo($id)['data']['name']}";
             } elseif ($arr['ret'] == 6002) {
@@ -603,7 +610,7 @@ class sign extends login
                 $this->fail = true;
                 $this->getCookie('qipao');
                 $this->msg[] = '更换气泡失败！SKEY过期';
-            } elseif ($arr['ret'] == -13200){
+            } elseif ($arr['ret'] == -13200) {
                 $this->msg[] = '更换气泡失败！貌似没有该气泡';
             } else {
                 $this->msg[] = "气泡更换失败 错误代码{$arr['ret']}{$arr['msg']}";
@@ -615,7 +622,8 @@ class sign extends login
         }
     }
 
-    public function getCookie($callback){
+    public function getCookie($callback)
+    {
         $supertoken = (string)$this->getToken($this->superkey);
         $url = "https://ssl.ptlogin2.qq.com/pt4_auth?daid=18&aid=8000212&auth_token=" . $this->getToken($supertoken);
         $data = get_curl($url, 0, 'https://ui.ptlogin2.qq.com/cgi-bin/login', "superuin=o0{$this->uin}; superkey={$this->superkey}; supertoken={$supertoken};");
@@ -637,15 +645,16 @@ class sign extends login
         }
     }
 
-    public function getQipaoInfo($id){
+    public function getQipaoInfo($id)
+    {
         $url = "https://zb.vip.qq.com/bubble/cgi/getBubbleItem?g_tk={$this->gtk}&p_tk=NgNUga8s0ivxufC4MD6K7RQ76fTKrerS*JlUWCqGTZc_";
 //                dump($this->cookie,$url);
         $post = "id={$id}";
         $referer = "https://zb.vip.qq.com/sonic/bubble?_wv=16778243";
         $ua = "Mozilla/5.0 (Linux; Android 10; YAL-AL00 Build/HUAWEIYAL-AL00; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045332 Mobile Safari/537.36 V1_AND_SQ_8.4.8_1492_YYB_D QQ/8.4.8.4810 NetType/WIFI WebP/0.3.0 Pixel/1080 StatusBarHeight/108 SimpleUISwitch/1 QQTheme/2921 InMagicWin/0 Edg/85.0.4183.121";
 
-        $ret = get_curl($url,$post,$referer,$this->cookie,0,$ua);
-        $ret = json_decode($ret,true);
+        $ret = get_curl($url, $post, $referer, $this->cookie, 0, $ua);
+        $ret = json_decode($ret, true);
         return $ret;
     }
 }

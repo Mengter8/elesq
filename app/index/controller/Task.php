@@ -12,7 +12,7 @@ class Task
      * @var Request
      */
 
-    protected $middleware = ['app\index\middleware\CheckLoginUser','app\index\middleware\CheckSafeChallenge'];
+    protected $middleware = ['app\index\middleware\CheckLoginUser', 'app\index\middleware\CheckSafeChallenge'];
 
 
     /**
@@ -79,14 +79,17 @@ class Task
         if ($res and $res->ToArray()) {
             return '<script>x.msg(\'请不要重复添加\');</script>';
         }
-        \app\model\Task::create([
-            'uin' => $uin,
-            'type' => $type,
-            'dataset' => '',
-            'create_time' => time(),
-            'last_time' => time(),
-            'next_time' => time()
-        ]);
+
+        if ($type == 'zan') {
+            $dataset = array("server" => 0, "mode" => 0, "qqlist" => "");
+        } elseif ($type == 'qunqd') {
+            $dataset = array('tid' => 0, 'site' => '', 'content' => '', 'mode' => 0, 'qunlist' => '');
+        } elseif ($type == 'qipao') {
+            $dataset = array('mode' => 0);
+        } else {
+            $dataset = array();
+        }
+        (new \app\model\Task())->createTask($uin, $type, $dataset);
         if (Request::isMobile()) {
             return "<script>x.msg('添加成功');qqset_mode_load();$(\".{$type}access\").html(\"已添加\");</script>";
         } else {
@@ -103,7 +106,6 @@ class Task
         $uin = request::param('uin');
         $type = Request::param('type');
         $res = (new \app\model\Task)->getTaskData($type, $uin);
-
         if (!$res) {
             //未添加
             return 'error';
@@ -135,6 +137,8 @@ class Task
             $dataset = Request::post(['server', 'mode', 'qqlist']);//服务器
         } elseif ($type == 'qunqd') {
             $dataset = Request::post(['tid', 'site', 'content', 'mode', 'qunlist']);//服务器
+        } elseif ($type == 'qipao') {
+            $dataset = Request::post(['mode']);
         } else {
             $dataset = NULL;
         }

@@ -1,0 +1,32 @@
+<title>百变气泡 设置 - {:config('conf.title')}</title>
+<div class="app-header t-v bg-bai dl2 bb">
+    <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
+    <span class="header-c t-v t-c nowrap">百变气泡 设置</span>
+    <span class="header-r t-v t-r nowrap" onclick=""><i class="icon  f10"></i></span>
+</div>
+<div class="app-content bg-bai">
+    <div class="p4">
+        <div class="lan bold">[24H自动] 随机变换QQ聊天气泡</div>
+<!--        <div class="mt2 mb3 f3 hui">系统会每隔10秒自动变换一次您的QQ聊天气泡，建议不要长时间开启，会导致更换频繁限制的</div>-->
+        <hr/>
+        <div class="pt4 pb4 bold"><label class="i-checks"><input type="radio" name="status" value="0" {if $status == 0}checked{/if}><i></i>关闭功能</label>
+            <label class="i-checks ml4"><input type="radio" name="status" value="1" {if $status == 1}checked{/if}><i></i>开启功能</label></div>
+        <hr/>
+        <div class="pt4 pb4 bold">
+            <label class="i-checks"><input type="radio" name="mode" value="0" {if $data.mode == 0}checked{/if}><i></i>免费气泡</label>
+            <label class="i-checks ml4"><input type="radio" name="mode" value="1" {if $data.mode == 1}checked{/if}><i></i>VIP气泡</label>
+            <label class="i-checks ml4"><input type="radio" name="mode" value="2" {if $data.mode == 2}checked{/if}><i></i>SVIP气泡</label>
+        </div>
+        <div class="pb3 f3 hui">请根据自己的QQ会员类型选择对应的气泡，不是QQ会员选择VIP或SVIP气泡会无效</div>
+        <div class="pt5 pb4">
+            <button class="btn btn-dlan btn-md w" onclick="ajax_gnset_qp();">保 存 设 置</button>
+        </div>
+    </div>
+</div>
+<script>
+    function ajax_gnset_qp() {
+        var status = $('input[name="status"]:checked').val();
+        var mode = $('input[name="mode"]:checked').val();
+        x.ajax('/task/setTaskData.html', 'type=qipao&uin={$uin}&status='+ status + '&mode=' + mode, 1);
+    }
+</script>

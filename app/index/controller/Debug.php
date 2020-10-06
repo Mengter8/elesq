@@ -302,7 +302,12 @@ class Debug
     public function qiPao()
     {
         $do = new sign($this->uin, $this->res['skey'], $this->res['pskey'], $this->res['superkey']);
-        $do->qipao();
+
+        $res = (new \app\model\Task())->findTypeUin('qipao',$this->uin);
+        $dataset = $res['dataset'];
+        $mode = !empty($dataset['mode']) ? $dataset['mode'] : 0;
+
+        $do->qipao($mode);
         foreach ($do->msg as $v) {
             echo $v . "<br>";
         }

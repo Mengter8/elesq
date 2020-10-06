@@ -158,7 +158,7 @@
         x.mode('/task/runTask.html?type=' + type + '&uin=' + uin);
     }
     function setTask(uin,type){
-        if (type === 'zan' || type === 'qunqd'){
+        if (type === 'zan' || type === 'qunqd' || type === 'qipao'){
             x.mode('/task/setTask.html?uin=' + uin + '&type=' + type, 'setTask');
         } else if(type === 'auto' ) {
             x.btn('状态更新无法关闭','本站已为所有用户开启了打码更新功能<br>保障您的QQ在线状态一直处于正常在线');

@@ -90,7 +90,7 @@
     function setTask_footer(xm, msg, mod) {
         var htmlcon = '';
         htmlcon += '<li><p class="p3 f3 hui">' + msg + '</p></li>';
-        if (xm === 'zan' || xm === 'qunqd') {
+        if (xm === 'zan' || xm === 'qunqd' || xm === 'qipao') {
             htmlcon += '<li><p class="p3 lan bt b-hui footer in" onclick="x.mclose();x.mode(\'/task/setTask.html?uin={$uin}&type=' + xm + '\',\'gnset' + xm + '\');">功能设置</p></li>';
         }
         if (xm !== 'auto') {
