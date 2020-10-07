@@ -169,7 +169,7 @@ class User
     {
         $data = getVipLevel(session::get('user.vip_start_time'), session::get('user.vip_end_time'));
         View::assign([
-            'coler' => $data['coler'],
+            'color' => $data['color'],
             'title' => $data['title'],
             'diff' => $data['diff']
         ]);

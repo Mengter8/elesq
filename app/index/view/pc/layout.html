@@ -37,7 +37,7 @@
                     <li class="{eq name=':request()->controller()' value='User'}active{/eq}"><a href="{:url('/user/index')}" class="t-v" data-pjax>首页</a></li>
                     <li class="{eq name=':request()->controller()' value='Qlist'}active{/eq}"><a href="{:url('/qlist/index')}" class="t-v" data-pjax>QQ管理</a></li>
                     <li class="{eq name=':request()->controller()' value='Shop'}active{/eq}"><a href="{:url('/shop/vip')}" class="t-v" data-pjax>自助购买</a></li>
-                    <li class="{if request()->controller() == 'Other' }{if request()->action() == 'sign' || request()->action() == 'invite' || request()->action() == 'redeem'}active{/if}{/if}"><a href="/other/sign.html" class="t-v" data-pjax>福利中心</a></li>
+                    <li class="{if request()->controller() == 'Other' }{if request()->action() == 'invite'}active{/if}{/if}"><a href="/other/invite.html" class="t-v" data-pjax>福利中心</a></li>
                     <li class="{if request()->controller() == 'Other' }{if request()->action() == 'prove_query' || request()->action() == 'wall'  }active{/if}{/if}"><a href="/other/prove_query.html" class="t-v" data-pjax>快捷连接</a></li>
                 </ul>
                 <ul class="g-nav t-v fr">
