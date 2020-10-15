@@ -97,11 +97,13 @@ class Qq extends Model
         if ($login->checkLogin() == false){
             return resultJson(0, '登录信息验证失败');
         }
-
+        if (!$sid){
+            return resultJson(0, '未设置保存节点');
+        }
         $task = new Task();
         $res = $this->getByUin($uin);
         if (!$uid) {
-            //不存在密码 则使用数据库UID
+            //不存在UID 则使用数据库UID
             $uid = isset($res['uid']) ?  $res['uid']: '';
         }
         if (!$pwd) {
@@ -125,18 +127,14 @@ class Qq extends Model
                 //如果[自动更新]状态失效 连续秒赞重新计算
                 $data['update_time'] = time();
             }
-            $res = $this->update($data, ['uin' => $uin]);
-        } else {
-            $data['update_time'] = time();
-            //添加
-            $res = $this->create($data);
-            //创建自动更新任务
-            $task->createTask($uin, 'auto',array());
-        }
-        if ($res) {
+            $this->update($data, ['uin' => $uin]);
             return resultJson(1, '更新成功');
         } else {
-            return resultJson(0, '更新失败');
+            $data['update_time'] = time();
+            $this->create($data);
+            //创建自动更新任务
+            $task->createTask($uin, 'auto',array());
+            return resultJson(1, '添加成功');
         }
     }
 
