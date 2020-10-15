@@ -172,12 +172,15 @@ function get_client_ip($type = 0)
     return $ip[$type];
 }
 
+/**
+ * 获取QQ昵称
+ * @param $uin
+ * @return mixed|string
+ */
 function get_qqnick($uin)
 {
-    //https://api.unipay.qq.com/v1/r/1450000186/wechat_query?cmd=1&pf=mds_storeopen_qb-__mds_qqclub_tab_-html5&pfkey=pfkey&from_h5=1&from_https=1&openid=openid&openkey=openkey&session_id=hy_gameid&session_type=st_dummy&qq_appid=&offerId=1450000186&sandbox=&provide_uin=1543797310
-    //https://r.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?get_nick=1&uins=9147218
-    //https://api.unipay.qq.com/v1/r/1450000186/wechat_query?cmd=1&openid=openid&openkey=openkey&session_id=hy_gameid&session_type=st_dummy&provide_uin=9147218
-    //https://users.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?get_nick=1&uins=9147218
+    //https://r.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?uins=1543797310
+    //https://users.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?uins=1543797310
 //    preg_match('/[1-9][0-9]{4,}/',$uin,$match);
 //
 //
@@ -186,14 +189,34 @@ function get_qqnick($uin)
 //    }
 
     $ret = get_curl("https://r.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?get_nick=&uins={$uin}");
-
     $ret = mb_convert_encoding($ret, "UTF-8", "GBK");
     $ret = str_replace(array("portraitCallBack(", ")"), array('', ''), $ret);
 
     $nickname = json_decode($ret, true);
-//    dump($nickname);
     if ($nickname) {
         return $nickname[$uin][6];
+    } else {
+        return "[NULL]";
+    }
+}
+
+/**
+ * 获取QQ昵称带emoji
+ * @param $uin
+ * @return mixed|string
+ */
+function getQqNickname($uin){
+    /**
+     * 最短参数
+     * $url = "https://api.unipay.qq.com/v1/r/1450000186/wechat_query?cmd=1&openid=openid&openkey=openkey&session_id=hy_gameid&session_type=st_dummy&provide_uin=1543797310";
+     */
+    $url = "https://api.unipay.qq.com/v1/r/1450000186/wechat_query?cmd=1&pf=mds_storeopen_qb-__mds_qqclub_tab_-html5&pfkey=pfkey&from_h5=1&from_https=1&openid=openid&openkey=openkey&session_id=hy_gameid&session_type=st_dummy&qq_appid=&offerId=1450000186&sandbox=&provide_uin={$uin}";
+    $ret = get_curl($url);
+    $ret = urldecode($ret);
+    $json = json_decode($ret,true);
+
+    if ($json){
+        return $json['nick'];
     } else {
         return "[NULL]";
     }

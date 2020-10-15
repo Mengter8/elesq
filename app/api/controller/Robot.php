@@ -39,7 +39,7 @@ class Robot
             'uid' => $uid,
             'uin' => $uin,
             'pwd' => $pwd,
-            'nick'=> get_qqnick($uin),
+            'nick'=> getQqNickname($uin),
             'skey' => request::post('skey'),
             'pskey' => request::post('pskey'),
             'superkey' => request::post('superkey'),

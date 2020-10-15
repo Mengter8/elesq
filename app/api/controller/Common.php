@@ -26,7 +26,7 @@ class Common
             return resultJson(0, $e->getError());
         }
 
-        $nickName = get_qqnick($uin);
+        $nickName = getQqNickname($uin);
 
         if (!empty($nickName)) {
             return resultJson(1, '获取成功!', $nickName);

@@ -64,7 +64,7 @@ class Other
                 'server' => $server,
             ]);
         } else {
-            $res['nickname'] = get_qqnick($uin);
+            $res['nickname'] = getQqNickname($uin);
             $res['status'] = NULL;
             $res['update_time'] = NULL;
         }

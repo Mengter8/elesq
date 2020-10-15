@@ -36,8 +36,9 @@ class QiPao extends Command
 //            for ($i=0;$i <= 100;$i++) {
 //                $do->qipao();
 //            }
-
-            $do->qipao();
+            $dataset = $v['dataset'];
+            $mode = !empty($dataset['mode']) ? $dataset['mode'] : 0;
+            $do->qipao($mode);
             foreach ($do->msg as $result) {
                 $output->writeln("{$v->uin}_{$result}");
             }

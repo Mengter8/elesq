@@ -113,7 +113,7 @@ class Qq extends Model
             'sid' => $sid,
             'uin' => $uin,
             'pwd' => $pwd,
-            'nickname' => get_qqnick($uin),
+            'nickname' => getQqNickname($uin),
             'skey' => $skey,
             'pskey' => $pskey,
             'superkey' =>$superkey,
