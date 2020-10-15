@@ -37,7 +37,9 @@ class ExceptionHandle extends Handle
     public function report(Throwable $exception): void
     {
         //记录报错日志
-        putRuntimeCache("Debug", time() . ".txt", $exception);
+        if (!$exception instanceof HttpException) {
+            putRuntimeCache("Debug", time() . ".txt", $exception);
+        }
         // 使用内置的方式记录异常日志
         parent::report($exception);
     }

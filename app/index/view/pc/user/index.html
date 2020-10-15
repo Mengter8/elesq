@@ -30,7 +30,7 @@
         <div class="f8 hei">
             <img class="w9 h9 r5 mr4" src="//q4.qlogo.cn/headimg_dl?dst_uin={:session('user.qq')}&spec=100">
             {:session('user.nickname')}
-            <a class="ml3 f3 lan" href="https://u.istt.cn/login/api?mod=name&pid=10000&time=1587262707&url=https%3A%2F%2Fwww.xkmz.cc%2Findex%2Floginapi&zdy=%2Fuser%2Findex.html&sign=090525b1205339b02bb08a725d31448e&sign_type=MD5" target="_blank">修改</a><font class="ml3 f3 hui">UID:{:session('user.uid')}</font>
+            <a class="ml3 f3 lan" onclick="x.mode('/user/bindQq.html');" target="_blank">修改</a><font class="ml3 f3 hui">UID:{:session('user.uid')}</font>
         </div>
         <div class="in-list top mt4">
             <dl>
