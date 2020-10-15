@@ -45,9 +45,6 @@ class Index
 
     public function test()
     {
-        //取昵称
-        echo get_qqnick('204461275');
-        echo get_qqnick('123456');
         //判断所有QQ Auto是否存在 没有会导致报错
         $task = new Task();
 //        $task->DeleteTask(NULL,'1543797310');
