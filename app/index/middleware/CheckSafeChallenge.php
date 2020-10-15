@@ -20,7 +20,10 @@ class CheckSafeChallenge
         // 判断是否自己的QQ
         $this->uin = Request::param('uin');
         if ($this->uin) {
-            $this->res = (new Qq())->findMyUin($this->uin);
+            $this->res = (new Qq())
+                ->where('uin', '=', $this->uin)
+                ->where('uid','=',session('user.uid'))
+                ->find();
             if (!$this->res) {
                 //不是自己的QQ
                 exit(':-) SafeChallenge');
