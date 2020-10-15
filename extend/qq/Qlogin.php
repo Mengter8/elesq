@@ -11,9 +11,9 @@ class Qlogin
     private $referrer;
     public $loginApi;
 
-    public function setLoginApi($url)
+    public function __construct($proxy)
     {
-        $this->loginApi = $url;
+        $this->loginApi = $proxy;
     }
 
     /**

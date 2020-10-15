@@ -25,7 +25,6 @@ class Update extends Command
     protected function execute(Input $input, Output $output)
     {
         $server = new Server();
-        $Qlogin = new \qq\Qlogin();
         $task = new Task();
         $res = $task->getAutoUpdateTask();
 //        dump($res->toArray());die();
@@ -33,7 +32,7 @@ class Update extends Command
 //            dump($value);
             $uin = $value['uin'];
             $sid = $value['sid'];
-            $Qlogin->setLoginApi($server->getId($sid)['api']);
+            $Qlogin = new \qq\Qlogin($server->getId($sid)['api']);
             $checkvc = $Qlogin->checkvc($uin);
             if ($checkvc['code'] == 1) {
                 //可直接登录

@@ -24,20 +24,18 @@ class Qlogin
 
     protected function initialize()
     {
-        $this->Qlogin = new \qq\Qlogin();
-
         $this->uin = Request::param('uin');
         $serverId = Request::param('serverId');
         if ($this->uin) {
             $this->res = (new Qq())->queryUinForServer($this->uin);
             if ($this->res) {
-                $this->Qlogin->setLoginApi($this->res['api']);
+                $this->Qlogin = new \qq\Qlogin($this->res['api']);
             }
         }
         if (isset($serverId)) {
             if (defined('proxy') == false) {
                 if ($ret = (new Server())->getId($serverId)) {
-                    $this->Qlogin->setLoginApi($ret['api']);
+                    $this->Qlogin = new \qq\Qlogin($ret['api']);
                 } else  {
                     return resultJson(0, '服务器ID错误');
                 }
