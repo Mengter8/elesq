@@ -59,8 +59,9 @@ class User
         $nickname = Request::post('nickname');
         $uin = Request::post('uin');
         try {
-            validate(\app\validate\Qq::class)->check([
+            validate(\app\validate\User::class)->check([
                 'qq' => $uin,
+                'nickname'=>$nickname
             ]);
         } catch (ValidateException $e) {
             // 验证失败 输出错误信息

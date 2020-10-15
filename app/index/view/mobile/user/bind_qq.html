@@ -15,7 +15,7 @@
         </div>
         <div class="h10 mt3">
             <font class="f4 bold">昵称</font>
-            <input type="text" class="form wh p0 r0 bb" name="nickname" value="{:htmlentities(session('user.nickname'))}" placeholder="输入用户昵称" autocomplete="off"/>
+            <input type="text" class="form wh p0 r0 bb" name="nickname" value="{:htmlentities(session('user.nickname'))}" placeholder="输入用户昵称" autocomplete="off" maxlength="10"/>
         </div>
         <div class="mt7 mb3"><button class="btn btn-qing btn-md w" onclick="save();">确 定 补 充</button></div>
     </div>
