@@ -1,4 +1,4 @@
-<title>CQY聊天室 - 小柯秒赞</title>
+<title>CQY聊天室 - {:config('conf.title')}</title>
 <div class="app-header t-v bg-bai dl2 bb">
     <span class="header-l t-v nowrap" onclick="x.mclose();"><i class="icon icon-pleft f9"></i>返回</span>
     <span class="header-c t-v t-c nowrap">CQY聊天室</span>
@@ -6,14 +6,57 @@
 </div><div class="app-content mode-b9 chatscrool bg-bai dk">
     <div class="in-list top" id="chatheight" onclick="$('#chatcon').blur();">
         {foreach $list as $vo}
+
+        {php}
+        $info = getVipLevel($vo['vip_start_time'],$vo['vip_end_time'],$vo['agent']);
+        $font = $info['chat_color_m'];
+
+        if ($info['title'] != "已过期"){
+            $level ='<span class="bg-lan pl1 pr1 rx1 mr1">';
+            $level .= $info['title'];
+            $level .='</span>';
+            $nickname_font = "hong bold";
+        } else {
+            $level = "";
+            $nickname_font = "";
+        }
+        {/php}
+
+        {if $vo['qq'] != session('user.qq')}
         <dl class="w pt2 pb3">
-            <dt><p class="w10 t-c"><img class="w7 h7 b r5" src="//q4.qlogo.cn/headimg_dl?dst_uin={$vo['qq']}&spec=40"></p></dt>
+            <dt>
+                <p class="w10 t-c">
+                    <img class="w7 h7 b r5" src="//q4.qlogo.cn/headimg_dl?dst_uin={$vo['qq']}&spec=40">
+                </p>
+            </dt>
             <dd>
-                <p class="f2"><span class="bg-lan pl1 pr1 rx1 mr1">{:getVipLevel($vo['vip_start_time'],$vo['vip_end_time'],$vo['agent'])['title']}</span><font class="hong bold">{$vo['nickname']}</font></p>
-                <p><span class="inline bg-{:getVipLevel($vo['vip_start_time'],$vo['vip_end_time'],$vo['agent'])['chat_color_m']} dl2 p2 rx3">{$vo['content']}</span></p>
+                <p class="f2">
+                    {$level|raw}
+                    <font class="{$nickname_font}">{$vo['nickname']}</font>
+                </p>
+                <p><span class="inline bg-{$info['chat_color_m']} dl2 p2 rx3">{$vo['content']}</span></p>
             </dd>
             <dt><p class="w10"></p></dt>
         </dl>
+        {else}
+        <dl class="pt2 pb3">
+            <dt>
+                <p class="w10"></p>
+            </dt>
+            <dd class="t-r">
+                <p class="f2">
+                    {$level|raw}
+                    <font class="hong bold">{$vo['nickname']}</font>
+                </p>
+                <p><span class="inline bg-{$info['chat_color_m']} p2 rx3">{$vo['content']}</span></p>
+            </dd>
+            <dt>
+                <p class="w10 t-c">
+                    <img class="w7 h7 b r5" src="//q4.qlogo.cn/headimg_dl?dst_uin={$vo['qq']}&spec=40">
+                </p>
+            </dt>
+        </dl>
+        {/if}
         {/foreach}
     </div>
 </div>
@@ -26,63 +69,105 @@
 <script>
 
     token = "{:session('user.openid')}";
-    socket = io('wss://wss.elesq.cn', {transports: ['websocket']});
-    // socket = io('ws://192.168.1.106:9501', {transports: ['websocket']});
-    socket.emit("join",{"room":"chat", "token":token})
+    qq = "{:session('user.qq')}";
+    if (typeof socket === "object"){
+        socket.emit("leave",{"token":token})
+        socket.close();
+    }
+    socket = io("{:config('conf.wss')}", {transports: ['websocket']});
+    socket.emit("join",{"token":token})
+
     // socket.emit("chat", {"content": "我是内容", "token":token})
 
-    // socket.emit("leave",{"room":["chat"]})
-
     socket.on('ChatCallback', data => {
-        if (token == data.token){
-            $("#chatheight").append(
-                '<dl class="w pt2 pb3">\n' +
-                '            <dt><p class="w10 t-c"><img class="w7 h7 b r5" src="//q4.qlogo.cn/headimg_dl?dst_uin=' + data.user.qq + '&amp;spec=40"></p></dt>\n' +
-                '            <dd>\n' +
-                '                <p class="f2"><span class="bg-lan pl1 pr1 rx1 mr1">' + data.user.level + '</span><font class="hong bold">' + data.user.nickname + '</font></p>\n' +
-                '                <p><span class="inline bg-' + data.color_m+' dl2 p2 rx3">' + data.message + '</span></p>\n' +
-                '            </dd>\n' +
-                '            <dt><p class="w10"></p></dt>\n' +
-                '        </dl>');
-            $("#chatcon").val("");
+
+        if (data.user.level){
+            level = '<span class="bg-lan pl1 pr1 rx1 mr1">' + data.user.level + '</span>';
+            font = "hong bold"
+        } else {
+            level = "";
+            font = "";
         }
-        //成功发送
+        $("#chatheight").append(
+            "        <dl class=\"pt2 pb3\">\n" +
+            "            <dt>\n" +
+            "                <p class=\"w10\"></p>\n" +
+            "            </dt>\n" +
+            "            <dd class=\"t-r\">\n" +
+            "                <p class=\"f2\">\n" +
+            "                    "+level+"\n" +
+            "                    <font class=\"" + font + "\">" + data.user.nickname + "</font>\n" +
+            "                </p>\n" +
+            "                <p><span class=\"inline bg-" + data.user.color_m + " p2 rx3\">" + data.message + "</span></p>\n" +
+            "            </dd>\n" +
+            "            <dt>\n" +
+            "                <p class=\"w10 t-c\">\n" +
+            "                    <img class=\"w7 h7 b r5\" src=\"//q4.qlogo.cn/headimg_dl?dst_uin=" + data.user.qq + "&spec=40\">\n" +
+            "                </p>\n" +
+            "            </dt>\n" +
+            "        </dl>"
+        );
+        ChatScroolToEnd();
+        $("#chatcon").val("");
     });
     socket.on('SysChatCallback', data => {
-            if (data.user.level){
-                level = '<span class="bg-lan pl1 pr1 rx1 mr1">' + data.user.level + '</span>';
-                font = "hong bold"
-            }
+        if (data.user.level){
+            level = '<span class="bg-lan pl1 pr1 rx1 mr1">' + data.user.level + '</span>';
+            font = "hong bold"
+        } else {
+            level = "";
+            font = "";
+        }
+        if (data.user.qq === qq){
+            //对应ChatCallback事件
+            //场景PC Mobile同时打开聊天室PC发送消息
             $("#chatheight").append(
-                '<dl class="pt2 pb3">' +
-                '<dt>' +
-                '<p class="w10"></p>' +
-                '</dt>' +
-                '<dd class="t-r">' +
-                '<p class="f2">' + level +
-                '<font class="' + font +'">' + data.user.nickname + '</font></p>' +
-                '<p><span class="inline bg-' +data.user.color_m +' p2 rx3">' + data.message + '</span><\/p>' +
-                '</dd>' +
-                '<dt><p class="w10 t-c">' +
-                '<img class="w7 h7 b r5" src="//q4.qlogo.cn/headimg_dl?dst_uin=' + data.user.qq + '&spec=40"></p>' +
-                '</dt>' +
-                '</dl>');
+                "        <dl class=\"pt2 pb3\">\n" +
+                "            <dt>\n" +
+                "                <p class=\"w10\"></p>\n" +
+                "            </dt>\n" +
+                "            <dd class=\"t-r\">\n" +
+                "                <p class=\"f2\">\n" +
+                "                    "+level+"\n" +
+                "                    <font class=\"" + font + "\">" + data.user.nickname + "</font>\n" +
+                "                </p>\n" +
+                "                <p><span class=\"inline bg-" + data.user.color_m + " p2 rx3\">" + data.message + "</span></p>\n" +
+                "            </dd>\n" +
+                "            <dt>\n" +
+                "                <p class=\"w10 t-c\">\n" +
+                "                    <img class=\"w7 h7 b r5\" src=\"//q4.qlogo.cn/headimg_dl?dst_uin=" + data.user.qq + "&spec=40\">\n" +
+                "                </p>\n" +
+                "            </dt>\n" +
+                "        </dl>"
+            );
+        } else {
+            $("#chatheight").append(
+                "        <dl class=\"w pt2 pb3\">\n" +
+                "            <dt>\n" +
+                "                <p class=\"w10 t-c\">\n" +
+                "                    <img class=\"w7 h7 b r5\" src=\"//q4.qlogo.cn/headimg_dl?dst_uin=" + data.user.qq + "&spec=40\">\n" +
+                "                </p>\n" +
+                "            </dt>\n" +
+                "            <dd>\n" +
+                "                <p class=\"f2\">\n" +
+                "                    "+level+"\n" +
+                "                    <font class=\"" + font + "\">" + data.user.nickname + "</font>\n" +
+                "                </p>\n" +
+                "                <p><span class=\"inline bg-" + data.user.color_m + " dl2 p2 rx3\">" + data.message + "</span></p>\n" +
+                "            </dd>\n" +
+                "            <dt><p class=\"w10\"></p></dt>\n" +
+                "        </dl>"
+            );
+        }
 
         ChatScroolToEnd();
     });
     socket.on('SystemCallback', data => {
         //系统消息
         console.log("系统消息:" + data.message);
+        $("#chatheight").append('<dl class="t-c pt2 pb3"><span class="inline bg-lan p2 rx3">' + data.message + '</span><dl>');
+        ChatScroolToEnd();
     });
-    socket.on('JoinCallback', data => {
-        //加入房间回调
-        console.log("加入房间回调:" + data.message);
-    });
-    socket.on('LeaveCallback', data => {
-        //离开房间回调
-        console.log("离开房间回调:" + data.message);
-    });
-
 
 
     function ChatScroolToEnd() {

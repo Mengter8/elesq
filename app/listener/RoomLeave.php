@@ -3,6 +3,7 @@ declare (strict_types=1);
 
 namespace app\listener;
 
+use app\model\Chat;
 use think\Container;
 use think\swoole\Websocket;
 
@@ -22,10 +23,11 @@ class RoomLeave
      */
     public function handle($event)
     {
-        $this->websocket->leave($event['room']);
 
-        $fd = $this->websocket->getSender();
-        $this->websocket->emit("LeaveCallback", ['fd' => $fd, 'message' => "leave for {$event['room']} is success!"]);
-        $this->websocket->to($event['room'])->emit("SysChatCallback", ["message" => "fd{$fd}离开了本房间"]);
+        if (isset($event['token'])) {
+            $chat = new Chat();
+            $user = $chat->getUserInfo($event['token']);
+            $this->websocket->broadcast()->emit("SystemCallback", ["message" => "用户 {$user['nickname']} 离开了聊天室"]);
+        }
     }
 }
