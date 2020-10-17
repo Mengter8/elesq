@@ -11,17 +11,6 @@ use app\model\User;
 
 class Robot
 {
-    public function getUin()
-    {
-        $uin = Request::get('uin');
-        $res = User::field('uid')->getByQq($uin);
-        if ($res) {
-            return json(['code' => 1]);
-        } else {
-            return json(['code' => 0]);
-        }
-    }
-
     /**
      * 获取登录二维码
      */
@@ -68,16 +57,85 @@ class Robot
         $pskey = request::param('pskey');
         $superkey = request::param('superkey');
         $qq = new Qq();
-//        $res = $qq->getByUin($uin);
-//        if ($res) {
-//            $uid = $res['uid'];
-//        } else {
-//            $uid = 1;
-//        }
         return $qq->add(0, $serverId, $uin, 0, $skey, $pskey, $superkey);
-
     }
 
+    public function getStatus(){
+        $uin = request::param('uin');
+        $qq = new \app\api\model\Qq();
+        $res = $qq->getUinStatus($uin);
+        if ($res){
+            return resultJson(1,'获取成功',$res);
+        } else {
+            return resultJson(1,'获取失败',[]);
+        }
+    }
+    public function getUserInfo(){
+        $uin = request::param('uin');
+
+        $user = new \app\api\model\User();
+        $res = $user->getUserInfo($uin);
+        if ($res){
+            return resultJson(1,'获取成功',$res);
+        } else {
+            return resultJson(1,'获取失败',[]);
+        }
+    }
+    public function getMyList(){
+        $uin = request::param('uin');
+
+        $user = new \app\api\model\Qq();
+        $res = $user->getMyList($uin);
+        if ($res){
+            return resultJson(1,'获取成功',$res);
+        } else {
+            return resultJson(1,'获取失败',[]);
+        }
+    }
+    /**
+     * 业务查询
+     */
+    public function getPayInfo()
+    {
+        $uin = Request::get('uin');
+        $res = (new Qq)->getByUin($uin);
+
+        $skey = $res->skey;
+        $res = get_curl("https://api.unipay.qq.com/v1/r/1450000172/wechat_query?cmd=7&session_id=uin&session_type=skey&openid={$uin}&openkey={$skey}");
+        $arr = json_decode($res, true);
+//        dump($arr);
+        foreach ($arr['service'] as $key=>$vo) {
+            if ($vo['start_time'] > $vo['end_time'] || $vo['end_time'] > date("Y-m-d H:i:s")) {
+                $ret[] = ['service_name'=>$vo['service_name'],'start_time'=>$vo['start_time'],'end_time'=>$vo['end_time']];
+            }
+        }
+        return resultJson(1,'获取成功',$ret);
+    }
+    public function getPayLevel(){
+        //https://r.qzone.qq.com/cgi-bin/user/cgi_personal_card?uin=10001&remark=0&g_tk=1577542604
+
+        /**
+        _Callback(
+        {"uin":10001,
+        "qzone":1,
+        "intimacyScore":0,
+        "nickname":"pony",
+        "realname":"",
+        "smartname":"",
+        "logolabel":"0",
+        "commfrd":0,
+        "friendship":0,
+        "gender":1,
+        "astro":7,
+        "isFriend":0,
+        "bitmap":"1a51d5c41433d301",
+        "qqvip":9,
+        "greenvip":6,
+        "bluevip":4,
+        "publicwalfare":1,
+        "avatarUrl":"http://qlogo2.store.qq.com/qzone/10001/10001/100?0"});
+         */
+    }
     public function mpz()
     {
         $uin = Request::get('uin');
