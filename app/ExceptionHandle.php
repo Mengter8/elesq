@@ -1,4 +1,5 @@
 <?php
+
 namespace app;
 
 use think\db\exception\DataNotFoundException;
@@ -31,14 +32,24 @@ class ExceptionHandle extends Handle
      * 记录异常信息（包括日志或者其它方式记录）
      *
      * @access public
-     * @param  Throwable $exception
+     * @param Throwable $exception
      * @return void
      */
     public function report(Throwable $exception): void
     {
         //记录报错日志
         if (!$exception instanceof HttpException) {
-            putRuntimeCache("Debug", time() . ".txt", $exception);
+            $info = \think\facade\Request::method() . " " . \think\facade\Request::url() . "\r\n";
+
+            if (\think\facade\Request::isPost()) {
+                $info .= var_export(\think\facade\Request::param(), true) . "\r\n";
+            }
+
+            if (\think\facade\session::has('user')){
+                $info .= var_export(\think\facade\session::get("user"), true) . "\r\n";
+            }
+
+            putRuntimeCache("Debug", time() . ".txt", $info . "\r\n" . $exception);
         }
         // 使用内置的方式记录异常日志
         parent::report($exception);
@@ -48,7 +59,7 @@ class ExceptionHandle extends Handle
      * Render an exception into an HTTP response.
      *
      * @access public
-     * @param \think\Request   $request
+     * @param \think\Request $request
      * @param Throwable $e
      * @return Response
      */

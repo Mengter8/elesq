@@ -193,10 +193,12 @@ class qzone extends login
 
     /**
      * 获取自己说说
+     * @param int $num 获取数量
+     * @return false|mixed
      */
-    public function getMyList($uin = null, $num = 20)
+    public function getMyList($num = 20)
     {
-        if (empty($uin)) $uin = $this->uin;
+        if (empty($uin))
         $url = 'https://mobile.qzone.qq.com/list?qzonetoken=' . $this->qzoneToken . '&g_tk=' . $this->gtk2 . '&res_attach=&format=json&list_type=shuoshuo&action=0&res_uin=' . $this->uin . '&count=' . $num;
         $json = get_curl($url, 0, 1, $this->cookie);
         $arr = json_decode($json, true);
