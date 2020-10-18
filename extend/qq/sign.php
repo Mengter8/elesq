@@ -82,7 +82,9 @@ class sign extends login
     public function mobileSpeed()
     {
         //全天在线 移动加速
-        $url = "https://cgi.vip.qq.com/online/set?ps_tk={$this->gtk2}&g_tk=" . getGTK2($this->skey) . "&type=Y&beg=0&end=24";
+        //p_tk: PgbTIMW0NhElt4leVCaa3*R*-OszNzK0gWPv7QwPHXc_
+        //原版p_tk 为cookie的pt4_token
+        $url = "https://cgi.vip.qq.com/online/set?ps_tk={$this->gtk2}&g_tk=" . $this->getGTK2($this->skey) . "&type=Y&beg=0&end=24";
         $data = get_curl($url, 0, 'https://vip.qq.com/my/index', $this->cookie);
         $arr = json_decode($data, true);
         if (array_key_exists('ret', $arr) && $arr['ret'] == 0) {

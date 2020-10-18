@@ -133,7 +133,7 @@ class cf extends login
         $uin = Request::get('uin');
         $skey = Request::get('skey');
         $cookie = "uin=o{$uin}; skey={$skey}";
-        $gtk = getGTK($skey);
+        $gtk = $this->getGTK($skey);
         //查询角色
         $url = "http://cf.aci.game.qq.com/main?game=cf&area={$area}&callback=158585265684517546&sCloudApiName=ams.gameattr.role&iAmsActivityId=290169&sServiceDepartment=group_f";
         $res = get_curl($url,0,$url,$cookie);

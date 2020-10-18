@@ -30,8 +30,8 @@ class login {
         $this->skey = $skey;
         $this->pskey = $pskey;
         $this->superkey = $superkey;
-        $this->gtk = getGTK($skey);
-        $this->gtk2 = getGTK($pskey);
+        $this->gtk = $this->getGTK($skey);
+        $this->gtk2 = $this->getGTK($pskey);
         $this->cookie = "uin=o{$uin}; skey={$skey}; p_skey={$pskey};";
 
         $this->qzoneToken = $this->getQzoneToken();
@@ -102,7 +102,7 @@ class login {
         $md5str = md5(implode($hash) . $md5key);
         return $md5str;
     }
-    private function getGTK3($skey)
+    public function getGTK3($skey)
     {
         $salt = 108;
         $md5key = 'tencent.mobile.qq.csrfauth';

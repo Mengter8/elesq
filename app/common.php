@@ -1,8 +1,6 @@
 <?php
 // 应用公共文件
 
-//mb_convert_encoding($ret, 'utf-8','GB2312');
-
 function getSubstr($str, $leftStr, $rightStr)
 {
     $left = strpos($str, $leftStr);
@@ -97,49 +95,6 @@ function get_curl($url, $post = 0, $referer = 1, $cookie = 0, $header = 0, $ua =
     return $ret;
 }
 
-function getGTK($skey)
-{
-    $len = strlen($skey);
-    $hash = 5381;
-    for ($i = 0; $i < $len; $i++) {
-        $hash += ($hash << 5 & 2147483647) + ord($skey[$i]) & 2147483647;
-        $hash &= 2147483647;
-    }
-    return $hash & 2147483647;
-}
-
-function getGTK2($skey)
-{
-    $salt = 5381;
-    $md5key = 'tencentQQVIP123443safde&!%^%1282';
-    $hash = array();
-    $hash[] = ($salt << 5);
-    for ($i = 0; $i < strlen($skey); $i++) {
-        $ASCIICode = mb_convert_encoding($skey[$i], 'UTF-32BE', 'UTF-8');
-        $ASCIICode = hexdec(bin2hex($ASCIICode));
-        $hash[] = (($salt << 5) + $ASCIICode);
-        $salt = $ASCIICode;
-    }
-    $md5str = md5(implode($hash) . $md5key);
-    return $md5str;
-}
-
-function getGTK3($skey)
-{
-    $salt = 108;
-    $md5key = 'tencent.mobile.qq.csrfauth';
-    $hash = array();
-    $hash[] = ($salt << 5);
-    for ($i = 0; $i < strlen($skey); $i++) {
-        $ASCIICode = mb_convert_encoding($skey[$i], 'UTF-32BE', 'UTF-8');
-        $ASCIICode = hexdec(bin2hex($ASCIICode));
-        $hash[] = (($salt << 5) + $ASCIICode);
-        $salt = $ASCIICode;
-    }
-    $md5str = md5(implode($hash) . $md5key);
-    return $md5str;
-}
-
 /**
  * 获取客户端IP地址
  * @param integer $type 返回类型 0 返回IP地址 1 返回IPV4地址数字
@@ -173,34 +128,6 @@ function get_client_ip($type = 0)
 }
 
 /**
- * 获取QQ昵称
- * @param $uin
- * @return mixed|string
- */
-function get_qqnick($uin)
-{
-    //https://r.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?uins=1543797310
-    //https://users.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?uins=1543797310
-//    preg_match('/[1-9][0-9]{4,}/',$uin,$match);
-//
-//
-//    if ($match){
-//        $uin=$match[0];
-//    }
-
-    $ret = get_curl("https://r.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?get_nick=&uins={$uin}");
-    $ret = mb_convert_encoding($ret, "UTF-8", "GBK");
-    $ret = str_replace(array("portraitCallBack(", ")"), array('', ''), $ret);
-
-    $nickname = json_decode($ret, true);
-    if ($nickname) {
-        return $nickname[$uin][6];
-    } else {
-        return "[NULL]";
-    }
-}
-
-/**
  * 获取QQ昵称带emoji
  * @param $uin
  * @return mixed|string
@@ -214,24 +141,25 @@ function getQqNickname($uin){
     $ret = get_curl($url);
     $ret = urldecode($ret);
     $json = json_decode($ret,true);
-
-    if ($json){
+    if ($json['ret'] == 0){
         return $json['nick'];
     } else {
-        return "[NULL]";
+        //多接口
+        //https://r.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?uins=1543797310
+        //https://users.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?uins=1543797310
+
+        $ret = get_curl("https://r.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?uins={$uin}");
+        $ret = mb_convert_encoding($ret, "UTF-8", "GBK");
+        $nickname = jsonp_decode($ret, true);
+        if (isset($nickname[key($nickname)][6])) {
+            return $nickname[key($nickname)][6];
+        } else {
+            return "[NULL]";
+        }
     }
 }
 
 
-//function get_qqnick($uin)
-//{
-//    if ($data = get_curl("http://users.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?get_nick=1&uins=" . $uin)) {
-//        $data = str_replace(array('portraitCallBack(', ')'), array('', ''), $data);
-//        $data = mb_convert_encoding($data, "UTF-8", "GBK");
-//        $row = json_decode($data, true);
-//        return $row[$uin][6];
-//    }
-//}
 
 /**
  * Jsonp转json
