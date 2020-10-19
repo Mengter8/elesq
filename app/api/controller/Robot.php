@@ -111,6 +111,14 @@ class Robot
         }
         return resultJson(1,'获取成功',$ret);
     }
+
+    /**
+     * 获取所有登录节点
+     */
+    public function getServer(){
+        $server = new Server();
+        return resultJson(1,'获取成功',$server->getServerList());
+    }
     public function getPayLevel(){
         //https://r.qzone.qq.com/cgi-bin/user/cgi_personal_card?uin=10001&remark=0&g_tk=1577542604
 

@@ -25,6 +25,9 @@ class Server extends Model
      */
     public function getServerList()
     {
-        return $this->select()->toArray();
+        return $this->field('id,name')
+            ->where('status', '=', '1')
+            ->select()
+            ->toArray();
     }
 }
