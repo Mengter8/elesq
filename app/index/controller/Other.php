@@ -56,8 +56,13 @@ class Other
         $Task = new \app\model\Task();
         $res = $Qq->getByUin($uin);
         if ($res) {
-            $TRes = $Task->getTaskData('zan', $uin);
-            $server = $TRes['dataset']['server'];
+            if ($TRes = $Task->getTaskData('zan', $uin)) {
+                $server = $TRes['dataset']['server'];
+            } else {
+                $server = 0;
+                $TRes['status'] = 0;
+                $TRes['create_time'] = 0;
+            }
             View::assign([
                 'task_status' => $TRes['status'],
                 'create_time' => $TRes['create_time'],
@@ -85,18 +90,21 @@ class Other
         return autoTemplate();
     }
 
-    public function agent_query(){
+    public function agent_query()
+    {
         return autoTemplate();
     }
-    public function agent_ajax(){
+
+    public function agent_ajax()
+    {
         $uin = input('uin');
         $user = new User();
         $res = $user->getAgentInfo($uin);
-        if ($res){
-            return resultJson(1,'y',$res);
+        if ($res) {
+            return resultJson(1, 'y', $res);
 
         } else {
-            return resultJson(0,'No',$res);
+            return resultJson(0, 'No', $res);
         }
     }
 
@@ -145,7 +153,8 @@ class Other
         return autoTemplate();
     }
 
-    public function agent(){
+    public function agent()
+    {
         return autoTemplate();
     }
 }
